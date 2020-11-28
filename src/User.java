@@ -6,8 +6,8 @@ public class User {
     private String password;
     static ArrayList<User> users = new ArrayList<>();
 
-    User(String username, String password){
-        this.email = username;
+    User(String email, String password){
+        this.email = email;
         this.password = password;
     }
 
