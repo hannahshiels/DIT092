@@ -1,4 +1,3 @@
-import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -69,7 +68,7 @@ public class RegisterInterface{
 
 
         PasswordField userPassword = new PasswordField();
-        userPassword.setPromptText("Enter password");
+        userPassword.setPromptText("Enter password (8 chars or more)");
 
 
         final PasswordField userPasswordConfirm = new PasswordField();
@@ -79,8 +78,48 @@ public class RegisterInterface{
 
         Button createBtn = new Button ("Create account");
 
-        Hyperlink loginLink = new Hyperlink("Log In instead");
 
+
+       Label debug = new Label();
+
+
+        createBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String email = userEmail.getText();
+                String firstName = userFirstName.getText();
+                String lastName = userLastName.getText();
+                String password = userPassword.getText();
+                String passwordConfirm = userPasswordConfirm.getText();
+                if(email.length() == 0 || firstName.length() == 0 || lastName.length() == 0 || password.length() == 0 || passwordConfirm.length() == 0){
+                    debug.setText("Enter all fields");
+                } else if(User.isEmailRegistered(email)){
+                    debug.setText("Email is already in use. Log in instead.");
+                } else if(!EmailValidation.isEmailValid(email)){
+                    debug.setText("Email is not valid.");
+                }else if(password.length() < 9){
+                    debug.setText("Password must be 8 or more characters");
+                } else if(!password.equals(passwordConfirm)){
+                    debug.setText("Passwords do not match.");
+                }else{
+                   //debug.setText("Account created.");
+                    User newUser = new User(email,firstName,lastName,password);
+                    User.users.add(newUser);
+                    Hyperlink link = new Hyperlink("Account created. Log in.");
+                    link.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            InterfaceController.switchToLogin(getStage(), getScene());
+                        }
+                    });
+                    GridPane.setConstraints(link, 0, 8);
+                    grid.getChildren().add(link);
+                }
+            }
+        });
+
+        Hyperlink loginLink = new Hyperlink("Log In instead");
 
         loginLink.setOnAction(new EventHandler() {
             @Override
@@ -108,8 +147,10 @@ public class RegisterInterface{
 
         GridPane.setConstraints(createBtn, 0, 7);
         grid.getChildren().add(createBtn);
+        grid.getChildren().add(debug);
+        GridPane.setConstraints(debug, 0, 8);
         grid.getChildren().add(loginLink);
-        GridPane.setConstraints(loginLink, 0, 8);
+        GridPane.setConstraints(loginLink, 0, 9);
 
 
 
