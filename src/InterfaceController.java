@@ -10,7 +10,7 @@ public class InterfaceController {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     public static void switchToLogin(Stage stage, Scene scene){
         showLogin(stage,scene);
     }
@@ -22,12 +22,12 @@ public class InterfaceController {
         showMainMenu(stage,scene);
     }
 
+    public static void switchToUserMenu(Stage stage, Scene scene){
+        showUserMenu(stage,scene);
+    }
 
-    public static void showLogin(Stage stage, Scene scene){
-        LoginInterface login = new LoginInterface(stage,scene) ;
-        GridPane gui = login.getGUI();
-        String title = login.getTitle();
-        changeScene(stage,scene, gui, title);
+    public static void switchToProjectMenu(Stage stage, Scene scene){
+        showProjectMenu(stage,scene);
     }
 
 
@@ -39,12 +39,36 @@ public class InterfaceController {
         changeScene(stage,scene, gui, title);
     }
 
+
+    public static void showLogin(Stage stage, Scene scene){
+        LoginInterface login = new LoginInterface(stage,scene) ;
+        GridPane gui = login.getGUI();
+        String title = login.getTitle();
+        changeScene(stage,scene, gui, title);
+    }
+
+
     public static void showRegister(Stage stage, Scene scene){
         RegisterInterface register = new RegisterInterface(stage,scene);
         GridPane gui = register.getGUI();
         String title = register.getTitle();
         changeScene(stage,scene, gui, title);
     }
+
+    public static void showUserMenu(Stage stage, Scene scene){
+        UserInterface userMenu = new UserInterface(stage,scene);
+        GridPane gui = userMenu.getGUI();
+        String title = userMenu.getTitle();
+        changeScene(stage,scene, gui, title);
+    }
+
+    public static void showProjectMenu(Stage stage, Scene scene){
+        CreateProjectInterface createProjectMenu = new CreateProjectInterface(stage,scene);
+        GridPane gui = createProjectMenu.getGUI();
+        String title = createProjectMenu.getTitle();
+        changeScene(stage,scene, gui, title);
+    }
+
 
 
 }
