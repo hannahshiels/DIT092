@@ -11,6 +11,11 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
+
+    public static void addProject(Project newProject){
+        projects.add(newProject);
+    }
+
     public void listProjects(){
         for(int i = 0; i < projects.size(); i++){
             System.out.println(projects.get(i).toString());
