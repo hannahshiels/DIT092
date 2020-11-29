@@ -70,11 +70,27 @@ public class CreateProjectInterface {
             Button createProjectBtn = new Button ("Create project");
             GridPane.setConstraints(createProjectBtn, 0, 3);
             grid.getChildren().add(createProjectBtn);
+            Label debug = new Label();
+            grid.getChildren().add(debug);
+            GridPane.setConstraints(debug, 0, 4);
 
             createProjectBtn.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    InterfaceController.switchToUserMenu(getStage(), getScene());
+                    String projectNameText = projectName.getText();
+                    String projectDescriptionText = projectDescription.getText();
+                    if(projectNameText.length() == 0){
+                        debug.setText("Please enter a project name");
+                    } else if(projectNameText.length() > 100){
+                        debug.setText("Project name must be 100 characters or less");
+                    } else if(projectDescriptionText.length() > 250){
+                        debug.setText("Project Description must be 250 characters or less");
+                    } else{
+                       Project newProject = new Project(projectNameText, projectDescriptionText);
+                       Project.addProject(newProject);
+                        InterfaceController.switchToUserMenu(getStage(), getScene());
+                    }
+
                 }
             });
 
