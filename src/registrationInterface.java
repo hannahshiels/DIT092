@@ -1,5 +1,10 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javafx.application.Application;
@@ -76,6 +81,11 @@ public class registrationInterface extends Application {
 		GridPane.setConstraints(submit, 0, 5);
 		grid.getChildren().add(submit);
 
+		//FOR DEBUGGIN! GET SAVED USERS FROM SER FILE
+		Button getUsers = new Button ("Restore user data");
+		GridPane.setConstraints(getUsers, 1, 5);
+		grid.getChildren().add(getUsers);
+		
         Label debugLabel = new Label("User info:"); 
 		grid.getChildren().add(debugLabel);	
 		grid.setConstraints(debugLabel, 0, 6);
@@ -89,15 +99,63 @@ public class registrationInterface extends Application {
             public void handle(ActionEvent e) 
             { 
             	User account = new User(userEmail.getText(), userFirstName.getText(), userLastName.getText(), userPassword.getText());
-                debugLabel.setText(account.toString()); 
+            	User.userList.add(account);
+
+                debugLabel.setText(account.toString());     
+                WriteObjectToFile(User.userList.add(account));
             } 
         };
             submit.setOnAction(event);
+            
+            
+            EventHandler<ActionEvent> eventDebug = new EventHandler<ActionEvent>() { 
+                public void handle(ActionEvent e) 
+                { 
+
+                    System.out.println("Reading from file..");
+                    readSavedObjects();      
+                } 
+            };
+            getUsers.setOnAction(eventDebug);
 		//Displaying the stage 
 		primaryStage.show();
 
-	   }         
+	   }   
+    public void WriteObjectToFile(Object obj) {
+        try {
+ 
+        	FileOutputStream fileOut = new FileOutputStream("src/users.ser");
+
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(obj);
+            objectOut.close();
+            System.out.println("User saved to file");
+
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void readSavedObjects() {
+
+    	try {
+        	FileInputStream fileIn = new FileInputStream("src/users.ser");
+        	ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+        		objectIn.readObject();
+        	
+        	for(User accounts: User.userList) {
+        		System.out.println(accounts);
+        		System.out.print(User.userList.get(3));
+        	}
+        	objectIn.close();
+    	} catch (Exception e) {
+    		System.out.println(e);
+    	}
+    }
 	public static void main (String args[]) {
+    	
+
 	      launch(args);      
 
 	}
