@@ -98,7 +98,7 @@ public class RegisterInterface{
                     debug.setText("Email is already in use. Log in instead.");
                 } else if(!EmailValidation.isEmailValid(email)){
                     debug.setText("Email is not valid.");
-                }else if(password.length() < 9){
+                }else if(password.length() < 8){
                     debug.setText("Password must be 8 or more characters");
                 } else if(!password.equals(passwordConfirm)){
                     debug.setText("Passwords do not match.");
