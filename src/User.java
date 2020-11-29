@@ -23,8 +23,6 @@ public class User {
     }
 
 
-
-
     public String getEmail(){
         return this.email;
     }
@@ -55,18 +53,24 @@ public class User {
     }
 
 
-
-
-
     public void listUsers(){
         for(int i = 0; i < users.size(); i++){
             System.out.println(users.get(i).toString());
         }
     }
 
-    public boolean isRegistered(String username, String password){
+    public static boolean isEmailRegistered(String email){
         for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getEmail().equalsIgnoreCase(username) && users.get(i).getPassword().equals(password)){
+            if(users.get(i).getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isRegistered(String email, String password){
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmail().equals(email) && users.get(i).getPassword().equals(password)){
                 return true;
             }
         }
