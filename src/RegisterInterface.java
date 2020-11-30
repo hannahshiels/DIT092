@@ -1,5 +1,6 @@
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -40,8 +41,11 @@ public class RegisterInterface{
     private GridPane showGUI(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
-        grid.setVgap(5);
+        grid.setVgap(10);
         grid.setHgap(5);
+        // add css classes like so
+        // userLastName.getStyleClass().add("user");
+
 
 
         Hyperlink menuLink = new Hyperlink("Back to Main Menu");
@@ -53,7 +57,7 @@ public class RegisterInterface{
             }
         });
 
-        Label label = new Label("Create an account");
+        Label creatAccLabel = new Label("Create an account");
 
         final TextField userFirstName = new TextField();
         userFirstName.setPromptText("Enter first name");
@@ -65,10 +69,8 @@ public class RegisterInterface{
         final TextField userLastName = new TextField();
         userLastName.setPromptText("Enter last name");
 
-
-
         PasswordField userPassword = new PasswordField();
-        userPassword.setPromptText("Enter password (8 chars or more)");
+        userPassword.setPromptText("Enter password (8 letters or more)");
 
 
         final PasswordField userPasswordConfirm = new PasswordField();
@@ -80,7 +82,8 @@ public class RegisterInterface{
 
 
 
-       Label debug = new Label();
+        Label debug = new Label();
+        debug.getStyleClass().add("debug");
 
 
         createBtn.setOnAction(new EventHandler() {
@@ -97,13 +100,13 @@ public class RegisterInterface{
                 } else if(User.isEmailRegistered(email)){
                     debug.setText("Email is already in use. Log in instead.");
                 } else if(!EmailValidation.isEmailValid(email)){
-                    debug.setText("Email is not valid.");
+                    debug.setText("Email is not valid");
                 }else if(password.length() < 8){
                     debug.setText("Password must be 8 or more characters");
                 } else if(!password.equals(passwordConfirm)){
                     debug.setText("Passwords do not match.");
                 }else{
-                   //debug.setText("Account created.");
+                    //debug.setText("Account created.");
                     User newUser = new User(email,firstName,lastName,password);
                     User.addUser(newUser);
                     Hyperlink link = new Hyperlink("Account created. Log in.");
@@ -119,7 +122,7 @@ public class RegisterInterface{
             }
         });
 
-        Hyperlink loginLink = new Hyperlink("Log In instead");
+        Hyperlink loginLink = new Hyperlink("Log in instead");
 
         loginLink.setOnAction(new EventHandler() {
             @Override
@@ -131,8 +134,8 @@ public class RegisterInterface{
 
         GridPane.setConstraints(menuLink, 0, 0);
         grid.getChildren().add(menuLink);
-        GridPane.setConstraints(label,0,1);
-        grid.getChildren().add(label);
+        GridPane.setConstraints(creatAccLabel,0,1);
+        grid.getChildren().add(creatAccLabel);
 
         GridPane.setConstraints(userFirstName, 0, 2);
         grid.getChildren().add(userFirstName);
@@ -144,18 +147,17 @@ public class RegisterInterface{
         grid.getChildren().add(userPassword);
         GridPane.setConstraints(userPasswordConfirm, 0, 6);
         grid.getChildren().add(userPasswordConfirm);
-
         GridPane.setConstraints(createBtn, 0, 7);
         grid.getChildren().add(createBtn);
         grid.getChildren().add(debug);
         GridPane.setConstraints(debug, 0, 8);
         grid.getChildren().add(loginLink);
         GridPane.setConstraints(loginLink, 0, 9);
+        GridPane.setHalignment(loginLink, HPos.RIGHT);
 
 
 
-
-         return grid;
+        return grid;
 
     }
 
