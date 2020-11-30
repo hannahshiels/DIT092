@@ -18,8 +18,17 @@ public class User {
         this.creationDate = CurrentDate.getCurrentDate();
     }
 
-    public void addUser(User newUser){
+    public static void addUser(User newUser){
         users.add(newUser);
+    }
+
+    public static User getUser(String email){
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmail().equals(email)){
+                return users.get(i);
+            }
+        }
+        return null;
     }
 
 
