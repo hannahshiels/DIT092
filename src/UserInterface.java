@@ -12,13 +12,16 @@ public class UserInterface {
         private String title;
         private Stage stage;
         private Scene scene;
+        private User currentUser;
 
-    UserInterface(Stage stage, Scene scene){
+
+    UserInterface(User currentUser,Stage stage, Scene scene){
             this.gui = this.showGUI();
             this.title = "Miss Management | User Menu";
             this.stage = stage;
             this.scene = scene;
-        }
+            this.currentUser = currentUser;
+    }
 
 
 
@@ -30,6 +33,11 @@ public class UserInterface {
     public String getTitle(){
         return this.title;
     }
+
+    public User getCurrentUser(){
+        return this.currentUser;
+    }
+
 
     public  Stage getStage(){
         return this.stage;
@@ -52,7 +60,7 @@ public class UserInterface {
         createAProjectBtn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                InterfaceController.switchToProjectMenu(getStage(), getScene());
+                InterfaceController.switchToProjectMenu(getCurrentUser(),getStage(), getScene());
             }
         });
 
@@ -63,7 +71,8 @@ public class UserInterface {
         projectsBtn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                InterfaceController.switchToProjectMenu(getStage(), getScene());
+                Project.listAllUserProjects(getCurrentUser());
+                InterfaceController.switchToProjectMenu(getCurrentUser(),getStage(), getScene());
             }
         });
 
