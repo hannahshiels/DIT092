@@ -62,7 +62,7 @@ public class User {
     }
 
 
-    public void listUsers(){
+    public static void listUsers(){
         for(int i = 0; i < users.size(); i++){
             System.out.println(users.get(i).toString());
         }
