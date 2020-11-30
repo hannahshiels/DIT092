@@ -50,7 +50,7 @@ public class UserInterface {
     private GridPane showGUI() {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
-        grid.setVgap(5);
+        grid.setVgap(10);
         grid.setHgap(5);
 
         Button createAProjectBtn = new Button("Create a project");
