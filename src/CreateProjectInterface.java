@@ -44,7 +44,7 @@ public class CreateProjectInterface {
         private GridPane showGUI() {
             GridPane grid = new GridPane();
             grid.setPadding(new Insets(20, 20, 20, 20));
-            grid.setVgap(5);
+            grid.setVgap(10);
             grid.setHgap(5);
 
 
@@ -76,6 +76,7 @@ public class CreateProjectInterface {
             GridPane.setConstraints(createProjectBtn, 0, 3);
             grid.getChildren().add(createProjectBtn);
             Label debug = new Label();
+            debug.getStyleClass().add("debug");
             grid.getChildren().add(debug);
             GridPane.setConstraints(debug, 0, 4);
 
