@@ -37,7 +37,6 @@ public class LoginInterface {
 
 
     private GridPane showGUI(){
-        testingInit();
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
@@ -115,19 +114,6 @@ public class LoginInterface {
         return grid;
     }
 
-
-    public void testingInit(){
-        User user1 = new User("email@email.com", "firstName", "lastName", "password");
-        User.addUser(user1);
-        Project project1 = new Project("Project name 1", "Project Description 1", user1);
-        Project.addProject(project1);
-        Project project2 = new Project("Project name 2", "Project Description 2", user1);
-        Project.addProject(project2);
-        Project project3 = new Project("Project name 3", "Project Description 3", user1);
-        Project.addProject(project3);
-
-
-    }
 
 
 
