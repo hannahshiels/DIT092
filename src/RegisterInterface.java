@@ -105,7 +105,7 @@ public class RegisterInterface{
                 }else{
                    //debug.setText("Account created.");
                     User newUser = new User(email,firstName,lastName,password);
-                    User.users.add(newUser);
+                    User.addUser(newUser);
                     Hyperlink link = new Hyperlink("Account created. Log in.");
                     link.setOnAction(new EventHandler() {
                         @Override
