@@ -17,6 +17,7 @@ public class Main extends Application{
 
         GridPane gui = new GridPane();
         Scene scene = new Scene(gui, 900, 700);
+        scene.getStylesheets().add("css/styles.css");
         InterfaceController.showMainMenu(primaryStage,scene);
     }
 
