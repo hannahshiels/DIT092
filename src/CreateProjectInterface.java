@@ -11,18 +11,23 @@ public class CreateProjectInterface {
     private String title;
     private Stage stage;
     private Scene scene;
+    private User currentUser;
 
-    CreateProjectInterface(Stage stage, Scene scene){
+    CreateProjectInterface(Stage stage, Scene scene, User currentUser){
             this.gui = this.showGUI();
             this.title = "Miss Management | Create a project";
             this.stage = stage;
             this.scene = scene;
+            this.currentUser = currentUser;
         }
 
 
         public GridPane getGUI(){
             return this.gui;
         }
+    public User getCurrentUser(){
+        return this.currentUser;
+    }
 
         public String getTitle(){
             return this.title;
@@ -50,7 +55,7 @@ public class CreateProjectInterface {
             menuLink.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    InterfaceController.switchToUserMenu(getStage(), getScene());
+                    InterfaceController.switchToUserMenu(getCurrentUser(),getStage(), getScene());
                 }
             });
 
@@ -77,6 +82,7 @@ public class CreateProjectInterface {
             createProjectBtn.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
+                    debug.setText("");
                     String projectNameText = projectName.getText();
                     String projectDescriptionText = projectDescription.getText();
                     if(projectNameText.length() == 0){
@@ -84,11 +90,11 @@ public class CreateProjectInterface {
                     } else if(projectNameText.length() > 100){
                         debug.setText("Project name must be 100 characters or less");
                     } else if(projectDescriptionText.length() > 250){
-                        debug.setText("Project Description must be 250 characters or less");
+                        debug.setText("Project description must be 250 characters or less");
                     } else{
-                       Project newProject = new Project(projectNameText, projectDescriptionText);
+                       Project newProject = new Project(projectNameText, projectDescriptionText,getCurrentUser());
                        Project.addProject(newProject);
-                        InterfaceController.switchToUserMenu(getStage(), getScene());
+                       InterfaceController.switchToUserMenu(getCurrentUser(),getStage(), getScene());
                     }
 
                 }
