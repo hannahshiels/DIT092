@@ -22,12 +22,12 @@ public class InterfaceController {
         showMainMenu(stage,scene);
     }
 
-    public static void switchToUserMenu(Stage stage, Scene scene){
-        showUserMenu(stage,scene);
+    public static void switchToUserMenu(User user, Stage stage, Scene scene){
+        showUserMenu(user,stage,scene);
     }
 
-    public static void switchToProjectMenu(Stage stage, Scene scene){
-        showProjectMenu(stage,scene);
+    public static void switchToProjectMenu(User user,Stage stage, Scene scene){
+        showProjectMenu(user,stage,scene);
     }
 
 
@@ -55,15 +55,15 @@ public class InterfaceController {
         changeScene(stage,scene, gui, title);
     }
 
-    public static void showUserMenu(Stage stage, Scene scene){
-        UserInterface userMenu = new UserInterface(stage,scene);
+    public static void showUserMenu(User user, Stage stage, Scene scene){
+        UserInterface userMenu = new UserInterface(user,stage,scene);
         GridPane gui = userMenu.getGUI();
         String title = userMenu.getTitle();
         changeScene(stage,scene, gui, title);
     }
 
-    public static void showProjectMenu(Stage stage, Scene scene){
-        CreateProjectInterface createProjectMenu = new CreateProjectInterface(stage,scene);
+    public static void showProjectMenu(User user,Stage stage, Scene scene){
+        CreateProjectInterface createProjectMenu = new CreateProjectInterface(stage,scene, user);
         GridPane gui = createProjectMenu.getGUI();
         String title = createProjectMenu.getTitle();
         changeScene(stage,scene, gui, title);
