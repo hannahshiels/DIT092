@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,8 +39,8 @@ public class LoginInterface {
 
     private GridPane showGUI(){
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
+        grid.setPadding(new Insets(10, 0, 10, 0));
+        grid.setVgap(10);
         grid.setHgap(5);
 
         Hyperlink menuLink = new Hyperlink("Back to Main Menu");
@@ -53,30 +54,34 @@ public class LoginInterface {
             }
         });
 
+        Label loginLabel = new Label("Login");
+        GridPane.setConstraints(loginLabel, 0, 1);
+        grid.getChildren().add(loginLabel);
+
+
 
 
         final TextField userEmail = new TextField();
-        userEmail.setPromptText("Enter user email");
-        userEmail.setPrefColumnCount(10);
-        GridPane.setConstraints(userEmail, 0, 1);
+        userEmail.setPromptText("Enter email");
+        GridPane.setConstraints(userEmail, 0, 2);
         grid.getChildren().add(userEmail);
 
         //User password
         final PasswordField userPassword = new PasswordField();
-        userPassword.setPromptText("Enter user password");
-        userPassword.setPrefColumnCount(10);
-        GridPane.setConstraints(userPassword, 0, 2);
+        userPassword.setPromptText("Enter password");
+        GridPane.setConstraints(userPassword, 0, 3);
         grid.getChildren().add(userPassword);
 
         // debug label
         Label debug = new Label();
         grid.getChildren().add(debug);
-        GridPane.setConstraints(debug, 0, 4);
+        GridPane.setConstraints(debug, 0, 5);
+         debug.getStyleClass().add("debug");
 
 
         //submission button
         Button submit = new Button ("Login");
-        GridPane.setConstraints(submit, 0, 3);
+        GridPane.setConstraints(submit, 0, 4);
         grid.getChildren().add(submit);
         submit.setOnAction(new EventHandler() {
             @Override
@@ -100,8 +105,10 @@ public class LoginInterface {
 
 
         Hyperlink createLink = new Hyperlink("Create an account instead");
-        GridPane.setConstraints(createLink, 0, 5);
+        GridPane.setConstraints(createLink, 0, 6);
         grid.getChildren().add(createLink);
+        GridPane.setHalignment(createLink, HPos.RIGHT);
+
 
         createLink.setOnAction(new EventHandler() {
             @Override
