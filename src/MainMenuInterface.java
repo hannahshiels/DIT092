@@ -13,12 +13,10 @@ import javafx.stage.Stage;
 
 public class MainMenuInterface extends Interface {
 
-    private String title;
-
 
     MainMenuInterface(Stage stage, Scene scene){
         super(stage, scene);
-        this.title = "Miss Management | Main Menu";
+        super.setTitle("Miss Management | Main Menu");
     }
 
     public GridPane showGUI() {
