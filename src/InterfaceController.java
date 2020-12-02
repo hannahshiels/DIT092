@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 public class InterfaceController {
 
     public static void start(Stage stage){
+        testingInit();
         GridPane gui = new GridPane();
         Scene scene = new Scene(gui, 900, 700);
         scene.getStylesheets().add("css/styles.css");
@@ -35,6 +36,10 @@ public class InterfaceController {
 
     public static void switchToProjectMenu(User user,Stage stage, Scene scene){
         showProjectMenu(user,stage,scene);
+    }
+
+    public static void switchToUserProjectsMenu(User user,Stage stage, Scene scene){
+        showUserProjectsMenu(user,stage,scene);
     }
 
 
@@ -76,9 +81,15 @@ public class InterfaceController {
         changeScene(stage,scene, gui, title);
     }
 
+    public static void showUserProjectsMenu(User user,Stage stage, Scene scene){
+        UserProjectsInterface userProjectsInterface = new UserProjectsInterface(user,stage, scene);
+        GridPane gui = userProjectsInterface.getGUI();
+        String title = userProjectsInterface.getTitle();
+        changeScene(stage,scene, gui, title);
+    }
 
-    public void testingInit(){
 
+    public static void testingInit(){
         User user1 = new User("email@email.com", "firstName", "lastName", "password");
         User.addUser(user1);
         Project project1 = new Project("Project name 1", "Project Description 1", user1);
@@ -88,7 +99,6 @@ public class InterfaceController {
         Project project3 = new Project("Project name 3", "Project Description 3", user1);
         Project.addProject(project3);
         User.listUsers();
-
     }
 
 
