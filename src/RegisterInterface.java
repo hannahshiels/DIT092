@@ -9,11 +9,9 @@ import javafx.stage.Stage;
 
 public class RegisterInterface extends Interface{
 
-    private String title;
-
     RegisterInterface(Stage stage, Scene scene){
         super(stage,scene);
-        this.title = "Miss Management | Register";
+        super.setTitle("Miss Management | Register");
     }
 
 
