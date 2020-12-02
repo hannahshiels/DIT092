@@ -8,14 +8,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class UserInterface extends Interface {
-        private String title;
         private User currentUser;
 
 
     UserInterface(User currentUser,Stage stage, Scene scene){
         super(stage, scene);
-            this.title = "Miss Management | User Menu";
-            this.currentUser = currentUser;
+        super.setTitle("Miss Management | User Menu");
+        this.currentUser = currentUser;
     }
 
     public User getCurrentUser(){
