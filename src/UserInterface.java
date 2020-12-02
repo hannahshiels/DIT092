@@ -7,47 +7,22 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class UserInterface {
-        private GridPane gui;
+public class UserInterface extends Interface {
         private String title;
-        private Stage stage;
-        private Scene scene;
         private User currentUser;
 
 
     UserInterface(User currentUser,Stage stage, Scene scene){
-            this.gui = this.showGUI();
+        super(stage, scene);
             this.title = "Miss Management | User Menu";
-            this.stage = stage;
-            this.scene = scene;
             this.currentUser = currentUser;
-    }
-
-
-
-
-    public GridPane getGUI(){
-        return this.gui;
-    }
-
-    public String getTitle(){
-        return this.title;
     }
 
     public User getCurrentUser(){
         return this.currentUser;
     }
 
-
-    public  Stage getStage(){
-        return this.stage;
-    }
-    public Scene getScene(){
-        return this.scene;
-    }
-
-
-    private GridPane showGUI() {
+    public GridPane showGUI() {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
@@ -71,8 +46,8 @@ public class UserInterface {
         projectsBtn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                Project.listAllUserProjects(getCurrentUser());
-                InterfaceController.switchToProjectMenu(getCurrentUser(),getStage(), getScene());
+              //  Project.listAllUserProjects(getCurrentUser());
+                InterfaceController.switchToUserProjectsMenu(getCurrentUser(),getStage(), getScene());
             }
         });
 
