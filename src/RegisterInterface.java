@@ -7,38 +7,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class RegisterInterface{
+public class RegisterInterface extends Interface{
 
-    private GridPane gui;
     private String title;
-    private Stage stage;
-    private Scene scene;
 
     RegisterInterface(Stage stage, Scene scene){
-        this.gui = this.showGUI();
+        super(stage,scene);
         this.title = "Miss Management | Register";
-        this.stage = stage;
-        this.scene = scene;
-    }
-
-    public GridPane getGUI(){
-        return this.gui;
-    }
-
-    public String getTitle(){
-        return this.title;
-    }
-
-    public  Stage getStage(){
-        return this.stage;
-    }
-    public Scene getScene(){
-        return this.scene;
     }
 
 
-
-    private GridPane showGUI(){
+    public GridPane showGUI(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
@@ -72,11 +51,8 @@ public class RegisterInterface{
         PasswordField userPassword = new PasswordField();
         userPassword.setPromptText("Enter password (8 letters or more)");
 
-
         final PasswordField userPasswordConfirm = new PasswordField();
         userPasswordConfirm.setPromptText("Confirm password");
-
-
 
         Button createBtn = new Button ("Create account");
 
