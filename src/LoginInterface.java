@@ -9,11 +9,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class LoginInterface extends Interface {
-    private String title;
 
     LoginInterface(Stage stage, Scene scene){
         super(stage, scene);
-        this.title = "Miss Management | Login";
+        super.setTitle("Miss Management | Login");
     }
 
 
