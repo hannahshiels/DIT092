@@ -6,42 +6,23 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class CreateProjectInterface {
-    private GridPane gui;
+public class CreateProjectInterface extends Interface {
     private String title;
-    private Stage stage;
-    private Scene scene;
     private User currentUser;
 
     CreateProjectInterface(Stage stage, Scene scene, User currentUser){
-            this.gui = this.showGUI();
+            super(stage,scene);
             this.title = "Miss Management | Create a project";
-            this.stage = stage;
-            this.scene = scene;
             this.currentUser = currentUser;
         }
 
 
-        public GridPane getGUI(){
-            return this.gui;
-        }
     public User getCurrentUser(){
         return this.currentUser;
     }
 
-        public String getTitle(){
-            return this.title;
-        }
 
-        public  Stage getStage(){
-            return this.stage;
-        }
-        public Scene getScene(){
-            return this.scene;
-        }
-
-
-        private GridPane showGUI() {
+        public GridPane showGUI() {
             GridPane grid = new GridPane();
             grid.setPadding(new Insets(20, 20, 20, 20));
             grid.setVgap(10);
@@ -100,7 +81,6 @@ public class CreateProjectInterface {
 
                 }
             });
-
 
 
 
