@@ -7,12 +7,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class CreateProjectInterface extends Interface {
-    private String title;
     private User currentUser;
 
     CreateProjectInterface(Stage stage, Scene scene, User currentUser){
             super(stage,scene);
-            this.title = "Miss Management | Create a project";
+            super.setTitle("Miss Management | Create a project");
             this.currentUser = currentUser;
         }
 
