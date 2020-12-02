@@ -38,6 +38,18 @@ public class Project {
         }
     }
 
+    public static ArrayList<Project> getAllUserProjects(User user){
+        ArrayList<Project> userProjects = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < projects.size(); i++){
+            if(projects.get(i).getProjectOwner().equals(user.getEmail())){
+                userProjects.add(count,projects.get(i));
+                count++;
+            }
+        }
+        return userProjects;
+    }
+
     public static void listAllUserProjects(User user){
         for(int i = 0; i < projects.size(); i++){
             if(projects.get(i).getProjectOwner().equals(user.getEmail())){
