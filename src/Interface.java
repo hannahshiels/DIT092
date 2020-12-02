@@ -21,6 +21,10 @@ public abstract class Interface {
         return this.title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Stage getStage(){
         return this.stage;
     }
