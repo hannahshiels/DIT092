@@ -10,21 +10,16 @@ import java.util.ArrayList;
 
 public class UserProjectsInterface extends Interface {
 
-    private String title;
     private User currentUser;
     static  ArrayList<Project> userProjects = new ArrayList<>();
 
     UserProjectsInterface(User currentUser,Stage stage, Scene scene){
         super(stage, scene);
-        this.title = "Miss Management | Current Projects";
+        super.setTitle("Miss Management | Current Projects");
         this.currentUser = currentUser;
         this.userProjects = Project.getAllUserProjects(currentUser);
     }
 
-
-    public String getTitle(){
-        return this.title;
-    }
 
     public User getCurrentUser() {
         return currentUser;
