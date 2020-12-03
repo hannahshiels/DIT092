@@ -20,9 +20,6 @@ public class RegisterInterface extends Interface{
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
         grid.setHgap(5);
-        // add css classes like so
-        // userLastName.getStyleClass().add("user");
-
 
 
         Hyperlink menuLink = new Hyperlink("Back to Main Menu");
@@ -80,7 +77,7 @@ public class RegisterInterface extends Interface{
                 } else if(!password.equals(passwordConfirm)){
                     debug.setText("Passwords do not match.");
                 }else{
-                    //debug.setText("Account created.");
+                   grid.getChildren().remove(debug);
                     User newUser = new User(email,firstName,lastName,password);
                     User.addUser(newUser);
                     Hyperlink link = new Hyperlink("Account created. Log in.");
