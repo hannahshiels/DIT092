@@ -11,38 +11,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainMenuInterface {
+public class MainMenuInterface extends Interface {
 
-    private GridPane gui;
-    private String title;
-    private Stage stage;
-    private Scene scene;
 
     MainMenuInterface(Stage stage, Scene scene){
-        this.gui = this.showGUI();
-        this.title = "Miss Management | Main Menu";
-        this.stage = stage;
-        this.scene = scene;
+        super(stage, scene);
+        super.setTitle("Miss Management | Main Menu");
     }
 
-
-    public GridPane getGUI(){
-        return this.gui;
-    }
-
-    public String getTitle(){
-        return this.title;
-    }
-
-    public  Stage getStage(){
-        return this.stage;
-    }
-    public Scene getScene(){
-        return this.scene;
-    }
-
-
-    private GridPane showGUI() {
+    public GridPane showGUI() {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 0, 20, 0));
         grid.setVgap(10);

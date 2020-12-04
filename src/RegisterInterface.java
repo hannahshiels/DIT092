@@ -7,45 +7,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class RegisterInterface{
-
-    private GridPane gui;
-    private String title;
-    private Stage stage;
-    private Scene scene;
+public class RegisterInterface extends Interface{
 
     RegisterInterface(Stage stage, Scene scene){
-        this.gui = this.showGUI();
-        this.title = "Miss Management | Register";
-        this.stage = stage;
-        this.scene = scene;
-    }
-
-    public GridPane getGUI(){
-        return this.gui;
-    }
-
-    public String getTitle(){
-        return this.title;
-    }
-
-    public  Stage getStage(){
-        return this.stage;
-    }
-    public Scene getScene(){
-        return this.scene;
+        super(stage,scene);
+        super.setTitle("Miss Management | Register");
     }
 
 
-
-    private GridPane showGUI(){
+    public GridPane showGUI(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
         grid.setHgap(5);
-        // add css classes like so
-        // userLastName.getStyleClass().add("user");
-
 
 
         Hyperlink menuLink = new Hyperlink("Back to Main Menu");
@@ -72,11 +46,8 @@ public class RegisterInterface{
         PasswordField userPassword = new PasswordField();
         userPassword.setPromptText("Enter password (8 letters or more)");
 
-
         final PasswordField userPasswordConfirm = new PasswordField();
         userPasswordConfirm.setPromptText("Confirm password");
-
-
 
         Button createBtn = new Button ("Create account");
 
@@ -106,7 +77,7 @@ public class RegisterInterface{
                 } else if(!password.equals(passwordConfirm)){
                     debug.setText("Passwords do not match.");
                 }else{
-                    //debug.setText("Account created.");
+                   grid.getChildren().remove(debug);
                     User newUser = new User(email,firstName,lastName,password);
                     User.addUser(newUser);
                     Hyperlink link = new Hyperlink("Account created. Log in.");

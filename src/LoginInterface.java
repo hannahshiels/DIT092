@@ -8,36 +8,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LoginInterface {
-    private GridPane gui;
-    private String title;
-    private Stage stage;
-    private Scene scene;
+public class LoginInterface extends Interface {
 
     LoginInterface(Stage stage, Scene scene){
-        this.gui = this.showGUI();
-        this.title = "Miss Management | Login";
-        this.stage = stage;
-        this.scene = scene;
-    }
-
-    public GridPane getGUI(){
-        return this.gui;
-    }
-
-    public String getTitle(){
-        return this.title;
-    }
-
-    public Stage getStage(){
-        return this.stage;
-    }
-    public Scene getScene(){
-        return this.scene;
+        super(stage, scene);
+        super.setTitle("Miss Management | Login");
     }
 
 
-    private GridPane showGUI(){
+    public GridPane showGUI(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 0, 10, 0));
         grid.setVgap(10);
