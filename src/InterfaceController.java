@@ -1,104 +1,247 @@
-import javafx.scene.Scene;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 
-public class InterfaceController {
 
-    public static void start(Stage stage){
+public class InterfaceController  {
+
+    private Stage stage;
+    private Scene scene;
+    private User currentUser;
+    private AnchorPane gui;
+    private MainMenuInterface mainMenuInterface;
+    private RegisterInterface registerInterface;
+    private LoginInterface loginInterface;
+    private UserInterface userInterface;
+    private CreateProjectInterface createProjectInterface;
+    private UserProjectsInterface userProjectsInterface;
+    private ProjectLibrary projectLibrary;
+    private UserLibrary userLibrary;
+
+
+    public InterfaceController(Stage stage){
+        this.stage = stage;
+        this.gui = new AnchorPane();
+        this.scene = new Scene(gui,900,700);
+        this.mainMenuInterface = new MainMenuInterface();
+        this.registerInterface = new RegisterInterface();
+        this.loginInterface = new LoginInterface();
+
+      //  this.currentUser = new User("email@email.com", "firstName", "lastName", "password");
+
+        this.userInterface = new UserInterface(currentUser);
+        this.createProjectInterface = new CreateProjectInterface(currentUser);
+        this.userProjectsInterface = new UserProjectsInterface(currentUser);
+        this.createProjectInterface = new CreateProjectInterface(currentUser);
+        this.projectLibrary = new ProjectLibrary();
+        this.userLibrary = new UserLibrary();
+
+
+    }
+
+    public void setUser(User user){
+        this.currentUser = user;
+    }
+
+    public User getUser(){
+        return this.currentUser;
+    }
+
+
+    public void start(){
+        this.scene.getStylesheets().add("css/styles.css");
         testingInit();
-        GridPane gui = new GridPane();
-        Scene scene = new Scene(gui, 900, 700);
-        scene.getStylesheets().add("css/styles.css");
-        showMainMenu(stage, scene);
-    }
-
-    public static void changeScene(Stage stage, Scene scene, GridPane gui, String title){
-        scene.setRoot(gui);
-        stage.setTitle(title);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void switchToLogin(Stage stage, Scene scene){
-        showLogin(stage,scene);
-    }
-    public static void switchToRegister(Stage stage, Scene scene){
-        showRegister(stage,scene);
-    }
-
-    public static void switchToMainMenu(Stage stage, Scene scene){
-        showMainMenu(stage,scene);
-    }
-
-    public static void switchToUserMenu(User user, Stage stage, Scene scene){
-        showUserMenu(user,stage,scene);
-    }
-
-    public static void switchToProjectMenu(User user,Stage stage, Scene scene){
-        showProjectMenu(user,stage,scene);
-    }
-
-    public static void switchToUserProjectsMenu(User user,Stage stage, Scene scene){
-        showUserProjectsMenu(user,stage,scene);
+        showMainMenu();
     }
 
 
 
-    public static void showMainMenu(Stage stage, Scene scene){
-        MainMenuInterface mainMenu = new MainMenuInterface(stage,scene);
-        GridPane gui = mainMenu.getGUI();
-        String title = mainMenu.getTitle();
-        changeScene(stage,scene, gui, title);
+    private void changeScene(AnchorPane gui, String title){
+        this.scene.setRoot(gui);
+        this.stage.setTitle(title);
+        this.stage.setScene(this.scene);
+        this.stage.show();
     }
 
 
-    public static void showLogin(Stage stage, Scene scene){
-        LoginInterface login = new LoginInterface(stage,scene) ;
-        GridPane gui = login.getGUI();
-        String title = login.getTitle();
-        changeScene(stage,scene, gui, title);
+
+    private void showMainMenu(){
+        AnchorPane gui = mainMenuInterface.getGUI();
+        String title = mainMenuInterface.getTitle();
+        changeScene(gui, title);
+
+
+        Button registerBtn = mainMenuInterface.getRegisterBtn();
+        registerBtn.setOnAction((EventHandler) event -> showRegister());
+        Button loginBtn = mainMenuInterface.getLoginBtn();
+        loginBtn.setOnAction((EventHandler) event -> showLogin());
     }
 
 
-    public static void showRegister(Stage stage, Scene scene){
-        RegisterInterface register = new RegisterInterface(stage,scene);
-        GridPane gui = register.getGUI();
-        String title = register.getTitle();
-        changeScene(stage,scene, gui, title);
+    private void showLogin(){
+        AnchorPane gui = loginInterface.getGUI();
+        String title = loginInterface.getTitle();
+        Hyperlink mainMenuLink = loginInterface.getMainMenuLink();
+        mainMenuLink.setOnAction((EventHandler) event -> showMainMenu());
+        Hyperlink registerLink = loginInterface.getRegisterLink();
+        registerLink.setOnAction((EventHandler) event -> showRegister());
+
+        Button submitLoginBtn = loginInterface.getSubmitLoginBtn();
+        submitLoginBtn.setOnAction((EventHandler) event -> {
+            Label debug = loginInterface.getDebug();
+            debug.setText("");
+            String email = loginInterface.getUserEmail().getText();
+            String password = loginInterface.getUserPassword().getText();
+            if(email.length() == 0 || password.length() == 0){
+                debug.setText("Enter all fields");
+            } else if(userLibrary.isRegistered(email,password)){
+                User currentUser = userLibrary.getUser(email);
+                setUser(currentUser);
+                showUserMenu();
+            } else{
+                debug.setText("Account not found.");
+            }
+
+        });
+
+        changeScene(gui, title);
     }
 
-    public static void showUserMenu(User user, Stage stage, Scene scene){
-        UserInterface userMenu = new UserInterface(user,stage,scene);
-        GridPane gui = userMenu.getGUI();
-        String title = userMenu.getTitle();
-        changeScene(stage,scene, gui, title);
+
+    private void showRegister(){
+        AnchorPane gui = registerInterface.getGUI();
+        Hyperlink mainMenuLink = registerInterface.getMainMenuLink();
+        mainMenuLink.setOnAction((EventHandler) event -> showMainMenu());
+        Hyperlink loginLink = registerInterface.getLoginLink();
+        loginLink.setOnAction((EventHandler) event -> showLogin());
+
+          GridPane grid = (GridPane) gui.getChildren().get(1);
+          Button createAccBtn = registerInterface.getCreateAccBtn();
+          createAccBtn.setOnAction((EventHandler) event -> {
+              Label debug = registerInterface.getDebug();
+              debug.setText("");
+              String email = registerInterface.getUserEmail().getText();
+              String firstName = registerInterface.getUserFirstName().getText();
+              String lastName = registerInterface.getUserLastName().getText();
+              String password = registerInterface.getUserPassword().getText();
+              String passwordConfirm = registerInterface.getUserPasswordConfirm().getText();
+              if(email.length() == 0 || firstName.length() == 0 || lastName.length() == 0 || password.length() == 0 || passwordConfirm.length() == 0){
+                  debug.setText("Enter all fields");
+              } else if(userLibrary.isEmailRegistered(email)){
+                  debug.setText("Email is already in use. Log in instead.");
+              } else if(!EmailValidation.isEmailValid(email)){
+                  debug.setText("Email is not valid");
+              }else if(password.length() < 8){
+                  debug.setText("Password must be 8 or more characters");
+              } else if(!password.equals(passwordConfirm)){
+                  debug.setText("Passwords do not match.");
+              }else{
+                 grid.getChildren().remove(debug);
+                  User newUser = new User(email,firstName,lastName,password);
+                  userLibrary.addUser(newUser);
+                  Hyperlink link = new Hyperlink("Account created. Log in.");
+                  link.setOnAction((EventHandler) event1 -> showLogin());
+                  GridPane.setConstraints(link, 0, 8);
+                  grid.getChildren().add(link);
+              }
+          });
+        String title = registerInterface.getTitle();
+        changeScene(gui, title);
     }
 
-    public static void showProjectMenu(User user,Stage stage, Scene scene){
-        CreateProjectInterface createProjectMenu = new CreateProjectInterface(stage,scene, user);
-        GridPane gui = createProjectMenu.getGUI();
-        String title = createProjectMenu.getTitle();
-        changeScene(stage,scene, gui, title);
+    private void showUserMenu(){
+        AnchorPane gui = userInterface.getGUI();
+        String title = userInterface.getTitle();
+
+        Button createAProjectBtn = userInterface.getCreateAProjectBtn();
+        createAProjectBtn.setOnAction((EventHandler) event -> showCreateProjectMenu());
+
+        Button projectsBtn = userInterface.getProjectsBtn();
+        projectsBtn.setOnAction((EventHandler) event -> {
+           projectLibrary.listAllUserProjects(getUser());
+            showUserProjectsMenu();
+        });
+        Hyperlink logoutLink = userInterface.getLogoutLink();
+        logoutLink.setOnAction((EventHandler) event -> {
+            setUser(null);
+            showMainMenu();
+        });
+        changeScene(gui, title);
     }
 
-    public static void showUserProjectsMenu(User user,Stage stage, Scene scene){
-        UserProjectsInterface userProjectsInterface = new UserProjectsInterface(user,stage, scene);
-        GridPane gui = userProjectsInterface.getGUI();
+    private void showCreateProjectMenu(){
+        AnchorPane gui = createProjectInterface.getGUI();
+        String title = createProjectInterface.getTitle();
+        Hyperlink backToUserMenu = createProjectInterface.getBackToUserMenuLink();
+        backToUserMenu.setOnAction((EventHandler) event -> showUserMenu());
+
+        Button createProjectBtn = createProjectInterface.getCreateProjectBtn();
+        Label debug = createProjectInterface.getDebug();
+
+        createProjectBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String projectNameText = createProjectInterface.getProjectName().getText();
+                String projectDescriptionText = createProjectInterface.getProjectDescription().getText();
+                if(projectNameText.length() == 0){
+                    debug.setText("Please enter a project name");
+                } else if(projectNameText.length() > 100){
+                    debug.setText("Project name must be 100 characters or less");
+                } else if(projectDescriptionText.length() > 250){
+                    debug.setText("Project description must be 250 characters or less");
+                } else{
+                    Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
+                    projectLibrary.addProject(newProject);
+                    showUserMenu();
+                }
+
+            }
+        });
+
+
+
+        changeScene(gui, title);
+    }
+
+    private void showUserProjectsMenu(){
+        AnchorPane gui = userProjectsInterface.getGUI();
         String title = userProjectsInterface.getTitle();
-        changeScene(stage,scene, gui, title);
+        Hyperlink backToUserMenu = userProjectsInterface.getBackToUserMenuLink();
+
+        backToUserMenu.setOnAction((EventHandler) event -> {
+           showUserMenu();
+        });
+
+        changeScene(gui, title);
     }
 
 
-    public static void testingInit(){
+    public void testingInit(){
         User user1 = new User("email@email.com", "firstName", "lastName", "password");
-        User.addUser(user1);
+        userLibrary.addUser(user1);
+        User user2 = new User("email2@email.com", "firstName", "lastName", "password");
+        userLibrary.addUser(user2);
         Project project1 = new Project("Project name 1", "Project Description 1", user1);
-        Project.addProject(project1);
+        projectLibrary.addProject(project1);
         Project project2 = new Project("Project name 2", "Project Description 2", user1);
-        Project.addProject(project2);
+        projectLibrary.addProject(project2);
         Project project3 = new Project("Project name 3", "Project Description 3", user1);
-        Project.addProject(project3);
-        User.listUsers();
+        projectLibrary.addProject(project3);
+        Project project4 = new Project("Project name 4", "Project Description 4", user2);
+        projectLibrary.addProject(project4);
+        Project project5 = new Project("Project name 5", "Project Description 5", user2);
+        projectLibrary.addProject(project5);
+        Project project6 = new Project("Project name 6", "Project Description 6", user2);
+        projectLibrary.addProject(project6);
+        userLibrary.listUsers();
     }
 
 
