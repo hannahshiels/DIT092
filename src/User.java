@@ -89,6 +89,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User: \n " + "email: " + this.email + " \n first name: " + this.firstName + "\n last name: " + this.lastName + " \n account created:  " + this.creationDate;
+        return "User: \n " + "email: " + this.email + " \n first name: " + this.firstName + "\n last name: " + this.lastName + " \n account created: " + this.creationDate;
     }
 }

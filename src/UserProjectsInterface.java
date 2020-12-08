@@ -44,15 +44,9 @@ public class UserProjectsInterface extends Interface {
        int count = 2;
 
        for(int i = 0; i < userProjects.size(); i++){
-            Button projectBtn = new Button(userProjects.get(i).getProjectName());
-            GridPane.setConstraints(projectBtn, 0, count);
-            grid.getChildren().add(projectBtn);
-            projectBtn.setOnAction(new EventHandler() {
-            	
-            public void handle(Event event) {
-            	InterfaceController.switchToManageProjectInterface(getCurrentUser(), getStage(), getScene());
-            }
-            });
+            Button project = new Button(userProjects.get(i).getProjectName());
+            GridPane.setConstraints(project, 0, count);
+            grid.getChildren().add(project);
             count++;
         }
 

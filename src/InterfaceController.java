@@ -42,10 +42,6 @@ public class InterfaceController {
         showUserProjectsMenu(user,stage,scene);
     }
 
-    public static void switchToManageProjectInterface(User user,Stage stage, Scene scene){
-    	showManageProjectInterface(user, stage, scene);
-    }
-
 
 
     public static void showMainMenu(Stage stage, Scene scene){
@@ -89,13 +85,6 @@ public class InterfaceController {
         UserProjectsInterface userProjectsInterface = new UserProjectsInterface(user,stage, scene);
         GridPane gui = userProjectsInterface.getGUI();
         String title = userProjectsInterface.getTitle();
-        changeScene(stage,scene, gui, title);
-    }
-    
-    public static void showManageProjectInterface(User user,Stage stage, Scene scene){
-    	ManageProjectInterface manageProjectInterface = new ManageProjectInterface(user,stage, scene);
-        GridPane gui = manageProjectInterface.getGUI();
-        String title = manageProjectInterface.getTitle();
         changeScene(stage,scene, gui, title);
     }
 
