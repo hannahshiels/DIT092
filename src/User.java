@@ -8,9 +8,8 @@ public class User {
     private String lastName;
     private String password;
     private LocalDate creationDate;
-    static ArrayList<User> users = new ArrayList<>();
 
-    User(String email, String firstName, String lastName, String password){
+    public User(String email, String firstName, String lastName, String password){
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -18,18 +17,7 @@ public class User {
         this.creationDate = CurrentDate.getCurrentDate();
     }
 
-    public static void addUser(User newUser){
-        users.add(newUser);
-    }
 
-    public static User getUser(String email){
-        for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getEmail().equals(email)){
-                return users.get(i);
-            }
-        }
-        return null;
-    }
 
 
     public String getEmail(){
@@ -62,29 +50,6 @@ public class User {
     }
 
 
-    public static void listUsers(){
-        for(int i = 0; i < users.size(); i++){
-            System.out.println(users.get(i).toString());
-        }
-    }
-
-    public static boolean isEmailRegistered(String email){
-        for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getEmail().equals(email)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isRegistered(String email, String password){
-        for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getEmail().equals(email) && users.get(i).getPassword().equals(password)){
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     @Override
