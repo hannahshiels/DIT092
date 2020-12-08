@@ -64,7 +64,6 @@ abstract public class Interface {
     PasswordField userPasswordConfirm = new PasswordField();
     Label debug = new Label();
 
-    Label createAccLabel = new Label("Create an account");
 
     Button createAccBtn = new Button ("Create account");
 
