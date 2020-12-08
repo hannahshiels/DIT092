@@ -1,11 +1,8 @@
-package interfaces;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import users.User;
 
 public class ManageProjectInterface extends Interface {
 
