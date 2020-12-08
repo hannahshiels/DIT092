@@ -1,25 +1,12 @@
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.GridPane;
-import java.util.ArrayList;
 
 public class UserProjectsInterface extends Interface {
-
-    private User currentUser;
-    private ProjectLibrary projectLibrary;
-    ArrayList<Project> userProjects = new ArrayList<>();
 
     public UserProjectsInterface(User currentUser){
         super();
         super.setTitle("Miss Management | Current Projects");
-        this.currentUser = currentUser;
-        this.projectLibrary = new ProjectLibrary();
-        this.userProjects = projectLibrary.getAllUserProjects(currentUser);
     }
 
 
