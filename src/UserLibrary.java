@@ -1,26 +1,44 @@
 import java.util.ArrayList;
 
 public class UserLibrary {
-    private ArrayList<User> userList = new ArrayList<>();
+    ArrayList<User> userList = new ArrayList<>();
 
-    public void addUser(User newUser) {
+    public void addUser(User newUser){
         userList.add(newUser);
     }
 
-    public ArrayList<User> getAllUsers() {
-        return userList;
-    }
-
     public User getUser(String email){
-        for(User user : userList){
-            if(user.getEmail().equals(email)){
-                return user;
+        for(int i = 0; i < userList.size(); i++){
+            if(userList.get(i).getEmail().equals(email)){
+                return userList.get(i);
             }
         }
         return null;
     }
+    public  void listUsers(){
+        for(int i = 0; i < userList.size(); i++){
+            System.out.println(userList.get(i).toString());
+        }
+    }
 
-    //We'll probably need to add more methods here
-    //maybe some getters?
+
+    public boolean isEmailRegistered(String email){
+        for(int i = 0; i < userList.size(); i++){
+            if(userList.get(i).getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRegistered(String email, String password){
+        for(int i = 0; i < userList.size(); i++){
+            if(userList.get(i).getEmail().equals(email) && userList.get(i).getPassword().equals(password)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
