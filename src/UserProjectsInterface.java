@@ -48,27 +48,12 @@ public class UserProjectsInterface extends Interface {
         GridPane.setConstraints(backToUserMenu, 0, 0);
         grid.getChildren().add(backToUserMenu);
 
-        showAllProjects(1, grid);
         grid.getStyleClass().add("grid");
 
         return grid;
     }
 
 
-    private void showAllProjects(int startNum, GridPane grid){
-        // always returns null
-        // need to fix
-        if(userProjects == null){
-            System.out.println("no projects yet");
-        } else {
-            for(int i = 0; i < userProjects.size(); i++){
-                Button project = new Button(userProjects.get(i).getProjectName());
-                GridPane.setConstraints(project, 0, startNum);
-                grid.getChildren().add(project);
-                startNum++;
-            }
-        }
 
-    }
 
 }
