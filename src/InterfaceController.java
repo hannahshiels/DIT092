@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -23,6 +24,7 @@ public class InterfaceController  {
     private UserInterface userInterface;
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
+    private ManageProjectInterface manageProjectInterface;
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
 
@@ -41,6 +43,7 @@ public class InterfaceController  {
         this.createProjectInterface = new CreateProjectInterface(currentUser);
         this.userProjectsInterface = new UserProjectsInterface(currentUser);
         this.createProjectInterface = new CreateProjectInterface(currentUser);
+        this.manageProjectInterface = new ManageProjectInterface(currentUser);
         this.projectLibrary = new ProjectLibrary();
         this.userLibrary = new UserLibrary();
 
@@ -202,7 +205,6 @@ public class InterfaceController  {
             } else{
                 Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
                 projectLibrary.addProject(newProject);
-
                 showUserMenu();
             }
 
@@ -224,6 +226,7 @@ public class InterfaceController  {
 
         GridPane grid = (GridPane) gui.getChildren().get(1);
 
+        System.out.println(getUser());
         ArrayList<Project> userProjects = projectLibrary.getAllUserProjects(getUser());
         int startNum = 1;
         if(userProjects == null){
@@ -231,6 +234,10 @@ public class InterfaceController  {
         } else {
             for(int i = 0; i < userProjects.size(); i++){
                 Button project = new Button(userProjects.get(i).getProjectName());
+                int currentProject = i;
+                project.setOnAction((EventHandler) event -> {
+                    showManageProjectInterface(userProjects.get(currentProject));
+                });
                 GridPane.setConstraints(project, 0, startNum);
                 grid.getChildren().add(project);
                 startNum++;
@@ -241,6 +248,28 @@ public class InterfaceController  {
 
         changeScene(gui, title);
     }
+
+
+    private void showManageProjectInterface(Project project){
+        AnchorPane gui = manageProjectInterface.getGUI();
+        String title = manageProjectInterface.getTitle();
+
+        Label projectName = manageProjectInterface.getProjectNameLabel();
+        Label projectDesc = manageProjectInterface.getProjectDescLabel();
+        projectName.setText(project.getProjectName());
+        projectDesc.setText(project.getProjectDescription());
+
+        Button createATask = manageProjectInterface.getCreateTaskBtn();
+        Hyperlink link = manageProjectInterface.getBackToManageProjects();
+        link.setOnAction((EventHandler) event -> {
+            showUserProjectsMenu();
+        });
+
+
+
+        changeScene(gui, title);
+    }
+
 
 
     public void testingInit(){
@@ -262,7 +291,6 @@ public class InterfaceController  {
         projectLibrary.addProject(project6);
         userLibrary.listUsers();
     }
-
 
 
 }
