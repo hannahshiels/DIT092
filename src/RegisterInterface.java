@@ -1,6 +1,10 @@
+package interfaces;
+
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.geometry.HPos;
 import javafx.scene.layout.GridPane;
+import users.UserLibrary;
 
 public class RegisterInterface extends Interface {
 
@@ -11,7 +15,7 @@ public class RegisterInterface extends Interface {
         super.setTitle("Miss Management | Register");
         this.userLibrary = new UserLibrary();
     }
-    
+
 
     public AnchorPane showGUI(){
         AnchorPane root = new AnchorPane();
@@ -24,6 +28,7 @@ public class RegisterInterface extends Interface {
         AnchorPane.setTopAnchor(titlePane,0.0);
         AnchorPane.setTopAnchor(registerPane,120.0);
 
+
         return root;
     }
 
@@ -33,6 +38,8 @@ public class RegisterInterface extends Interface {
 
         grid.setVgap(10);
         grid.setHgap(5);
+
+        Label createAccLabel = new Label("Create an account");
 
         userFirstName.setPromptText("Enter first name");
         userLastName.setPromptText("Enter last name");
@@ -66,7 +73,9 @@ public class RegisterInterface extends Interface {
         grid.getStyleClass().add("grid");
 
         return grid;
+
     }
+
 
 
 
