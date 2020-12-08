@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -64,12 +66,12 @@ abstract public class Interface {
     PasswordField userPasswordConfirm = new PasswordField();
     Label debug = new Label();
 
-
     Button createAccBtn = new Button ("Create account");
 
     // user projects
 
     Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
+    Hyperlink backToManageProjects = new Hyperlink("Back to Manage Projects");
     Hyperlink logoutLink = new Hyperlink("Log out");
 
     Button createAProjectBtn = new Button("Create a project");
@@ -79,8 +81,15 @@ abstract public class Interface {
     TextField projectName = new TextField();
     TextArea projectDescription = new TextArea();
 
+    Label projectNameLabel = new Label();
+    Label projectDescLabel = new Label();
 
-   // login + register
+    Button CreateTaskBtn = new Button("Create a task");
+
+
+
+
+    // login + register
 
 
     public Button getRegisterBtn(){
@@ -169,5 +178,24 @@ abstract public class Interface {
     public TextArea getProjectDescription(){
         return this.projectDescription;
     }
+
+    public Button getCreateTaskBtn(){
+        return this.CreateTaskBtn;
+    }
+
+    public Hyperlink getBackToManageProjects(){
+        return this.backToManageProjects;
+    }
+
+
+    public Label getProjectNameLabel(){
+        return this.projectNameLabel;
+    }
+
+    public Label getProjectDescLabel(){
+        return this.projectDescLabel;
+    }
+
+
 
 }
