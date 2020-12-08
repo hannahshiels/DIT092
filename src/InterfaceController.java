@@ -3,6 +3,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
@@ -124,8 +125,10 @@ public class InterfaceController  {
 
           GridPane grid = (GridPane) gui.getChildren().get(1);
           Button createAccBtn = registerInterface.getCreateAccBtn();
-          createAccBtn.setOnAction((EventHandler) event -> {
-              Label debug = registerInterface.getDebug();
+          Label debug = registerInterface.getDebug();
+
+
+        createAccBtn.setOnAction((EventHandler) event -> {
               debug.setText("");
               String email = registerInterface.getUserEmail().getText();
               String firstName = registerInterface.getUserFirstName().getText();
@@ -142,7 +145,7 @@ public class InterfaceController  {
                   debug.setText("Password must be 8 or more characters");
               } else if(!password.equals(passwordConfirm)){
                   debug.setText("Passwords do not match.");
-              }else{
+              } else{
                  grid.getChildren().remove(debug);
                   User newUser = new User(email,firstName,lastName,password);
                   userLibrary.addUser(newUser);
@@ -185,25 +188,24 @@ public class InterfaceController  {
         Button createProjectBtn = createProjectInterface.getCreateProjectBtn();
         Label debug = createProjectInterface.getDebug();
 
-        createProjectBtn.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                debug.setText("");
-                String projectNameText = createProjectInterface.getProjectName().getText();
-                String projectDescriptionText = createProjectInterface.getProjectDescription().getText();
-                if(projectNameText.length() == 0){
-                    debug.setText("Please enter a project name");
-                } else if(projectNameText.length() > 100){
-                    debug.setText("Project name must be 100 characters or less");
-                } else if(projectDescriptionText.length() > 250){
-                    debug.setText("Project description must be 250 characters or less");
-                } else{
-                    Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
-                    projectLibrary.addProject(newProject);
-                    showUserMenu();
-                }
 
+        createProjectBtn.setOnAction((EventHandler) event -> {
+            debug.setText("");
+            String projectNameText = createProjectInterface.getProjectName().getText();
+            String projectDescriptionText = createProjectInterface.getProjectDescription().getText();
+            if(projectNameText.length() == 0){
+                debug.setText("Please enter a project name");
+            } else if(projectNameText.length() > 100){
+                debug.setText("Project name must be 100 characters or less");
+            } else if(projectDescriptionText.length() > 250){
+                debug.setText("Project description must be 250 characters or less");
+            } else{
+                Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
+                projectLibrary.addProject(newProject);
+
+                showUserMenu();
             }
+
         });
 
 
@@ -219,6 +221,23 @@ public class InterfaceController  {
         backToUserMenu.setOnAction((EventHandler) event -> {
            showUserMenu();
         });
+
+        GridPane grid = (GridPane) gui.getChildren().get(1);
+
+        ArrayList<Project> userProjects = projectLibrary.getAllUserProjects(getUser());
+        int startNum = 1;
+        if(userProjects == null){
+            System.out.println("no projects yet");
+        } else {
+            for(int i = 0; i < userProjects.size(); i++){
+                Button project = new Button(userProjects.get(i).getProjectName());
+                GridPane.setConstraints(project, 0, startNum);
+                grid.getChildren().add(project);
+                startNum++;
+            }
+        }
+
+
 
         changeScene(gui, title);
     }
