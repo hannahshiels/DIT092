@@ -1,10 +1,7 @@
-package interfaces;
-
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.geometry.HPos;
 import javafx.scene.layout.GridPane;
-import users.UserLibrary;
 
 public class RegisterInterface extends Interface {
 
