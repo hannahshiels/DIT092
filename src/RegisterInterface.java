@@ -1,112 +1,57 @@
-import javafx.event.Event;
-import javafx.event.EventHandler;
+package interfaces;
+
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import users.UserLibrary;
 
-public class RegisterInterface extends Interface{
+public class RegisterInterface extends Interface {
 
-    RegisterInterface(Stage stage, Scene scene){
-        super(stage,scene);
+    private UserLibrary userLibrary;
+
+    public RegisterInterface(){
+        super();
         super.setTitle("Miss Management | Register");
+        this.userLibrary = new UserLibrary();
     }
 
 
-    public GridPane showGUI(){
+    public AnchorPane showGUI(){
+        AnchorPane root = new AnchorPane();
+
+        GridPane titlePane = getTitlePane("Miss Management | Register");
+        GridPane registerPane = createRegisterPane();
+        root.getChildren().add(titlePane);
+        root.getChildren().add(registerPane);
+
+        AnchorPane.setTopAnchor(titlePane,0.0);
+        AnchorPane.setTopAnchor(registerPane,120.0);
+
+
+        return root;
+    }
+
+
+    public GridPane createRegisterPane(){
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(20, 20, 20, 20));
+
         grid.setVgap(10);
         grid.setHgap(5);
 
+        Label createAccLabel = new Label("Create an account");
 
-        Hyperlink menuLink = new Hyperlink("Back to Main Menu");
-
-        menuLink.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToMainMenu(getStage(), getScene());
-            }
-        });
-
-        Label creatAccLabel = new Label("Create an account");
-
-        final TextField userFirstName = new TextField();
         userFirstName.setPromptText("Enter first name");
-
-
-        TextField userEmail = new TextField();
-        userEmail.setPromptText("Enter email");
-
-        final TextField userLastName = new TextField();
         userLastName.setPromptText("Enter last name");
-
-        PasswordField userPassword = new PasswordField();
+        userEmail.setPromptText("Enter email");
         userPassword.setPromptText("Enter password (8 letters or more)");
-
-        final PasswordField userPasswordConfirm = new PasswordField();
         userPasswordConfirm.setPromptText("Confirm password");
-
-        Button createBtn = new Button ("Create account");
-
-
-
-        Label debug = new Label();
         debug.getStyleClass().add("debug");
 
-
-        createBtn.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                debug.setText("");
-                String email = userEmail.getText();
-                String firstName = userFirstName.getText();
-                String lastName = userLastName.getText();
-                String password = userPassword.getText();
-                String passwordConfirm = userPasswordConfirm.getText();
-                if(email.length() == 0 || firstName.length() == 0 || lastName.length() == 0 || password.length() == 0 || passwordConfirm.length() == 0){
-                    debug.setText("Enter all fields");
-                } else if(User.isEmailRegistered(email)){
-                    debug.setText("Email is already in use. Log in instead.");
-                } else if(!EmailValidation.isEmailValid(email)){
-                    debug.setText("Email is not valid");
-                }else if(password.length() < 8){
-                    debug.setText("Password must be 8 or more characters");
-                } else if(!password.equals(passwordConfirm)){
-                    debug.setText("Passwords do not match.");
-                }else{
-                   grid.getChildren().remove(debug);
-                    User newUser = new User(email,firstName,lastName,password);
-                    User.addUser(newUser);
-                    Hyperlink link = new Hyperlink("Account created. Log in.");
-                    link.setOnAction(new EventHandler() {
-                        @Override
-                        public void handle(Event event) {
-                            InterfaceController.switchToLogin(getStage(), getScene());
-                        }
-                    });
-                    GridPane.setConstraints(link, 0, 8);
-                    grid.getChildren().add(link);
-                }
-            }
-        });
-
-        Hyperlink loginLink = new Hyperlink("Log in instead");
-
-        loginLink.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToLogin(getStage(), getScene());
-            }
-        });
-
-
-        GridPane.setConstraints(menuLink, 0, 0);
-        grid.getChildren().add(menuLink);
-        GridPane.setConstraints(creatAccLabel,0,1);
-        grid.getChildren().add(creatAccLabel);
+        GridPane.setConstraints(mainMenuLink, 0, 0);
+        grid.getChildren().add(mainMenuLink);
+        GridPane.setConstraints(createAccLabel,0,1);
+        grid.getChildren().add(createAccLabel);
 
         GridPane.setConstraints(userFirstName, 0, 2);
         grid.getChildren().add(userFirstName);
@@ -118,18 +63,20 @@ public class RegisterInterface extends Interface{
         grid.getChildren().add(userPassword);
         GridPane.setConstraints(userPasswordConfirm, 0, 6);
         grid.getChildren().add(userPasswordConfirm);
-        GridPane.setConstraints(createBtn, 0, 7);
-        grid.getChildren().add(createBtn);
+        GridPane.setConstraints(createAccBtn, 0, 7);
+        grid.getChildren().add(createAccBtn);
         grid.getChildren().add(debug);
         GridPane.setConstraints(debug, 0, 8);
         grid.getChildren().add(loginLink);
         GridPane.setConstraints(loginLink, 0, 9);
         GridPane.setHalignment(loginLink, HPos.RIGHT);
-
-
+        grid.getStyleClass().add("grid");
 
         return grid;
 
     }
+
+
+
 
 }

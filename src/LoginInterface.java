@@ -1,101 +1,78 @@
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class LoginInterface extends Interface {
 
-    LoginInterface(Stage stage, Scene scene){
-        super(stage, scene);
+    private UserLibrary userLibrary;
+
+
+    public LoginInterface(){
+        super();
         super.setTitle("Miss Management | Login");
+        this.userLibrary = new UserLibrary();
     }
 
 
-    public GridPane showGUI(){
+
+
+    public AnchorPane showGUI(){
+        AnchorPane root = new AnchorPane();
+
+        GridPane titlePane = getTitlePane("Miss Management | Login");
+        GridPane loginPane = getLoginPane();
+
+        root.getChildren().add(titlePane);
+        root.getChildren().add(loginPane);
+
+        AnchorPane.setTopAnchor(titlePane,0.0);
+        AnchorPane.setTopAnchor(loginPane,120.0);
+
+        return root;
+    }
+
+
+
+    private GridPane getLoginPane(){
         GridPane grid = new GridPane();
+
+        Label loginLabel = new Label("Login");
+
         grid.setPadding(new Insets(10, 0, 10, 0));
         grid.setVgap(10);
         grid.setHgap(5);
 
-        Hyperlink menuLink = new Hyperlink("Back to Main Menu");
-        GridPane.setConstraints(menuLink, 0, 0);
-        grid.getChildren().add(menuLink);
+        GridPane.setConstraints(mainMenuLink, 0, 0);
+        grid.getChildren().add(mainMenuLink);
 
-        menuLink.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToMainMenu(getStage(), getScene());
-            }
-        });
-
-        Label loginLabel = new Label("Login");
         GridPane.setConstraints(loginLabel, 0, 1);
         grid.getChildren().add(loginLabel);
 
-
-
-
-        final TextField userEmail = new TextField();
         userEmail.setPromptText("Enter email");
         GridPane.setConstraints(userEmail, 0, 2);
+
         grid.getChildren().add(userEmail);
 
-        //User password
-        final PasswordField userPassword = new PasswordField();
         userPassword.setPromptText("Enter password");
         GridPane.setConstraints(userPassword, 0, 3);
         grid.getChildren().add(userPassword);
 
-        // debug label
-        Label debug = new Label();
+        GridPane.setConstraints(submitLoginBtn, 0, 4);
+        grid.getChildren().add(submitLoginBtn);
+
+
         grid.getChildren().add(debug);
         GridPane.setConstraints(debug, 0, 5);
-         debug.getStyleClass().add("debug");
+        debug.getStyleClass().add("debug");
 
 
-        //submission button
-        Button submit = new Button ("Login");
-        GridPane.setConstraints(submit, 0, 4);
-        grid.getChildren().add(submit);
-        submit.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                debug.setText("");
-                String email = userEmail.getText();
-                String password = userPassword.getText();
-                if(email.length() == 0 || password.length() == 0){
-                    debug.setText("Enter all fields");
-                } else if(User.isRegistered(email,password)){
-                    User currentUser = User.getUser(email);
-                    InterfaceController.switchToUserMenu(currentUser,getStage(), getScene());
-                } else{
-                    debug.setText("Account not found.");
-                }
+        GridPane.setConstraints(registerLink, 0, 6);
+        grid.getChildren().add(registerLink);
+        GridPane.setHalignment(registerLink, HPos.RIGHT);
 
-            }
-        });
-
-
-
-
-        Hyperlink createLink = new Hyperlink("Create an account instead");
-        GridPane.setConstraints(createLink, 0, 6);
-        grid.getChildren().add(createLink);
-        GridPane.setHalignment(createLink, HPos.RIGHT);
-
-
-        createLink.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToRegister(getStage(), getScene());
-            }
-        });
-
+        grid.getStyleClass().add("grid");
 
         return grid;
     }

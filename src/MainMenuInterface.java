@@ -1,70 +1,73 @@
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class MainMenuInterface extends Interface {
 
 
-    MainMenuInterface(Stage stage, Scene scene){
-        super(stage, scene);
+    public MainMenuInterface(){
+        super();
         super.setTitle("Miss Management | Main Menu");
     }
 
-    public GridPane showGUI() {
+
+    public AnchorPane showGUI() {
+        AnchorPane root = new AnchorPane();
+
+        GridPane mainTitlePane = getMainTitlePane();
+        GridPane menuOptionsPane = getMenuOptions();
+        root.getChildren().add(mainTitlePane);
+        root.getChildren().add(menuOptionsPane);
+
+        AnchorPane.setTopAnchor(mainTitlePane,0.0);
+        AnchorPane.setTopAnchor(menuOptionsPane,240.0);
+
+        return root;
+    }
+
+    private GridPane getMainTitlePane(){
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(20, 0, 20, 0));
-        grid.setVgap(10);
-        grid.setHgap(5);
 
         Label title = new Label("Miss Management");
         Label description = new Label("the program where project management isn't mismanaged");
+
         GridPane.setConstraints(title, 0, 0);
         grid.getChildren().add(title);
         GridPane.setConstraints(description, 0, 1);
         grid.getChildren().add(description);
+
         title.getStyleClass().add("title");
         description.getStyleClass().add("subtitle");
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("bg");
 
-        GridPane.setHalignment(title, HPos.CENTER);
-        GridPane.setHalignment(description, HPos.CENTER);
+        return grid;
+    }
 
-        Button loginBtn = new Button("Log In");
-        GridPane.setConstraints(loginBtn, 0, 2);
+    private GridPane getMenuOptions(){
+        GridPane grid = new GridPane();
+
+        grid.setVgap(20);
+        grid.setHgap(5);
+
+        GridPane.setConstraints(loginBtn, 0, 0);
         grid.getChildren().add(loginBtn);
+        loginBtn.getStyleClass().add("btn");
 
-        loginBtn.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToLogin(getStage(), getScene());
-            }
-        });
-
-        Button registerBtn = new Button("Register");
-       GridPane.setConstraints(registerBtn, 0, 3);
+        GridPane.setConstraints(registerBtn, 0, 1);
         grid.getChildren().add(registerBtn);
-
-        registerBtn.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                InterfaceController.switchToRegister(getStage(), getScene());
-            }
-        });
-
+        getRegisterBtn().getStyleClass().add("btn");
 
         Button infoBtn = new Button("Further Info");
-       GridPane.setConstraints(infoBtn, 0, 4);
-       grid.getChildren().add(infoBtn);
+        GridPane.setConstraints(infoBtn, 0, 2);
+        grid.getChildren().add(infoBtn);
+        infoBtn.getStyleClass().add("btn");
 
-
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
 
         return grid;
     }

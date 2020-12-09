@@ -1,90 +1,64 @@
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class CreateProjectInterface extends Interface {
     private User currentUser;
+    private ProjectLibrary projectLibrary;
 
-    CreateProjectInterface(Stage stage, Scene scene, User currentUser){
-            super(stage,scene);
+    public CreateProjectInterface(User currentUser){
+            super();
             super.setTitle("Miss Management | Create a project");
-            this.currentUser = currentUser;
+            this.projectLibrary = new ProjectLibrary();
         }
 
 
-    public User getCurrentUser(){
-        return this.currentUser;
+    private GridPane getCreateProjectPane(){
+        GridPane grid = new GridPane();
+
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setVgap(10);
+        grid.setHgap(5);
+
+        GridPane.setConstraints(backToUserMenu, 0, 0);
+        grid.getChildren().add(backToUserMenu);
+
+        projectName.setPromptText("Enter project name");
+        projectName.setPrefColumnCount(10);
+        GridPane.setConstraints(projectName, 0, 1);
+        grid.getChildren().add(projectName);
+
+        projectDescription.setPromptText("Enter project description");
+        projectDescription.setPrefColumnCount(10);
+        GridPane.setConstraints(projectDescription, 0, 2);
+        grid.getChildren().add(projectDescription);
+
+        GridPane.setConstraints(createProjectBtn, 0, 3);
+        grid.getChildren().add(createProjectBtn);
+        debug.getStyleClass().add("debug");
+        grid.getChildren().add(debug);
+        GridPane.setConstraints(debug, 0, 4);
+
+        return grid;
+
     }
 
 
-        public GridPane showGUI() {
-            GridPane grid = new GridPane();
-            grid.setPadding(new Insets(20, 20, 20, 20));
-            grid.setVgap(10);
-            grid.setHgap(5);
 
+    public AnchorPane showGUI() {
+        AnchorPane root = new AnchorPane();
 
-            Hyperlink menuLink = new Hyperlink("Back to User Menu");
-            GridPane.setConstraints(menuLink, 0, 0);
-            grid.getChildren().add(menuLink);
+        GridPane titlePane = getTitlePane("Miss Management | Create a project");
+        GridPane createProjectPane = getCreateProjectPane();
+        root.getChildren().add(titlePane);
+        root.getChildren().add(createProjectPane);
 
-            menuLink.setOnAction(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    InterfaceController.switchToUserMenu(getCurrentUser(),getStage(), getScene());
-                }
-            });
+        AnchorPane.setTopAnchor(titlePane,0.0);
+        AnchorPane.setTopAnchor(createProjectPane,120.0);
 
+        return root;
 
-            final TextField projectName = new TextField();
-            projectName.setPromptText("Enter project name");
-            projectName.setPrefColumnCount(10);
-            GridPane.setConstraints(projectName, 0, 1);
-            grid.getChildren().add(projectName);
-
-            final TextArea projectDescription = new TextArea();
-            projectDescription.setPromptText("Enter project description");
-            projectDescription.setPrefColumnCount(10);
-            GridPane.setConstraints(projectDescription, 0, 2);
-            grid.getChildren().add(projectDescription);
-
-            Button createProjectBtn = new Button ("Create project");
-            GridPane.setConstraints(createProjectBtn, 0, 3);
-            grid.getChildren().add(createProjectBtn);
-            Label debug = new Label();
-            debug.getStyleClass().add("debug");
-            grid.getChildren().add(debug);
-            GridPane.setConstraints(debug, 0, 4);
-
-            createProjectBtn.setOnAction(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    debug.setText("");
-                    String projectNameText = projectName.getText();
-                    String projectDescriptionText = projectDescription.getText();
-                    if(projectNameText.length() == 0){
-                        debug.setText("Please enter a project name");
-                    } else if(projectNameText.length() > 100){
-                        debug.setText("Project name must be 100 characters or less");
-                    } else if(projectDescriptionText.length() > 250){
-                        debug.setText("Project description must be 250 characters or less");
-                    } else{
-                       Project newProject = new Project(projectNameText, projectDescriptionText,getCurrentUser());
-                       Project.addProject(newProject);
-                       InterfaceController.switchToUserMenu(getCurrentUser(),getStage(), getScene());
-                    }
-
-                }
-            });
-
-
-
-
-            return grid;
         }
 
 }
