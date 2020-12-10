@@ -3,6 +3,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import users.User;
 
 public class ManageProjectInterface extends Interface {
 
@@ -41,8 +42,8 @@ public class ManageProjectInterface extends Interface {
         grid.setHgap(5);
 
 
-        GridPane.setConstraints(backToManageProjects, 0, 0);
-        grid.getChildren().add(backToManageProjects);
+        GridPane.setConstraints(backToCurrentProjects, 0, 0);
+        grid.getChildren().add(backToCurrentProjects);
 
         GridPane.setConstraints(projectNameLabel, 0, 1);
         grid.getChildren().add(projectNameLabel);
@@ -62,8 +63,8 @@ public class ManageProjectInterface extends Interface {
             grid.setVgap(10);
             grid.setHgap(5);
 
-            GridPane.setConstraints(CreateTaskBtn, 0, 0);
-            grid.getChildren().add(CreateTaskBtn);
+            GridPane.setConstraints(createTaskBtn, 0, 0);
+            grid.getChildren().add(createTaskBtn);
              grid.getStyleClass().add("grid");
           grid.getStyleClass().add("center");
 
