@@ -1,5 +1,3 @@
-package tools;
-
 import javafx.scene.control.Alert;
 
 import java.io.File;
