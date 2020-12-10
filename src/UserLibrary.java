@@ -47,12 +47,8 @@ public class UserLibrary {
             StringBuilder builder = new StringBuilder();
             for (User user : userList) {
                 String email = user.getEmail();
-                System.out.println(email);
                 String firstName = user.getFirstName();
-                System.out.println(firstName);
-
                 String lastName = user.getLastName();
-                System.out.println(lastName);
 
                 builder.append(email + ";" + firstName + ";" + lastName + ";");
                 builder.append("\n");
