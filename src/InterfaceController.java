@@ -1,10 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
@@ -126,9 +123,9 @@ public class InterfaceController  {
         Hyperlink loginLink = registerInterface.getLoginLink();
         loginLink.setOnAction((EventHandler) event -> showLogin());
 
-          GridPane grid = (GridPane) gui.getChildren().get(1);
-          Button createAccBtn = registerInterface.getCreateAccBtn();
-          Label debug = registerInterface.getDebug();
+        GridPane grid = (GridPane) gui.getChildren().get(1);
+        Button createAccBtn = registerInterface.getCreateAccBtn();
+        Label debug = registerInterface.getDebug();
 
 
         createAccBtn.setOnAction((EventHandler) event -> {
@@ -171,7 +168,7 @@ public class InterfaceController  {
 
         Button projectsBtn = userInterface.getProjectsBtn();
         projectsBtn.setOnAction((EventHandler) event -> {
-           projectLibrary.listAllUserProjects(getUser());
+          // projectLibrary.listAllUserProjects(getUser());
             showUserProjectsMenu();
         });
         Hyperlink logoutLink = userInterface.getLogoutLink();
@@ -191,11 +188,15 @@ public class InterfaceController  {
         Button createProjectBtn = createProjectInterface.getCreateProjectBtn();
         Label debug = createProjectInterface.getDebug();
 
+        TextField projectNameField = createProjectInterface.getProjectName();
+        TextArea projectDescriptionField = createProjectInterface.getProjectDescription();
+
+
 
         createProjectBtn.setOnAction((EventHandler) event -> {
             debug.setText("");
-            String projectNameText = createProjectInterface.getProjectName().getText();
-            String projectDescriptionText = createProjectInterface.getProjectDescription().getText();
+            String projectNameText = projectNameField.getText();
+            String projectDescriptionText = projectDescriptionField.getText();
             if(projectNameText.length() == 0){
                 debug.setText("Please enter a project name");
             } else if(projectNameText.length() > 100){
@@ -205,6 +206,8 @@ public class InterfaceController  {
             } else{
                 Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
                 projectLibrary.addProject(newProject);
+                projectNameField.setText("");
+                projectDescriptionField.setText("");
                 showUserMenu();
             }
 
@@ -225,13 +228,10 @@ public class InterfaceController  {
         });
 
         GridPane grid = (GridPane) gui.getChildren().get(1);
-
-        System.out.println(getUser());
+        grid.getChildren().remove(1,grid.getChildren().size());
         ArrayList<Project> userProjects = projectLibrary.getAllUserProjects(getUser());
         int startNum = 1;
-        if(userProjects == null){
-            System.out.println("no projects yet");
-        } else {
+
             for(int i = 0; i < userProjects.size(); i++){
                 Button project = new Button(userProjects.get(i).getProjectName());
                 int currentProject = i;
@@ -242,9 +242,6 @@ public class InterfaceController  {
                 grid.getChildren().add(project);
                 startNum++;
             }
-        }
-
-
 
         changeScene(gui, title);
     }
@@ -260,7 +257,7 @@ public class InterfaceController  {
         projectDesc.setText(project.getProjectDescription());
 
         Button createATask = manageProjectInterface.getCreateTaskBtn();
-        Hyperlink link = manageProjectInterface.getBackToManageProjects();
+        Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction((EventHandler) event -> {
             showUserProjectsMenu();
         });
