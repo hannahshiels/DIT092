@@ -85,6 +85,10 @@ abstract public class Interface {
     Button createTaskBtn = new Button("Create a task");
 
 
+    // admin
+
+    Button exportBtn = new Button("Create export");
+
 
 
     // login + register
@@ -193,6 +197,13 @@ abstract public class Interface {
     public Label getProjectDescLabel(){
         return this.projectDescLabel;
     }
+
+    // admin
+
+    public Button getExportBtn(){
+        return this.exportBtn;
+    }
+
 
 
 
