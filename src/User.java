@@ -25,7 +25,7 @@ public class User {
     }
 
     public String getFirstName(){
-        return this.email;
+        return this.firstName;
     }
 
 
@@ -34,7 +34,7 @@ public class User {
     }
 
     public String getLastName(){
-        return this.password;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -48,6 +48,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 
 
