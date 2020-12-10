@@ -40,5 +40,28 @@ public class UserLibrary {
         return false;
     }
 
+    public String exportUserData() {
+        if (userList.size() == 0) {
+            return "There are no users.";
+        } else {
+            StringBuilder builder = new StringBuilder();
+            for (User user : userList) {
+                String email = user.getEmail();
+                System.out.println(email);
+                String firstName = user.getFirstName();
+                System.out.println(firstName);
+
+                String lastName = user.getLastName();
+                System.out.println(lastName);
+
+                builder.append(email + ";" + firstName + ";" + lastName + ";");
+                builder.append("\n");
+            }
+            return builder.toString();
+        }
+    }
+
+
+
 
 }
