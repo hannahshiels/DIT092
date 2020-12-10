@@ -22,8 +22,10 @@ public class InterfaceController  {
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
+    private AdminInterface adminInterface;
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
+    private SysAdminLibrary sysAdminLibrary;
 
 
     public InterfaceController(Stage stage){
@@ -41,8 +43,10 @@ public class InterfaceController  {
         this.userProjectsInterface = new UserProjectsInterface(currentUser);
         this.createProjectInterface = new CreateProjectInterface(currentUser);
         this.manageProjectInterface = new ManageProjectInterface(currentUser);
+        this.adminInterface = new AdminInterface();
         this.projectLibrary = new ProjectLibrary();
         this.userLibrary = new UserLibrary();
+        this.sysAdminLibrary = new SysAdminLibrary();
 
 
     }
@@ -86,6 +90,7 @@ public class InterfaceController  {
     }
 
 
+
     private void showLogin(){
         AnchorPane gui = loginInterface.getGUI();
         String title = loginInterface.getTitle();
@@ -106,7 +111,12 @@ public class InterfaceController  {
                 User currentUser = userLibrary.getUser(email);
                 setUser(currentUser);
                 showUserMenu();
-            } else{
+            } else if(sysAdminLibrary.isRegistered(email, password)){
+                SysAdmin admin = (SysAdmin) sysAdminLibrary.getUser(email);
+                setUser(admin);
+                showAdmin();
+
+            }else{
                 debug.setText("Account not found.");
             }
 
@@ -267,6 +277,30 @@ public class InterfaceController  {
         changeScene(gui, title);
     }
 
+    private void showAdmin(){
+        AnchorPane gui = adminInterface.getGUI();
+        String title = adminInterface.getTitle();
+
+        Button createExport = adminInterface.getExportBtn();
+        Hyperlink logoutLink = adminInterface.getLogoutLink();
+
+        createExport.setOnAction((EventHandler) event ->{
+            Export.createUserDataExport(userLibrary.exportUserData());
+        });
+
+        logoutLink.setOnAction((EventHandler) event -> {
+            setUser(null);
+            showMainMenu();
+        });
+
+
+
+        changeScene(gui, title);
+    }
+
+
+
+
 
 
     public void testingInit(){
@@ -287,7 +321,10 @@ public class InterfaceController  {
         Project project6 = new Project("Project name 6", "Project Description 6", user2);
         projectLibrary.addProject(project6);
         userLibrary.listUsers();
+     //   projectLibrary.listAllProjects();
+        sysAdminLibrary.addSysAdmin("admin@email.com", "hannah", "shiels", "password");
     }
+
 
 
 }
