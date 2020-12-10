@@ -69,7 +69,7 @@ abstract public class Interface {
     // user projects
 
     Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
-    Hyperlink backToManageProjects = new Hyperlink("Back to Manage Projects");
+    Hyperlink backToCurrentProjects = new Hyperlink("Back to Current Projects");
     Hyperlink logoutLink = new Hyperlink("Log out");
 
     Button createAProjectBtn = new Button("Create a project");
@@ -82,7 +82,7 @@ abstract public class Interface {
     Label projectNameLabel = new Label();
     Label projectDescLabel = new Label();
 
-    Button CreateTaskBtn = new Button("Create a task");
+    Button createTaskBtn = new Button("Create a task");
 
 
 
@@ -178,11 +178,11 @@ abstract public class Interface {
     }
 
     public Button getCreateTaskBtn(){
-        return this.CreateTaskBtn;
+        return this.createTaskBtn;
     }
 
-    public Hyperlink getBackToManageProjects(){
-        return this.backToManageProjects;
+    public Hyperlink getBackToCurrentProjects(){
+        return this.backToCurrentProjects;
     }
 
 
