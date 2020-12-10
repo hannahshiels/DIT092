@@ -1,5 +1,3 @@
-package interfaces;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
