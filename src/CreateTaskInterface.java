@@ -1,5 +1,3 @@
-package interfaces;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextArea;
@@ -11,19 +9,19 @@ public class CreateTaskInterface extends Interface{
 
     public CreateTaskInterface() {
         super();
-        super.setTitle("Miss Management | User Menu");
+        super.setTitle("Miss Management | Create a task");
     }
 
     public AnchorPane showGUI() {
         AnchorPane root = new AnchorPane();
 
         GridPane titlePane = getTitlePane("Miss Management | Create a task");
-        GridPane adminMenu = getCreateATask();
+        GridPane taskMenu = getCreateATask();
         root.getChildren().add(titlePane);
-        root.getChildren().add(adminMenu);
+        root.getChildren().add(taskMenu);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(adminMenu,120.0);
+        AnchorPane.setTopAnchor(taskMenu,120.0);
 
         return root;
     }
