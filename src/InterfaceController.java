@@ -22,10 +22,13 @@ public class InterfaceController  {
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
+    private CreateTaskInterface createTaskInterface;
     private AdminInterface adminInterface;
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
     private SysAdminLibrary sysAdminLibrary;
+    private TaskLibrary taskLibrary;
+
 
 
     public InterfaceController(Stage stage){
@@ -43,10 +46,14 @@ public class InterfaceController  {
         this.userProjectsInterface = new UserProjectsInterface(currentUser);
         this.createProjectInterface = new CreateProjectInterface(currentUser);
         this.manageProjectInterface = new ManageProjectInterface(currentUser);
+        this.createTaskInterface = new CreateTaskInterface();
         this.adminInterface = new AdminInterface();
+
+        this.taskLibrary = new TaskLibrary();
         this.projectLibrary = new ProjectLibrary();
         this.userLibrary = new UserLibrary();
         this.sysAdminLibrary = new SysAdminLibrary();
+
 
 
     }
@@ -267,6 +274,11 @@ public class InterfaceController  {
         projectDesc.setText(project.getProjectDescription());
 
         Button createATask = manageProjectInterface.getCreateTaskBtn();
+        createATask.setOnAction((EventHandler) event -> {
+            showCreateTaskMenu(project.getProjectID());
+        });
+
+
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction((EventHandler) event -> {
             showUserProjectsMenu();
@@ -276,6 +288,48 @@ public class InterfaceController  {
 
         changeScene(gui, title);
     }
+
+    private void showCreateTaskMenu(String ID){
+        AnchorPane gui = createTaskInterface.getGUI();
+        String title = createTaskInterface.getTitle();
+
+        Hyperlink backToManageProject = createTaskInterface.getBackToManageProject();
+        Button createTask = createTaskInterface.getCreateATaskBtn();
+        TextField taskName = createTaskInterface.getTaskName();
+        TextArea taskDesc = createTaskInterface.getProjectDescription();
+        Label debug = createTaskInterface.getDebug();
+
+        backToManageProject.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+              showManageProjectInterface(projectLibrary.getProject(ID));
+            }
+        });
+
+        createTask.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String taskText = taskName.getText();
+                String taskDescriptionText = taskDesc.getText();
+                if(taskText.length() == 0){
+                    debug.setText("Please enter a task name");
+                } else if(taskText.length() > 100){
+                    debug.setText("Task name must be 100 characters or less");
+                } else if(taskDescriptionText.length() > 200){
+                    debug.setText("Task description must be 200 characters or less");
+                } else{
+                    Task newtask = new Task(getUser(),ID, taskText, taskDescriptionText);
+                    taskLibrary.addTask(newtask);
+                    showManageProjectInterface(projectLibrary.getProject(ID));
+                }
+
+            }
+        });
+        changeScene(gui, title);
+
+    }
+
 
     private void showAdmin(){
         AnchorPane gui = adminInterface.getGUI();
