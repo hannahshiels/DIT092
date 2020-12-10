@@ -285,7 +285,7 @@ public class InterfaceController  {
         Hyperlink logoutLink = adminInterface.getLogoutLink();
 
         createExport.setOnAction((EventHandler) event ->{
-            Export.createExport(userLibrary.exportUserData());
+            Export.createUserDataExport(userLibrary.exportUserData());
         });
 
         logoutLink.setOnAction((EventHandler) event -> {
