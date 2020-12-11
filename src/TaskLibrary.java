@@ -15,18 +15,15 @@ public class TaskLibrary {
     }
 
 
-    /*
-    public  ArrayList<Task> getAllUserTasks(User user){
-        ArrayList<Task> userProjects = new ArrayList<>();
-        int count = 0;
+    public ArrayList<Task> getAllUserTasks(User user, String projectID){
+        ArrayList<Task> userTasks = new ArrayList<>();
         for (int i = 0; i < taskList.size(); i++){
-            if(taskList.get(i).getTaskDescription().equals(user.getEmail())){
-                taskList.add(count,taskList.get(i));
-                count++;
+            if(taskList.get(i).getUserAssigned().getEmail().equals(user.getEmail()) && taskList.get(i).getProjectID().equals(projectID)){
+                userTasks.add(taskList.get(i));
             }
         }
-        return tasks;
-    }*/
+        return userTasks;
+    }
 
 
 
