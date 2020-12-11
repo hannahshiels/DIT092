@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -11,7 +13,7 @@ public class ManageTaskInterface extends Interface{
 
     public AnchorPane showGUI(){
         AnchorPane root = new AnchorPane();
-        GridPane titlePane = getTitlePane("Miss Management | Manage Project");
+        GridPane titlePane = getTitlePane("Miss Management | Manage Task");
         GridPane manageTaskNav = getManageTaskNav();
         GridPane manageTaskMenu = getManageTaskMenu();
 
@@ -21,7 +23,7 @@ public class ManageTaskInterface extends Interface{
 
         AnchorPane.setTopAnchor(titlePane,0.0);
         AnchorPane.setTopAnchor(manageTaskNav,120.0);
-        AnchorPane.setTopAnchor(manageTaskMenu,240.0);
+        AnchorPane.setTopAnchor(manageTaskMenu,280.0);
 
 
 
@@ -46,6 +48,9 @@ public class ManageTaskInterface extends Interface{
         GridPane.setConstraints(taskDescLabel, 0, 2);
         grid.getChildren().add(taskDescLabel);
 
+        GridPane.setConstraints(taskProgressLabel, 0, 3);
+        grid.getChildren().add(taskProgressLabel);
+
         grid.getStyleClass().add("grid");
 
         return grid;
@@ -56,9 +61,6 @@ public class ManageTaskInterface extends Interface{
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
         grid.setHgap(5);
-        taskProgress.getItems().addAll("Not started", "In progress", "Done");
-        GridPane.setConstraints(taskProgress, 0, 0);
-        grid.getChildren().add(taskProgress);
 
         grid.getStyleClass().add("grid");
 
