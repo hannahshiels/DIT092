@@ -357,20 +357,43 @@ public class InterfaceController  {
         });
 
 
-       GridPane grid = (GridPane) gui.getChildren().get(1);
+
+        GridPane grid = (GridPane) gui.getChildren().get(1);
         grid.getChildren().remove(1,grid.getChildren().size());
 
         ArrayList<Task> userTasks = taskLibrary.getAllUserTasks(getUser(),projectID);
         int startNum = 1;
         for(int i = 0; i < userTasks.size(); i++){
-            System.out.println(userTasks.get(i).toString());
             Button taskBtn = new Button(userTasks.get(i).getTaskName());
             int currentTask = i;
+
+            ChoiceBox taskProgressCb = new ChoiceBox();
+            taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
+            taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
+
+
+            taskProgressCb.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    String progress = taskProgressCb.getValue().toString();
+                    if(progress.equalsIgnoreCase("Not started")){
+                        userTasks.get(currentTask).setTaskNotStarted();
+                    } else if(progress.equalsIgnoreCase("In progress")){
+                        userTasks.get(currentTask).setTaskInProgress();
+                    } else if(progress.equalsIgnoreCase("Done")){
+                        userTasks.get(currentTask).setTaskDone();
+                    }
+                }
+            });
+
+
             taskBtn.setOnAction((EventHandler) event -> {
                showManageTask(userTasks.get(currentTask));
             });
             GridPane.setConstraints(taskBtn, 0, startNum);
             grid.getChildren().add(taskBtn);
+            GridPane.setConstraints(taskProgressCb, 1, startNum);
+            grid.getChildren().add(taskProgressCb);
             startNum++;
         }
 
@@ -387,26 +410,11 @@ public class InterfaceController  {
 
         Label taskNameLabel = manageTaskInterface.getTaskNameLabel();
         Label taskDescLabel = manageTaskInterface.getTaskDescLabel();
-        taskNameLabel.setText(task.getTaskName());
-        taskDescLabel.setText(task.getTaskDescription());
+        Label taskProgressLabel = manageTaskInterface.getTaskProgressLabel();
+        taskNameLabel.setText("Task name:" + task.getTaskName());
+        taskDescLabel.setText("Task description: " + task.getTaskDescription());
+        taskProgressLabel.setText("Progress: " + task.getTaskProgress());
 
-        ChoiceBox taskProgressCb = manageTaskInterface.getTaskProgress();
-        taskProgressCb.setValue(task.getTaskProgress());
-
-        taskProgressCb.setOnAction(new EventHandler(){
-            @Override
-            public void handle(Event event) {
-                String progress = taskProgressCb.getValue().toString();
-                System.out.println(task.getTaskProgress());
-                if(progress.equalsIgnoreCase("Not started")){
-                    task.setTaskNotStarted();
-                } else if(progress.equalsIgnoreCase("In progress")){
-                    task.setTaskInProgress();
-                } else if(progress.equalsIgnoreCase("Done")){
-                    task.setTaskDone();
-                }
-            }
-        });
 
         backToCurrentTasks.setOnAction(new EventHandler() {
             @Override
