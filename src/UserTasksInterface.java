@@ -1,9 +1,6 @@
-package interfaces;
-
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import users.User;
 
 public class UserTasksInterface extends Interface {
 
