@@ -1,5 +1,3 @@
-package tools;
-
 import java.util.UUID;
 
 public class RandomID {
