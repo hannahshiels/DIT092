@@ -23,6 +23,8 @@ public class InterfaceController  {
     private UserProjectsInterface userProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
     private CreateTaskInterface createTaskInterface;
+    private UserTasksInterface userTasksInterface;
+    private ManageTaskInterface manageTaskInterface;
     private AdminInterface adminInterface;
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
@@ -47,6 +49,9 @@ public class InterfaceController  {
         this.createProjectInterface = new CreateProjectInterface(currentUser);
         this.manageProjectInterface = new ManageProjectInterface(currentUser);
         this.createTaskInterface = new CreateTaskInterface();
+        this.userTasksInterface = new UserTasksInterface();
+        this.manageTaskInterface = new ManageTaskInterface();
+
         this.adminInterface = new AdminInterface();
 
         this.taskLibrary = new TaskLibrary();
@@ -270,6 +275,7 @@ public class InterfaceController  {
 
         Label projectName = manageProjectInterface.getProjectNameLabel();
         Label projectDesc = manageProjectInterface.getProjectDescLabel();
+
         projectName.setText(project.getProjectName());
         projectDesc.setText(project.getProjectDescription());
 
@@ -277,6 +283,12 @@ public class InterfaceController  {
         createATask.setOnAction((EventHandler) event -> {
             showCreateTaskMenu(project.getProjectID());
         });
+
+        Button currentTasksBtn = manageProjectInterface.getCurrentTasksBtn();
+        currentTasksBtn.setOnAction((EventHandler) event -> {
+            showUserTasksMenu(project.getProjectID(), getUser());
+        });
+
 
 
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
@@ -296,7 +308,7 @@ public class InterfaceController  {
         Hyperlink backToManageProject = createTaskInterface.getBackToManageProject();
         Button createTask = createTaskInterface.getCreateATaskBtn();
         TextField taskName = createTaskInterface.getTaskName();
-        TextArea taskDesc = createTaskInterface.getProjectDescription();
+        TextArea taskDesc = createTaskInterface.getTaskDesc();
         Label debug = createTaskInterface.getDebug();
 
         backToManageProject.setOnAction(new EventHandler() {
@@ -319,14 +331,93 @@ public class InterfaceController  {
                 } else if(taskDescriptionText.length() > 200){
                     debug.setText("Task description must be 200 characters or less");
                 } else{
-                    Task newtask = new Task(getUser(),ID, taskText, taskDescriptionText);
-                    taskLibrary.addTask(newtask);
+                    Task newTask = new Task(getUser(),ID, taskText, taskDescriptionText);
+                    taskLibrary.addTask(newTask);
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
 
             }
         });
         changeScene(gui, title);
+
+    }
+
+    private void showUserTasksMenu(String projectID, User user ){
+        AnchorPane gui = userTasksInterface.getGUI();
+        String title = userTasksInterface.getTitle();
+
+        Hyperlink backToManageProjects = userTasksInterface.getBackToManageProject();
+
+
+        backToManageProjects.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showManageProjectInterface(projectLibrary.getProject(projectID));
+            }
+        });
+
+
+       GridPane grid = (GridPane) gui.getChildren().get(1);
+        grid.getChildren().remove(1,grid.getChildren().size());
+
+        ArrayList<Task> userTasks = taskLibrary.getAllUserTasks(getUser(),projectID);
+        int startNum = 1;
+        for(int i = 0; i < userTasks.size(); i++){
+            System.out.println(userTasks.get(i).toString());
+            Button taskBtn = new Button(userTasks.get(i).getTaskName());
+            int currentTask = i;
+            taskBtn.setOnAction((EventHandler) event -> {
+               showManageTask(userTasks.get(currentTask));
+            });
+            GridPane.setConstraints(taskBtn, 0, startNum);
+            grid.getChildren().add(taskBtn);
+            startNum++;
+        }
+
+
+
+        changeScene(gui, title);
+
+    }
+
+    private void showManageTask(Task task){
+        AnchorPane gui = manageTaskInterface.getGUI();
+        String title = manageTaskInterface.getTitle();
+        Hyperlink backToCurrentTasks = manageTaskInterface.getBackToCurrentTasks();
+
+        Label taskNameLabel = manageTaskInterface.getTaskNameLabel();
+        Label taskDescLabel = manageTaskInterface.getTaskDescLabel();
+        taskNameLabel.setText(task.getTaskName());
+        taskDescLabel.setText(task.getTaskDescription());
+
+        ChoiceBox taskProgressCb = manageTaskInterface.getTaskProgress();
+        taskProgressCb.setValue(task.getTaskProgress());
+
+        taskProgressCb.setOnAction(new EventHandler(){
+            @Override
+            public void handle(Event event) {
+                String progress = taskProgressCb.getValue().toString();
+                System.out.println(task.getTaskProgress());
+                if(progress.equalsIgnoreCase("Not started")){
+                    task.setTaskNotStarted();
+                } else if(progress.equalsIgnoreCase("In progress")){
+                    task.setTaskInProgress();
+                } else if(progress.equalsIgnoreCase("Done")){
+                    task.setTaskDone();
+                }
+            }
+        });
+
+        backToCurrentTasks.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showUserTasksMenu(task.getProjectID(), getUser());
+            }
+        });
+
+
+        changeScene(gui, title);
+
 
     }
 
