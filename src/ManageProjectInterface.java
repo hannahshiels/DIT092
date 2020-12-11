@@ -3,7 +3,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import users.User;
 
 public class ManageProjectInterface extends Interface {
 
@@ -58,18 +57,21 @@ public class ManageProjectInterface extends Interface {
     }
 
     public GridPane getManageProjectsMenu(){
-            GridPane grid = new GridPane();
-            grid.setPadding(new Insets(20, 20, 20, 20));
-            grid.setVgap(10);
-            grid.setHgap(5);
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setVgap(10);
+        grid.setHgap(5);
 
-            GridPane.setConstraints(createTaskBtn, 0, 0);
-            grid.getChildren().add(createTaskBtn);
-             grid.getStyleClass().add("grid");
-          grid.getStyleClass().add("center");
+        GridPane.setConstraints(createTaskBtn, 0, 0);
+        grid.getChildren().add(createTaskBtn);
+
+        GridPane.setConstraints(currentTasksBtn, 0, 1);
+        grid.getChildren().add(currentTasksBtn);
+
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
 
         return grid;
-
     }
 
 
