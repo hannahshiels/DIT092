@@ -9,15 +9,45 @@ public class Task {
     Date dueDate;
     LocalDate dateCreated;
     String projectID;
+    String taskProgress;
+
 
     public Task(User user, String projectID, String taskTitle, String taskDescription){
         this.userAssigned  = user;
         this.taskTitle = taskTitle;
         this.taskDescription = taskDescription;
         this.projectID = projectID;
+        this.taskProgress = "Not started";
     }
 
-    public String getTask() {
+    public void setTaskNotStarted(){
+        this.taskProgress = "Not started";
+    }
+
+    public String getTaskProgress(){
+        return this.taskProgress;
+    }
+
+
+    public void setTaskInProgress(){
+        this.taskProgress = "In progress";
+    }
+
+    public void setTaskDone(){
+        this.taskProgress = "Done";
+    }
+
+
+    public User getUserAssigned() {
+        return this.userAssigned;
+    }
+
+    public String getProjectID() {
+        return this.projectID;
+    }
+
+
+    public String getTaskName() {
         return this.taskTitle;
     }
 
@@ -25,6 +55,10 @@ public class Task {
         return taskDescription;
     }
 
+    @Override
+    public String toString() {
+        return "Task: " +  "\n project id: " + this.getProjectID() +  "\n user assigned: " + this.getUserAssigned().getEmail() +  "\n task name: " + this.taskTitle + "\n task description: " + getTaskDescription() + "\n task progress: " + this.taskProgress;
+    }
 
 
 }
