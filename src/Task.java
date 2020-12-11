@@ -11,7 +11,6 @@ public class Task {
     String projectID;
     String taskProgress;
 
-
     public Task(User user, String projectID, String taskTitle, String taskDescription){
         this.userAssigned  = user;
         this.taskTitle = taskTitle;
@@ -59,6 +58,7 @@ public class Task {
     public String toString() {
         return "Task: " +  "\n project id: " + this.getProjectID() +  "\n user assigned: " + this.getUserAssigned().getEmail() +  "\n task name: " + this.taskTitle + "\n task description: " + getTaskDescription() + "\n task progress: " + this.taskProgress;
     }
+
 
 
 }
