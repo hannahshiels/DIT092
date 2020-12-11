@@ -35,11 +35,8 @@ public class UserTasksInterface extends Interface {
         grid.getChildren().add(backToManageProject);
 
         grid.getStyleClass().add("grid");
-
         return grid;
     }
-
-
 
 
 }

@@ -90,12 +90,12 @@ abstract public class Interface {
 
     Label taskNameLabel = new Label();
     Label taskDescLabel = new Label();
+    Label taskProgressLabel = new Label();
+
 
     Button createTaskBtn = new Button("Create a task");
     Button createATaskBtn = new Button("Create task");
     Button currentTasksBtn = new Button("Current Tasks");
-
-    ChoiceBox taskProgress = new ChoiceBox();
 
 
 
@@ -246,15 +246,14 @@ abstract public class Interface {
     public Label getTaskNameLabel(){
         return this.taskNameLabel;
     }
+
     public Label getTaskDescLabel(){
         return this.taskDescLabel;
     }
 
-    public ChoiceBox getTaskProgress(){
-        return this.taskProgress;
+    public Label getTaskProgressLabel(){
+        return this.taskProgressLabel;
     }
-
-
 
     // admin
 
