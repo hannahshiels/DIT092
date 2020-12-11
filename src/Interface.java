@@ -70,6 +70,8 @@ abstract public class Interface {
 
     Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
     Hyperlink backToCurrentProjects = new Hyperlink("Back to Current Projects");
+    Hyperlink backToManageProject = new Hyperlink("Back to Manage Projects");
+
     Hyperlink logoutLink = new Hyperlink("Log out");
 
     Button createAProjectBtn = new Button("Create a project");
@@ -78,11 +80,16 @@ abstract public class Interface {
 
     TextField projectName = new TextField();
     TextArea projectDescription = new TextArea();
+    TextField taskName = new TextField();
+    TextArea taskDesc = new TextArea();
 
     Label projectNameLabel = new Label();
     Label projectDescLabel = new Label();
 
     Button createTaskBtn = new Button("Create a task");
+    Button createATaskBtn = new Button("Create task");
+
+
 
 
     // admin
@@ -197,6 +204,26 @@ abstract public class Interface {
     public Label getProjectDescLabel(){
         return this.projectDescLabel;
     }
+
+
+
+    public Button getCreateATaskBtn(){
+        return this.createATaskBtn;
+    }
+
+    public Hyperlink getBackToManageProject(){
+        return this.backToManageProject;
+    }
+
+
+    public TextField getTaskName(){
+        return this.taskName;
+    }
+
+    public TextArea getTaskDesc(){
+        return this.taskDesc;
+    }
+
 
     // admin
 

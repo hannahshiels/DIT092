@@ -13,6 +13,25 @@ public class ProjectLibrary {
         }
     }
 
+    public boolean checkIfProjectExists(String ID){
+        for (int i = 0; i < projectList.size(); i++){
+            if(projectList.get(i).getProjectID().equals(ID)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Project getProject(String ID){
+        for (int i = 0; i < projectList.size(); i++){
+            if(projectList.get(i).getProjectID().equals(ID)){
+                return projectList.get(i);
+            }
+        }
+        return null;
+    }
+
+
     public ArrayList<Project> getAllUserProjects(User user){
         ArrayList<Project> userProjects = new ArrayList<>();
         for (int i = 0; i < projectList.size(); i++){
