@@ -249,10 +249,10 @@ public class InterfaceController  {
            showUserMenu();
         });
 
-        GridPane grid = (GridPane) gui.getChildren().get(1);
-        grid.getChildren().remove(1,grid.getChildren().size());
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
         ArrayList<Project> userProjects = projectLibrary.getAllUserProjects(getUser());
-        int startNum = 1;
+        int startNum = 0;
 
             for(int i = 0; i < userProjects.size(); i++){
                 Button project = new Button(userProjects.get(i).getProjectName());
@@ -333,6 +333,8 @@ public class InterfaceController  {
                 } else{
                     Task newTask = new Task(getUser(),ID, taskText, taskDescriptionText);
                     taskLibrary.addTask(newTask);
+                    taskName.setText("");
+                    taskDesc.setText("");
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
 
@@ -358,11 +360,11 @@ public class InterfaceController  {
 
 
 
-        GridPane grid = (GridPane) gui.getChildren().get(1);
-        grid.getChildren().remove(1,grid.getChildren().size());
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
 
         ArrayList<Task> userTasks = taskLibrary.getAllUserTasks(getUser(),projectID);
-        int startNum = 1;
+        int startNum = 0;
         for(int i = 0; i < userTasks.size(); i++){
             Button taskBtn = new Button(userTasks.get(i).getTaskName());
             int currentTask = i;
