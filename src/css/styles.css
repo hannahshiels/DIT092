@@ -15,6 +15,10 @@
 .center{
     -fx-alignment: center;
 }
+.right-align{
+    -fx-alignment: bottom-right;
+}
+
 
 .title-grid{
     -fx-min-height: 150px;
