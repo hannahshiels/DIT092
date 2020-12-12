@@ -15,11 +15,15 @@ public class UserTasksInterface extends Interface {
 
         GridPane titlePane = getTitlePane("Miss Management | Current Tasks");
         GridPane userTasksPane = getUserTasksPane();
+        GridPane nav = getNav();
+
         root.getChildren().add(titlePane);
+        root.getChildren().add(nav);
         root.getChildren().add(userTasksPane);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(userTasksPane,120.0);
+        AnchorPane.setTopAnchor(nav,120.0);
+        AnchorPane.setTopAnchor(userTasksPane,240.0);
 
         return root;
     }
@@ -31,12 +35,26 @@ public class UserTasksInterface extends Interface {
         grid.setVgap(10);
         grid.setHgap(5);
 
+
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
+        return grid;
+    }
+
+
+    private GridPane getNav(){
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setVgap(10);
+        grid.setHgap(5);
+
         GridPane.setConstraints(backToManageProject, 0, 0);
         grid.getChildren().add(backToManageProject);
 
-        grid.getStyleClass().add("grid");
         return grid;
     }
+
+
 
 
 }
