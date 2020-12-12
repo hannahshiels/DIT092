@@ -2,11 +2,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 
+
 public class UserProjectsInterface extends Interface {
+
+    User user;
 
     public UserProjectsInterface(User currentUser){
         super();
         super.setTitle("Miss Management | Current Projects");
+        this.user = currentUser;
     }
 
 
@@ -14,15 +18,35 @@ public class UserProjectsInterface extends Interface {
         AnchorPane root = new AnchorPane();
 
         GridPane titlePane = getTitlePane("Miss Management | Current Projects");
+        GridPane nav = getNav();
         GridPane userProjectsPane = getUserProjectsPane();
+        root.getChildren().add(nav);
         root.getChildren().add(titlePane);
+
         root.getChildren().add(userProjectsPane);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(userProjectsPane,120.0);
+        AnchorPane.setTopAnchor(nav,120.0);
+
+        AnchorPane.setTopAnchor(userProjectsPane,200.0);
 
         return root;
     }
+
+    private GridPane getNav(){
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setVgap(10);
+        grid.setHgap(5);
+
+        GridPane.setConstraints(backToUserMenu, 0, 0);
+        grid.getChildren().add(backToUserMenu);
+        grid.getStyleClass().add("grid");
+
+
+        return grid;
+    }
+
 
 
     private GridPane getUserProjectsPane(){
@@ -32,10 +56,9 @@ public class UserProjectsInterface extends Interface {
         grid.setHgap(5);
 
 
-        GridPane.setConstraints(backToUserMenu, 0, 0);
-        grid.getChildren().add(backToUserMenu);
-
         grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
+
 
         return grid;
     }
