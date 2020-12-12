@@ -1,5 +1,3 @@
-package interfaces;
-
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -51,7 +49,6 @@ public class ManageTaskInterface extends Interface{
         GridPane.setConstraints(taskProgressLabel, 0, 3);
         grid.getChildren().add(taskProgressLabel);
 
-        grid.getStyleClass().add("grid");
 
         return grid;
     }
