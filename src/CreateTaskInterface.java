@@ -18,10 +18,13 @@ public class CreateTaskInterface extends Interface{
         GridPane titlePane = getTitlePane("Miss Management | Create a task");
         GridPane taskMenu = getCreateATask();
         root.getChildren().add(titlePane);
+        GridPane nav = getNav();
         root.getChildren().add(taskMenu);
+        root.getChildren().add(nav);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(taskMenu,120.0);
+        AnchorPane.setTopAnchor(nav,120.0);
+        AnchorPane.setTopAnchor(taskMenu,240.0);
 
         return root;
     }
@@ -34,38 +37,44 @@ public class CreateTaskInterface extends Interface{
         grid.setHgap(5);
 
 
-        GridPane.setConstraints(backToManageProject, 0, 0);
-        grid.getChildren().add(backToManageProject);
-
         taskName.setPromptText("Enter task name");
         taskName.setPrefColumnCount(10);
-        GridPane.setConstraints(taskName, 0, 1);
+        GridPane.setConstraints(taskName, 0, 0);
         grid.getChildren().add(taskName);
 
         taskDesc.setPromptText("Enter task description");
         taskDesc.setPrefColumnCount(10);
-        GridPane.setConstraints(taskDesc, 0, 2);
+        GridPane.setConstraints(taskDesc, 0, 1);
         grid.getChildren().add(taskDesc);
 
-        GridPane.setConstraints(createATaskBtn, 0, 3);
+        GridPane.setConstraints(createATaskBtn, 0, 2);
         grid.getChildren().add(createATaskBtn);
 
         debug.getStyleClass().add("debug");
         grid.getChildren().add(debug);
-        GridPane.setConstraints(debug, 0, 4);
-
-
-
-
+        GridPane.setConstraints(debug, 0, 3);
 
 
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
 
-
         return grid;
 
     }
+
+    private GridPane getNav(){
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(5);
+        grid.setPadding(new Insets(20, 20, 20, 20));
+
+
+        GridPane.setConstraints(backToManageProject, 0, 0);
+        grid.getChildren().add(backToManageProject);
+
+        return grid;
+    }
+
 
 
 
