@@ -51,8 +51,6 @@ public class ManageProjectInterface extends Interface {
         grid.getChildren().add(projectDescLabel);
 
 
-        grid.getStyleClass().add("grid");
-
         return grid;
     }
 

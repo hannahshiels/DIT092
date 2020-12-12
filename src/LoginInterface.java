@@ -23,15 +23,35 @@ public class LoginInterface extends Interface {
 
         GridPane titlePane = getTitlePane("Miss Management | Login");
         GridPane loginPane = getLoginPane();
+        GridPane nav = getTopNav();
 
         root.getChildren().add(titlePane);
+        root.getChildren().add(nav);
+
         root.getChildren().add(loginPane);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(loginPane,120.0);
+        AnchorPane.setTopAnchor(nav,120.0);
+
+        AnchorPane.setTopAnchor(loginPane,240.0);
 
         return root;
     }
+
+
+    private GridPane getTopNav(){
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(5);
+        grid.setPadding(new Insets(20, 20, 20, 20));
+
+        GridPane.setConstraints(mainMenuLink, 0, 0);
+        grid.getChildren().add(mainMenuLink);
+
+
+        return grid;
+    }
+
 
 
 
@@ -40,31 +60,28 @@ public class LoginInterface extends Interface {
 
         Label loginLabel = new Label("Login");
 
-        grid.setPadding(new Insets(10, 0, 10, 0));
+        grid.setPadding(new Insets(20, 0, 20, 0));
         grid.setVgap(10);
         grid.setHgap(5);
 
-        GridPane.setConstraints(mainMenuLink, 0, 0);
-        grid.getChildren().add(mainMenuLink);
-
-        GridPane.setConstraints(loginLabel, 0, 1);
+        GridPane.setConstraints(loginLabel, 0, 0);
         grid.getChildren().add(loginLabel);
 
         userEmail.setPromptText("Enter email");
-        GridPane.setConstraints(userEmail, 0, 2);
+        GridPane.setConstraints(userEmail, 0, 1);
 
         grid.getChildren().add(userEmail);
 
         userPassword.setPromptText("Enter password");
-        GridPane.setConstraints(userPassword, 0, 3);
+        GridPane.setConstraints(userPassword, 0, 2);
         grid.getChildren().add(userPassword);
 
-        GridPane.setConstraints(submitLoginBtn, 0, 4);
+        GridPane.setConstraints(submitLoginBtn, 0, 3);
         grid.getChildren().add(submitLoginBtn);
 
 
         grid.getChildren().add(debug);
-        GridPane.setConstraints(debug, 0, 5);
+        GridPane.setConstraints(debug, 0, 4);
         debug.getStyleClass().add("debug");
 
 
@@ -73,6 +90,7 @@ public class LoginInterface extends Interface {
         GridPane.setHalignment(registerLink, HPos.RIGHT);
 
         grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
 
         return grid;
     }

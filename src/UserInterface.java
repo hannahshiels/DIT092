@@ -19,11 +19,16 @@ public class UserInterface extends Interface {
 
         GridPane titlePane = getTitlePane("Miss Management | User Menu");
         GridPane projectsPane = getProjectsPane();
+        GridPane nav = getBottomNav();
         root.getChildren().add(titlePane);
         root.getChildren().add(projectsPane);
+        root.getChildren().add(nav);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(projectsPane,120.0);
+        AnchorPane.setTopAnchor(projectsPane,240.0);
+        AnchorPane.setBottomAnchor(nav,0.0);
+
+
 
         return root;
 
@@ -42,15 +47,33 @@ public class UserInterface extends Interface {
         GridPane.setConstraints(projectsBtn, 0, 1);
         grid.getChildren().add(projectsBtn);
 
-        grid.getChildren().add(logoutLink);
-        GridPane.setConstraints(logoutLink, 0, 2);
 
-        GridPane.setHalignment(logoutLink, HPos.RIGHT);
         grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("center");
+
 
         return grid;
 
     }
+
+
+    private GridPane getBottomNav(){
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(5);
+        grid.setPadding(new Insets(20, 20, 20, 20));
+
+        grid.getChildren().add(logoutLink);
+        GridPane.setConstraints(logoutLink, 0, 2);
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("right-align");
+
+
+        return grid;
+    }
+
+
+
 
 
 
