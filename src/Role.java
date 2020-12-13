@@ -1,7 +1,3 @@
-package projects;
-
-import users.User;
-
 public class Role {
 
     private User user;
