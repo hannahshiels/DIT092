@@ -2,14 +2,12 @@ public class Project {
 
     private String projectName;
     private String projectDescription;
-    private User user;
     private String projectOwner;
     private String ID;
 
     public Project(String projectName, String projectDescription, User user){
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-        this.user = user;
         this.projectOwner = user.getEmail();
         this.ID = RandomID.getRandomID();
     }
