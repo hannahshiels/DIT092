@@ -6,12 +6,9 @@ import javafx.scene.layout.GridPane;
 
 public class RegisterInterface extends Interface {
 
-    private UserLibrary userLibrary;
-
     public RegisterInterface(){
         super();
         super.setTitle("Miss Management | Register");
-        this.userLibrary = new UserLibrary();
     }
 
 
