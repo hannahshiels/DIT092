@@ -1,8 +1,5 @@
-package interfaces;
-
 import javafx.geometry.HPos;
 import javafx.scene.layout.AnchorPane;
-import users.User;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 
