@@ -15,11 +15,15 @@ public class AdminInterface extends Interface {
 
         GridPane titlePane = getTitlePane("Miss Management | Admin");
         GridPane adminMenu = getAdminOptions();
+        GridPane bottomNav = getBottomNav();
+
         root.getChildren().add(titlePane);
         root.getChildren().add(adminMenu);
+        root.getChildren().add(bottomNav);
 
         AnchorPane.setTopAnchor(titlePane,0.0);
-        AnchorPane.setTopAnchor(adminMenu,120.0);
+        AnchorPane.setTopAnchor(adminMenu,200.0);
+        AnchorPane.setBottomAnchor(bottomNav,0.0);
 
         return root;
     }
@@ -37,9 +41,6 @@ public class AdminInterface extends Interface {
         exportBtn.getStyleClass().add("btn");
 
 
-        GridPane.setConstraints(logoutLink, 0, 1);
-        grid.getChildren().add(logoutLink);
-        GridPane.setHalignment(logoutLink, HPos.RIGHT);
 
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
@@ -48,5 +49,23 @@ public class AdminInterface extends Interface {
         return grid;
 
     }
+
+
+    private GridPane getBottomNav(){
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(5);
+        grid.setPadding(new Insets(20, 20, 20, 20));
+
+        grid.getChildren().add(logoutLink);
+        GridPane.setConstraints(logoutLink, 0, 2);
+        grid.getStyleClass().add("grid");
+        grid.getStyleClass().add("right-align");
+
+
+        return grid;
+    }
+
+
 
 }
