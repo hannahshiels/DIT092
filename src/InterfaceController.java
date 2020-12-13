@@ -22,6 +22,7 @@ public class InterfaceController  {
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
+    private AddUserInterface addUserInterface;
     private CreateTaskInterface createTaskInterface;
     private UserTasksInterface userTasksInterface;
     private ManageTaskInterface manageTaskInterface;
@@ -30,6 +31,7 @@ public class InterfaceController  {
     private UserLibrary userLibrary;
     private SysAdminLibrary sysAdminLibrary;
     private TaskLibrary taskLibrary;
+    private RoleLibrary roleLibrary;
 
 
 
@@ -44,10 +46,11 @@ public class InterfaceController  {
       //  this.currentUser = new User("email@email.com", "firstName", "lastName", "password");
 
         this.userInterface = new UserInterface(currentUser);
-        this.createProjectInterface = new CreateProjectInterface(currentUser);
-        this.userProjectsInterface = new UserProjectsInterface(currentUser);
-        this.createProjectInterface = new CreateProjectInterface(currentUser);
-        this.manageProjectInterface = new ManageProjectInterface(currentUser);
+        this.createProjectInterface = new CreateProjectInterface();
+        this.userProjectsInterface = new UserProjectsInterface();
+        this.createProjectInterface = new CreateProjectInterface();
+        this.manageProjectInterface = new ManageProjectInterface();
+        this.addUserInterface = new AddUserInterface();
         this.createTaskInterface = new CreateTaskInterface();
         this.userTasksInterface = new UserTasksInterface();
         this.manageTaskInterface = new ManageTaskInterface();
@@ -57,6 +60,7 @@ public class InterfaceController  {
         this.taskLibrary = new TaskLibrary();
         this.projectLibrary = new ProjectLibrary();
         this.userLibrary = new UserLibrary();
+        this.roleLibrary = new RoleLibrary();
         this.sysAdminLibrary = new SysAdminLibrary();
 
 
@@ -190,7 +194,6 @@ public class InterfaceController  {
 
         Button projectsBtn = userInterface.getProjectsBtn();
         projectsBtn.setOnAction((EventHandler) event -> {
-          // projectLibrary.listAllUserProjects(getUser());
             showUserProjectsMenu();
         });
         Hyperlink logoutLink = userInterface.getLogoutLink();
@@ -228,6 +231,9 @@ public class InterfaceController  {
             } else{
                 Project newProject = new Project(projectNameText, projectDescriptionText,getUser());
                 projectLibrary.addProject(newProject);
+                Role newRole = new Role(getUser(), newProject.getProjectID());
+                newRole.setRoleProjectCreator();
+                roleLibrary.addRole(newRole);
                 projectNameField.setText("");
                 projectDescriptionField.setText("");
                 showUserMenu();
@@ -279,6 +285,12 @@ public class InterfaceController  {
         projectName.setText(project.getProjectName());
         projectDesc.setText(project.getProjectDescription());
 
+
+        Button addUserBtn = manageProjectInterface.getAddUserBtn();
+        addUserBtn.setOnAction((EventHandler) event ->{
+            showAddUserInterface(project.getProjectID());
+        });
+
         Button createATask = manageProjectInterface.getCreateTaskBtn();
         createATask.setOnAction((EventHandler) event -> {
             showCreateTaskMenu(project.getProjectID());
@@ -301,6 +313,96 @@ public class InterfaceController  {
         changeScene(gui, title);
     }
 
+
+    private void showAddUserInterface(String ID){
+        AnchorPane gui = addUserInterface.getGUI();
+        String title = addUserInterface.getTitle();
+
+        Label debug = addUserInterface.getDebug();
+
+        ChoiceBox userRolesCb = new ChoiceBox();
+        userRolesCb.getItems().addAll( "Scrum Master", "Product Owner", "Developer");
+        userRolesCb.setValue("Scrum Master");
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        GridPane.setConstraints(userRolesCb, 1, 0);
+        grid.getChildren().add(userRolesCb);
+        debug.setText("");
+        Button addUserBtn = addUserInterface.getAddUserConfirmBtn();
+        TextField email = addUserInterface.getUserEmail();
+        email.setText("");
+
+
+        addUserBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String emailText = email.getText();
+                String role = userRolesCb.getValue().toString();
+
+                if(emailText.equals("")){
+                    debug.setText("Enter email address!");
+                } else if(!EmailValidation.isEmailValid(emailText)){
+                    debug.setText("Enter a valid email!");
+                } else if(!userLibrary.isEmailRegistered(emailText)){
+                    debug.setText("Account not found.");
+                } else if(roleLibrary.isUserInProject(ID, emailText)){
+                    debug.setText("User is already in project.");
+                } else if(role.equals("Scrum Master")){
+                    if(roleLibrary.doesScrumMasterExist(ID)){
+                        debug.setText("Role is already filled.");
+                    } else{
+                        User user = userLibrary.getUser(emailText);
+                        Role newRole = new Role(user,ID);
+                        roleLibrary.addRole(newRole);
+                        if(role.equals("Scrum Master")){
+                            newRole.setRoleScrumMaster();
+                        } else if(role.equals("Product Owner")){
+                            newRole.setRoleProductOwner();
+                        } else{
+                            newRole.setRoleDeveloper();
+                        }
+                        showManageProjectInterface(projectLibrary.getProject(ID));
+                    }
+                } else if(role.equals("Product Owner")){
+                    if(roleLibrary.doesProductOwnerExist(ID)){
+                        debug.setText("Role is already filled.");
+                    } else{
+                        User user = userLibrary.getUser(emailText);
+                        Role newRole = new Role(user,ID);
+                        roleLibrary.addRole(newRole);
+                        if(role.equals("Scrum Master")){
+                            newRole.setRoleScrumMaster();
+                        } else if(role.equals("Product Owner")){
+                            newRole.setRoleProductOwner();
+                        } else{
+                            newRole.setRoleDeveloper();
+                        }
+                        showManageProjectInterface(projectLibrary.getProject(ID));
+                    }
+                }else{
+                    User user = userLibrary.getUser(emailText);
+                    Role newRole = new Role(user,ID);
+                    roleLibrary.addRole(newRole);
+                    if(role.equals("Scrum Master")){
+                        newRole.setRoleScrumMaster();
+                    } else if(role.equals("Product Owner")){
+                        newRole.setRoleProductOwner();
+                    } else{
+                        newRole.setRoleDeveloper();
+                    }
+                showManageProjectInterface(projectLibrary.getProject(ID));
+                }
+            }
+        });
+
+
+
+        Hyperlink backToManageProject = addUserInterface.getBackToManageProject();
+        backToManageProject.setOnAction((EventHandler) event -> showManageProjectInterface(projectLibrary.getProject(ID)));
+        changeScene(gui, title);
+
+    }
+
+
     private void showCreateTaskMenu(String ID){
         AnchorPane gui = createTaskInterface.getGUI();
         String title = createTaskInterface.getTitle();
@@ -310,6 +412,8 @@ public class InterfaceController  {
         TextField taskName = createTaskInterface.getTaskName();
         TextArea taskDesc = createTaskInterface.getTaskDesc();
         Label debug = createTaskInterface.getDebug();
+
+        debug.setText("");
 
         backToManageProject.setOnAction(new EventHandler() {
             @Override
@@ -461,20 +565,57 @@ public class InterfaceController  {
     public void testingInit(){
         User user1 = new User("email@email.com", "firstName", "lastName", "password");
         userLibrary.addUser(user1);
+
         User user2 = new User("email2@email.com", "firstName", "lastName", "password");
         userLibrary.addUser(user2);
+
+        User user3 = new User("email3@email.com", "firstName", "lastName", "password");
+        userLibrary.addUser(user3);
+
+        User user4 = new User("email4@email.com", "firstName", "lastName", "password");
+        userLibrary.addUser(user4);
+
         Project project1 = new Project("Project name 1", "Project Description 1", user1);
         projectLibrary.addProject(project1);
+
+        Role role1 =  new Role(user1, project1.getProjectID());
+        role1.setRoleProjectCreator();
+        roleLibrary.addRole(role1);
+
         Project project2 = new Project("Project name 2", "Project Description 2", user1);
         projectLibrary.addProject(project2);
+
+        Role role2 =  new Role(user1, project2.getProjectID());
+        role2.setRoleProjectCreator();
+        roleLibrary.addRole(role2);
+
         Project project3 = new Project("Project name 3", "Project Description 3", user1);
         projectLibrary.addProject(project3);
+        Role role3 =  new Role(user1, project3.getProjectID());
+        role3.setRoleProjectCreator();
+        roleLibrary.addRole(role3);
+
         Project project4 = new Project("Project name 4", "Project Description 4", user2);
         projectLibrary.addProject(project4);
+
+        Role role4 =  new Role(user2, project4.getProjectID());
+        role4.setRoleProjectCreator();
+        roleLibrary.addRole(role4);
+
         Project project5 = new Project("Project name 5", "Project Description 5", user2);
         projectLibrary.addProject(project5);
+
+        Role role5 =  new Role(user2, project5.getProjectID());
+        role5.setRoleProjectCreator();
+        roleLibrary.addRole(role5);
+
         Project project6 = new Project("Project name 6", "Project Description 6", user2);
         projectLibrary.addProject(project6);
+
+        Role role6 =  new Role(user2, project6.getProjectID());
+        role6.setRoleProjectCreator();
+        roleLibrary.addRole(role6);
+
         userLibrary.listUsers();
      //   projectLibrary.listAllProjects();
         sysAdminLibrary.addSysAdmin("admin@email.com", "hannah", "shiels", "password");
