@@ -45,7 +45,7 @@ public class InterfaceController  {
 
       //  this.currentUser = new User("email@email.com", "firstName", "lastName", "password");
 
-        this.userInterface = new UserInterface(currentUser);
+        this.userInterface = new UserInterface();
         this.createProjectInterface = new CreateProjectInterface();
         this.userProjectsInterface = new UserProjectsInterface();
         this.createProjectInterface = new CreateProjectInterface();
