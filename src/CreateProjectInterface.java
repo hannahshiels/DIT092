@@ -4,13 +4,10 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 
 public class CreateProjectInterface extends Interface {
-    private User currentUser;
-    private ProjectLibrary projectLibrary;
 
-    public CreateProjectInterface(User currentUser){
+    public CreateProjectInterface(){
             super();
             super.setTitle("Miss Management | Create a project");
-            this.projectLibrary = new ProjectLibrary();
         }
 
 
