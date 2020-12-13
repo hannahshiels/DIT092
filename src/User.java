@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.time.LocalDate;
 
+
 public class User {
 
     private String email;

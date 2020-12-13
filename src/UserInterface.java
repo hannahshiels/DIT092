@@ -5,13 +5,11 @@ import javafx.scene.layout.GridPane;
 
 
 public class UserInterface extends Interface {
-        private User currentUser;
 
 
-    public UserInterface(User currentUser){
+    public UserInterface(){
         super();
         super.setTitle("Miss Management | User Menu");
-        this.currentUser = currentUser;
     }
 
     public AnchorPane showGUI() {

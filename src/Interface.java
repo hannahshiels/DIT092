@@ -97,8 +97,14 @@ abstract public class Interface {
     Button createATaskBtn = new Button("Create task");
     Button currentTasksBtn = new Button("Current Tasks");
 
+    Button addUserBtn = new Button("Add users");
+    Button addUserConfirmBtn = new Button("Add user");
 
 
+
+    public Button getAddUserConfirmBtn(){
+        return this.addUserConfirmBtn;
+    }
 
 
     // admin
@@ -254,6 +260,12 @@ abstract public class Interface {
     public Label getTaskProgressLabel(){
         return this.taskProgressLabel;
     }
+
+    public Button getAddUserBtn(){
+        return addUserBtn;
+    }
+
+
 
     // admin
 
