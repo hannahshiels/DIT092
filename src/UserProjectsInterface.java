@@ -5,12 +5,10 @@ import javafx.scene.layout.GridPane;
 
 public class UserProjectsInterface extends Interface {
 
-    User user;
 
-    public UserProjectsInterface(User currentUser){
+    public UserProjectsInterface(){
         super();
         super.setTitle("Miss Management | Current Projects");
-        this.user = currentUser;
     }
 
 
@@ -41,7 +39,6 @@ public class UserProjectsInterface extends Interface {
 
         GridPane.setConstraints(backToUserMenu, 0, 0);
         grid.getChildren().add(backToUserMenu);
-        grid.getStyleClass().add("grid");
 
 
         return grid;
