@@ -149,7 +149,7 @@ public class InterfaceController  {
         Hyperlink loginLink = registerInterface.getLoginLink();
         loginLink.setOnAction((EventHandler) event -> showLogin());
 
-        GridPane grid = (GridPane) gui.getChildren().get(1);
+        GridPane grid = (GridPane) gui.getChildren().get(2);
         Button createAccBtn = registerInterface.getCreateAccBtn();
         Label debug = registerInterface.getDebug();
 
@@ -257,7 +257,11 @@ public class InterfaceController  {
 
         GridPane grid = (GridPane) gui.getChildren().get(2);
         grid.getChildren().remove(0,grid.getChildren().size());
-        ArrayList<Project> userProjects = projectLibrary.getAllUserProjects(getUser());
+        ArrayList<String> allUserProjects = roleLibrary.getAllUserProjects(getUser());
+        ArrayList<Project> userProjects = projectLibrary.getProjects(allUserProjects);
+        for (int i = 0; i < userProjects.size(); i++){
+            System.out.println(userProjects.get(i));
+        }
         int startNum = 0;
 
             for(int i = 0; i < userProjects.size(); i++){
