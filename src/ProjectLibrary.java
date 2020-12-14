@@ -1,3 +1,7 @@
+package projects;
+
+import users.User;
+
 import java.util.ArrayList;
 
 public class ProjectLibrary {
@@ -31,7 +35,19 @@ public class ProjectLibrary {
         return null;
     }
 
+    public ArrayList<Project> getProjects(ArrayList<String> projectIDS){
+        ArrayList<Project> userProjects = new ArrayList<>();
+        for (int i = 0; i < projectList.size(); i++){
+            for(int j = 0; j < projectIDS.size(); j++){
+                if(projectList.get(i).getProjectID().equals(projectIDS.get(j))){
+                    userProjects.add(projectList.get(i));
+                }
+            }
+        }
+        return userProjects;
+    }
 
+/*
     public ArrayList<Project> getAllUserProjects(User user){
         ArrayList<Project> userProjects = new ArrayList<>();
         for (int i = 0; i < projectList.size(); i++){
@@ -50,7 +66,7 @@ public class ProjectLibrary {
             }
         }
     }
-
+*/
 
 
 
