@@ -24,6 +24,17 @@ public class RoleLibrary {
 
     }
 
+    public ArrayList<String> getAllUserProjects(User user){
+        ArrayList<String> userProjects = new ArrayList<>();
+        for (int i = 0; i < roleList.size(); i++) {
+            if (roleList.get(i).getUser().equals(user)) {
+                userProjects.add(roleList.get(i).getProjectID());
+            }
+        }
+        return userProjects;
+    }
+
+
     public ArrayList<Role> getRoleListInProject(String projectID) {
         ArrayList<Role> rolesInProject = new ArrayList<>();
         for (Role role : roleList) {
