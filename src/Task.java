@@ -19,6 +19,10 @@ public class Task {
         this.taskProgress = "Not started";
     }
 
+    public void setUserAssigned(User user){
+        this.userAssigned = user;
+    }
+
     public void setTaskNotStarted(){
         this.taskProgress = "Not started";
     }
