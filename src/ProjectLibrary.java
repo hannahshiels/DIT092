@@ -1,7 +1,3 @@
-package projects;
-
-import users.User;
-
 import java.util.ArrayList;
 
 public class ProjectLibrary {
