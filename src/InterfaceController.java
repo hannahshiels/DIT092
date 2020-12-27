@@ -100,9 +100,9 @@ public class InterfaceController  {
 
 
         Button registerBtn = mainMenuInterface.getRegisterBtn();
-        registerBtn.setOnAction((EventHandler) event -> showRegister());
+        registerBtn.setOnAction(event -> showRegister());
         Button loginBtn = mainMenuInterface.getLoginBtn();
-        loginBtn.setOnAction((EventHandler) event -> showLogin());
+        loginBtn.setOnAction(event -> showLogin());
     }
 
 
@@ -111,12 +111,12 @@ public class InterfaceController  {
         AnchorPane gui = loginInterface.getGUI();
         String title = loginInterface.getTitle();
         Hyperlink mainMenuLink = loginInterface.getMainMenuLink();
-        mainMenuLink.setOnAction((EventHandler) event -> showMainMenu());
+        mainMenuLink.setOnAction(event -> showMainMenu());
         Hyperlink registerLink = loginInterface.getRegisterLink();
-        registerLink.setOnAction((EventHandler) event -> showRegister());
+        registerLink.setOnAction(event -> showRegister());
 
         Button submitLoginBtn = loginInterface.getSubmitLoginBtn();
-        submitLoginBtn.setOnAction((EventHandler) event -> {
+        submitLoginBtn.setOnAction(event -> {
             Label debug = loginInterface.getDebug();
             debug.setText("");
             String email = loginInterface.getUserEmail().getText();
@@ -145,16 +145,16 @@ public class InterfaceController  {
     private void showRegister(){
         AnchorPane gui = registerInterface.getGUI();
         Hyperlink mainMenuLink = registerInterface.getMainMenuLink();
-        mainMenuLink.setOnAction((EventHandler) event -> showMainMenu());
+        mainMenuLink.setOnAction(event -> showMainMenu());
         Hyperlink loginLink = registerInterface.getLoginLink();
-        loginLink.setOnAction((EventHandler) event -> showLogin());
+        loginLink.setOnAction(event -> showLogin());
 
         GridPane grid = (GridPane) gui.getChildren().get(2);
         Button createAccBtn = registerInterface.getCreateAccBtn();
         Label debug = registerInterface.getDebug();
 
 
-        createAccBtn.setOnAction((EventHandler) event -> {
+        createAccBtn.setOnAction(event -> {
               debug.setText("");
               String email = registerInterface.getUserEmail().getText();
               String firstName = registerInterface.getUserFirstName().getText();
@@ -176,7 +176,7 @@ public class InterfaceController  {
                   User newUser = new User(email,firstName,lastName,password);
                   userLibrary.addUser(newUser);
                   Hyperlink link = new Hyperlink("Account created. Log in.");
-                  link.setOnAction((EventHandler) event1 -> showLogin());
+                  link.setOnAction(event1 -> showLogin());
                   GridPane.setConstraints(link, 0, 8);
                   grid.getChildren().add(link);
               }
@@ -190,14 +190,12 @@ public class InterfaceController  {
         String title = userInterface.getTitle();
 
         Button createAProjectBtn = userInterface.getCreateAProjectBtn();
-        createAProjectBtn.setOnAction((EventHandler) event -> showCreateProjectMenu());
+        createAProjectBtn.setOnAction(event -> showCreateProjectMenu());
 
         Button projectsBtn = userInterface.getProjectsBtn();
-        projectsBtn.setOnAction((EventHandler) event -> {
-            showUserProjectsMenu();
-        });
+        projectsBtn.setOnAction(event -> showUserProjectsMenu());
         Hyperlink logoutLink = userInterface.getLogoutLink();
-        logoutLink.setOnAction((EventHandler) event -> {
+        logoutLink.setOnAction(event -> {
             setUser(null);
             showMainMenu();
         });
@@ -208,7 +206,7 @@ public class InterfaceController  {
         AnchorPane gui = createProjectInterface.getGUI();
         String title = createProjectInterface.getTitle();
         Hyperlink backToUserMenu = createProjectInterface.getBackToUserMenuLink();
-        backToUserMenu.setOnAction((EventHandler) event -> showUserMenu());
+        backToUserMenu.setOnAction(event -> showUserMenu());
 
         Button createProjectBtn = createProjectInterface.getCreateProjectBtn();
         Label debug = createProjectInterface.getDebug();
@@ -218,7 +216,7 @@ public class InterfaceController  {
 
 
 
-        createProjectBtn.setOnAction((EventHandler) event -> {
+        createProjectBtn.setOnAction(event -> {
             debug.setText("");
             String projectNameText = projectNameField.getText();
             String projectDescriptionText = projectDescriptionField.getText();
@@ -251,25 +249,21 @@ public class InterfaceController  {
         String title = userProjectsInterface.getTitle();
         Hyperlink backToUserMenu = userProjectsInterface.getBackToUserMenuLink();
 
-        backToUserMenu.setOnAction((EventHandler) event -> {
-           showUserMenu();
-        });
+        backToUserMenu.setOnAction(event -> showUserMenu());
 
         GridPane grid = (GridPane) gui.getChildren().get(2);
         grid.getChildren().remove(0,grid.getChildren().size());
         ArrayList<String> allUserProjects = roleLibrary.getAllUserProjects(getUser());
         ArrayList<Project> userProjects = projectLibrary.getProjects(allUserProjects);
-        for (int i = 0; i < userProjects.size(); i++){
-            System.out.println(userProjects.get(i));
+        for (Project userProject : userProjects) {
+            System.out.println(userProject);
         }
         int startNum = 0;
 
             for(int i = 0; i < userProjects.size(); i++){
                 Button project = new Button(userProjects.get(i).getProjectName());
                 int currentProject = i;
-                project.setOnAction((EventHandler) event -> {
-                    showManageProjectInterface(userProjects.get(currentProject));
-                });
+                project.setOnAction(event -> showManageProjectInterface(userProjects.get(currentProject)));
                 GridPane.setConstraints(project, 0, startNum);
                 grid.getChildren().add(project);
                 startNum++;
@@ -291,26 +285,19 @@ public class InterfaceController  {
 
 
         Button addUserBtn = manageProjectInterface.getAddUserBtn();
-        addUserBtn.setOnAction((EventHandler) event ->{
-            showAddUserInterface(project.getProjectID());
-        });
+        addUserBtn.setOnAction(event -> showAddUserInterface(project.getProjectID()));
 
         Button createATask = manageProjectInterface.getCreateTaskBtn();
-        createATask.setOnAction((EventHandler) event -> {
-            showCreateTaskMenu(project.getProjectID());
-        });
+        createATask.setOnAction(event -> showCreateTaskMenu(project.getProjectID()));
 
         Button currentTasksBtn = manageProjectInterface.getCurrentTasksBtn();
-        currentTasksBtn.setOnAction((EventHandler) event -> {
-            showUserTasksMenu(project.getProjectID(), getUser());
-        });
+        currentTasksBtn.setOnAction(event -> showUserTasksMenu(project.getProjectID(), getUser()));
 
 
 
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
-        link.setOnAction((EventHandler) event -> {
-            showUserProjectsMenu();
-        });
+        link.setOnAction(event -> showUserProjectsMenu());
+
 
 
 
@@ -324,7 +311,7 @@ public class InterfaceController  {
 
         Label debug = addUserInterface.getDebug();
 
-        ChoiceBox userRolesCb = new ChoiceBox();
+        ChoiceBox<String> userRolesCb = new ChoiceBox<>();
         userRolesCb.getItems().addAll( "Scrum Master", "Product Owner", "Developer");
         userRolesCb.setValue("Scrum Master");
         GridPane grid = (GridPane) gui.getChildren().get(2);
@@ -340,7 +327,7 @@ public class InterfaceController  {
             @Override
             public void handle(Event event) {
                 String emailText = email.getText();
-                String role = userRolesCb.getValue().toString();
+                String role = userRolesCb.getValue();
 
                 if(emailText.equals("")){
                     debug.setText("Enter email address!");
@@ -357,13 +344,7 @@ public class InterfaceController  {
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
                         roleLibrary.addRole(newRole);
-                        if(role.equals("Scrum Master")){
-                            newRole.setRoleScrumMaster();
-                        } else if(role.equals("Product Owner")){
-                            newRole.setRoleProductOwner();
-                        } else{
-                            newRole.setRoleDeveloper();
-                        }
+                        newRole.setRoleScrumMaster();
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 } else if(role.equals("Product Owner")){
@@ -373,27 +354,15 @@ public class InterfaceController  {
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
                         roleLibrary.addRole(newRole);
-                        if(role.equals("Scrum Master")){
-                            newRole.setRoleScrumMaster();
-                        } else if(role.equals("Product Owner")){
-                            newRole.setRoleProductOwner();
-                        } else{
-                            newRole.setRoleDeveloper();
-                        }
+                        newRole.setRoleProductOwner();
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 }else{
                     User user = userLibrary.getUser(emailText);
                     Role newRole = new Role(user,ID);
                     roleLibrary.addRole(newRole);
-                    if(role.equals("Scrum Master")){
-                        newRole.setRoleScrumMaster();
-                    } else if(role.equals("Product Owner")){
-                        newRole.setRoleProductOwner();
-                    } else{
-                        newRole.setRoleDeveloper();
-                    }
-                showManageProjectInterface(projectLibrary.getProject(ID));
+                    newRole.setRoleDeveloper();
+                    showManageProjectInterface(projectLibrary.getProject(ID));
                 }
             }
         });
@@ -401,7 +370,7 @@ public class InterfaceController  {
 
 
         Hyperlink backToManageProject = addUserInterface.getBackToManageProject();
-        backToManageProject.setOnAction((EventHandler) event -> showManageProjectInterface(projectLibrary.getProject(ID)));
+        backToManageProject.setOnAction(event -> showManageProjectInterface(projectLibrary.getProject(ID)));
         changeScene(gui, title);
 
     }
@@ -452,6 +421,7 @@ public class InterfaceController  {
 
     }
 
+    //User is not used at the moment, remove if necessary
     private void showUserTasksMenu(String projectID, User user ){
         AnchorPane gui = userTasksInterface.getGUI();
         String title = userTasksInterface.getTitle();
@@ -477,7 +447,7 @@ public class InterfaceController  {
             Button taskBtn = new Button(userTasks.get(i).getTaskName());
             int currentTask = i;
 
-            ChoiceBox taskProgressCb = new ChoiceBox();
+            ChoiceBox<String> taskProgressCb = new ChoiceBox<>();
             taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
             taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
 
@@ -485,7 +455,7 @@ public class InterfaceController  {
             taskProgressCb.setOnAction(new EventHandler(){
                 @Override
                 public void handle(Event event) {
-                    String progress = taskProgressCb.getValue().toString();
+                    String progress = taskProgressCb.getValue();
                     if(progress.equalsIgnoreCase("Not started")){
                         userTasks.get(currentTask).setTaskNotStarted();
                     } else if(progress.equalsIgnoreCase("In progress")){
@@ -497,9 +467,7 @@ public class InterfaceController  {
             });
 
 
-            taskBtn.setOnAction((EventHandler) event -> {
-               showManageTask(userTasks.get(currentTask));
-            });
+            taskBtn.setOnAction(event -> showManageTask(userTasks.get(currentTask)));
             GridPane.setConstraints(taskBtn, 0, startNum);
             grid.getChildren().add(taskBtn);
             GridPane.setConstraints(taskProgressCb, 1, startNum);
@@ -547,11 +515,10 @@ public class InterfaceController  {
         Button createExport = adminInterface.getExportBtn();
         Hyperlink logoutLink = adminInterface.getLogoutLink();
 
-        createExport.setOnAction((EventHandler) event ->{
-            Export.createUserDataExport(userLibrary.exportUserData());
-        });
+        createExport.setOnAction(event -> Export.createUserDataExport(userLibrary.exportUserData()));
 
-        logoutLink.setOnAction((EventHandler) event -> {
+
+        logoutLink.setOnAction(event -> {
             setUser(null);
             showMainMenu();
         });
