@@ -96,6 +96,9 @@ abstract public class Interface {
     Button createTaskBtn = new Button("Create a task");
     Button createATaskBtn = new Button("Create task");
     Button currentTasksBtn = new Button("Current Tasks");
+    Button allTasksBtn = new Button("View all project tasks");
+
+
 
     Button addUserBtn = new Button("Add users");
     Button addUserConfirmBtn = new Button("Add user");
@@ -109,7 +112,7 @@ abstract public class Interface {
 
     // admin
 
-    Button exportBtn = new Button("Create export");
+    Button userExportBtn = new Button("Export users");
 
 
 
@@ -230,6 +233,9 @@ abstract public class Interface {
         return this.currentTasksBtn;
     }
 
+    public Button getAllTasksBtn(){
+        return this.allTasksBtn;
+    }
 
     public Hyperlink getBackToManageProject(){
         return this.backToManageProject;
@@ -269,8 +275,8 @@ abstract public class Interface {
 
     // admin
 
-    public Button getExportBtn(){
-        return this.exportBtn;
+    public Button getUserExportBtn(){
+        return this.userExportBtn;
     }
 
 
