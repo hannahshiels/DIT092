@@ -14,6 +14,37 @@ public class TaskLibrary {
         }
     }
 
+    public ArrayList<Task> getAllProjectTasks(String projectID){
+        ArrayList<Task> projectTasks = new ArrayList<>();
+
+        for (int i = 0; i < taskList.size(); i++){
+            if(taskList.get(i).getProjectID().equals(projectID)){
+                projectTasks.add(taskList.get(i));
+            }
+        }
+        return projectTasks;
+    }
+
+    public Task getTaskFromName(String taskName){
+        for(int i = 0; i < taskList.size(); i++){
+            Task task = taskList.get(i);
+            if(task.getTaskName().equals(taskName)){
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public boolean doesTaskNameExistInProject(String projectID,String taskName){
+        for(int i = 0; i < taskList.size(); i++){
+            Task task = taskList.get(i);
+            if(task.getTaskName().equals(taskName) && task.getProjectID().equals(projectID)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public ArrayList<Task> getAllUserTasks(User user, String projectID){
         ArrayList<Task> userTasks = new ArrayList<>();
@@ -24,7 +55,5 @@ public class TaskLibrary {
         }
         return userTasks;
     }
-
-
 
 }

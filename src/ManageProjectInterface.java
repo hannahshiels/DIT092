@@ -65,6 +65,9 @@ public class ManageProjectInterface extends Interface {
         GridPane.setConstraints(currentTasksBtn, 0, 2);
         grid.getChildren().add(currentTasksBtn);
 
+        GridPane.setConstraints(allTasksBtn, 0, 3);
+        grid.getChildren().add(allTasksBtn);
+
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
 

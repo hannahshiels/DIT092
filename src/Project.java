@@ -1,17 +1,18 @@
-import java.util.ArrayList;
-
+import java.time.LocalDate;
 
 public class Project {
 
     private String projectName;
     private String projectDescription;
     private String ID;
+    private LocalDate dateStarted;
 
 
     public Project(String projectName, String projectDescription, User user){
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.ID = RandomID.getRandomID();
+        this.dateStarted = CurrentDate.getCurrentDate();
     }
 
     public String getProjectID(){

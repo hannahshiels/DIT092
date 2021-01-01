@@ -36,9 +36,9 @@ public class AdminInterface extends Interface {
         grid.setHgap(5);
 
 
-        GridPane.setConstraints(exportBtn, 0, 0);
-        grid.getChildren().add(exportBtn);
-        exportBtn.getStyleClass().add("btn");
+        GridPane.setConstraints(userExportBtn, 0, 0);
+        grid.getChildren().add(userExportBtn);
+        userExportBtn.getStyleClass().add("btn");
 
 
 
