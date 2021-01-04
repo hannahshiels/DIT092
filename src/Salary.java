@@ -1,5 +1,3 @@
-package projects;
-
 public class Salary {
 
     private String email;
