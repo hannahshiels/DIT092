@@ -1,3 +1,6 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 public class SalaryLibrary {
@@ -27,7 +30,7 @@ public class SalaryLibrary {
 
     public boolean doesUserHaveSalaryInProject(String email, String projectID){
         for (int i = 0; i < salaryList.size(); i++){
-            if(salaryList.get(i).getProjectID().equals(projectID) &&  salaryList.get(i).getProjectID().equals(email)){
+            if(salaryList.get(i).getProjectID().equals(projectID) &&  salaryList.get(i).getEmail().equals(email)){
                 return true;
             }
         }
