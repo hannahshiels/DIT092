@@ -1,3 +1,4 @@
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -701,7 +702,6 @@ public class InterfaceController  {
 
         Hyperlink backToManageProjects = userSalaryInterface.getBackToManageProject();
 
-        ArrayList<Salary> userSalaries = salaryLibrary.getAllProjectSalaries(projectID);
         TableView table = new TableView();
         TableColumn firstNameCol = new TableColumn("First Name");
         TableColumn lastNameCol = new TableColumn("Last Name");
@@ -709,9 +709,7 @@ public class InterfaceController  {
         TableColumn salaryCol = new TableColumn("Salary");
         table.getColumns().addAll(firstNameCol, lastNameCol, emailCol, salaryCol);
         salaryLibrary.listAllSalaries();
-        for(int i = 0; i < userSalaries.size(); i++){
 
-        }
 
         backToManageProjects.setOnAction(new EventHandler() {
             @Override
