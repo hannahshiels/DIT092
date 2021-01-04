@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
@@ -303,6 +304,19 @@ public class InterfaceController  {
              grid.getChildren().remove(addUserBtn);
              grid.getChildren().remove(allTasksBtn);
          }
+
+         if(!roleLibrary.doesProductOwnerExist(project.getProjectID()) && role.getRole().equals("Project Creator") || role.getRole().equals("Product Owner")){
+             if (!grid.getChildren().contains(addSalaryBtn)) {
+                 grid.getChildren().add(addSalaryBtn);
+             }
+             if(!grid.getChildren().contains(currentSalariesBtn)){
+                 grid.getChildren().add(currentSalariesBtn);
+             }
+         } else{
+             grid.getChildren().remove(addSalaryBtn);
+             grid.getChildren().remove(currentSalariesBtn);
+         }
+
 
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction(event -> showUserProjectsMenu());
@@ -657,6 +671,7 @@ public class InterfaceController  {
                 allUsersCB.setValue(user.getEmail());
             }
         }
+        debug.setText("");
 
         backToManageProject.setOnAction(new EventHandler() {
             @Override
@@ -702,14 +717,21 @@ public class InterfaceController  {
 
         Hyperlink backToManageProjects = userSalaryInterface.getBackToManageProject();
 
+        ObservableList<Salary> userSalaries = salaryLibrary.getTableData(projectID);
         TableView table = new TableView();
-        TableColumn firstNameCol = new TableColumn("First Name");
-        TableColumn lastNameCol = new TableColumn("Last Name");
         TableColumn emailCol = new TableColumn("Email");
-        TableColumn salaryCol = new TableColumn("Salary");
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol, salaryCol);
-        salaryLibrary.listAllSalaries();
+        TableColumn salaryCol = new TableColumn("Salary(SEK)");
+        table.getColumns().addAll(emailCol, salaryCol);
+        table.setItems(userSalaries);
+        table.setMinWidth(500);
+        salaryCol.setPrefWidth(250);
+        emailCol.setPrefWidth(250);
+        emailCol.setCellValueFactory(new PropertyValueFactory("email"));
+        salaryCol.setCellValueFactory(new PropertyValueFactory("salary"));
 
+        table.getColumns().setAll(emailCol, salaryCol);
+        GridPane.setConstraints(table, 0, 0);
+        grid.getChildren().add(table);
 
         backToManageProjects.setOnAction(new EventHandler() {
             @Override
