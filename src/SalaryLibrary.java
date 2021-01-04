@@ -28,6 +28,18 @@ public class SalaryLibrary {
         return projectSalaries;
     }
 
+    public ObservableList<Salary> getTableData(String projectID){
+        ObservableList<Salary> projectSalaries =  FXCollections.observableArrayList();
+
+        for (int i = 0; i < salaryList.size(); i++){
+           if(salaryList.get(i).getProjectID().equals(projectID)){
+                   projectSalaries.add(salaryList.get(i));
+               }
+        }
+        return projectSalaries;
+    }
+
+
     public boolean doesUserHaveSalaryInProject(String email, String projectID){
         for (int i = 0; i < salaryList.size(); i++){
             if(salaryList.get(i).getProjectID().equals(projectID) &&  salaryList.get(i).getEmail().equals(email)){
