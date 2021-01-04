@@ -6,6 +6,7 @@ public class Project {
     private String projectDescription;
     private String ID;
     private LocalDate dateStarted;
+    private String status;
 
 
     public Project(String projectName, String projectDescription, User user){
@@ -13,6 +14,15 @@ public class Project {
         this.projectDescription = projectDescription;
         this.ID = RandomID.getRandomID();
         this.dateStarted = CurrentDate.getCurrentDate();
+        this.status = "In progress";
+    }
+
+    public String getStatus(){
+        return this.status;
+    }
+
+    public void setStatusClose(){
+        this.status = "Closed";
     }
 
     public String getProjectID(){
