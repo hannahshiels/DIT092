@@ -1,8 +1,10 @@
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
@@ -27,12 +29,15 @@ public class InterfaceController  {
     private UserTasksInterface userTasksInterface;
     private ManageTaskInterface manageTaskInterface;
     private AllProjectTasksInterface allProjectTasksInterface;
+    private UserSalaryInterface userSalaryInterface;
+    private AddSalaryInterface addSalaryInterface;
     private AdminInterface adminInterface;
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
     private SysAdminLibrary sysAdminLibrary;
     private TaskLibrary taskLibrary;
     private RoleLibrary roleLibrary;
+    private SalaryLibrary salaryLibrary;
 
 
     public InterfaceController(Stage stage){
@@ -55,6 +60,8 @@ public class InterfaceController  {
         this.userTasksInterface = new UserTasksInterface();
         this.manageTaskInterface = new ManageTaskInterface();
         this.allProjectTasksInterface = new AllProjectTasksInterface();
+        this.addSalaryInterface = new AddSalaryInterface();
+        this.userSalaryInterface = new UserSalaryInterface();
 
         this.adminInterface = new AdminInterface();
 
@@ -63,6 +70,7 @@ public class InterfaceController  {
         this.userLibrary = new UserLibrary();
         this.roleLibrary = new RoleLibrary();
         this.sysAdminLibrary = new SysAdminLibrary();
+        this.salaryLibrary = new SalaryLibrary();
     }
 
     public void setUser(User user){
@@ -276,6 +284,12 @@ public class InterfaceController  {
         Button allTasksBtn = manageProjectInterface.getAllTasksBtn();
         allTasksBtn.setOnAction(event -> showAllProjectTasks(project.getProjectID()));
 
+        Button addSalaryBtn = manageProjectInterface.getAddSalaryBtn();
+        addSalaryBtn.setOnAction(event -> showAddSalaryInterface(project.getProjectID()));
+
+        Button currentSalariesBtn = manageProjectInterface.getCurrentSalariesBtn();
+        currentSalariesBtn.setOnAction(event -> showUserSalaryInterface(project.getProjectID()));
+
         Role role = roleLibrary.getUserRoleInProject(project.getProjectID(), getUser());
         GridPane grid = (GridPane) gui.getChildren().get(1);
 
@@ -290,6 +304,19 @@ public class InterfaceController  {
              grid.getChildren().remove(addUserBtn);
              grid.getChildren().remove(allTasksBtn);
          }
+
+         if(!roleLibrary.doesProductOwnerExist(project.getProjectID()) && role.getRole().equals("Project Creator") || role.getRole().equals("Product Owner")){
+             if (!grid.getChildren().contains(addSalaryBtn)) {
+                 grid.getChildren().add(addSalaryBtn);
+             }
+             if(!grid.getChildren().contains(currentSalariesBtn)){
+                 grid.getChildren().add(currentSalariesBtn);
+             }
+         } else{
+             grid.getChildren().remove(addSalaryBtn);
+             grid.getChildren().remove(currentSalariesBtn);
+         }
+
 
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction(event -> showUserProjectsMenu());
@@ -409,7 +436,7 @@ public class InterfaceController  {
         if(!roleLibrary.doesScrumMasterExist(ID) && role.getRole().equals("Project Creator") || role.getRole().equals("Scrum Master")) {
             if (!grid.getChildren().contains(assignUserCB) && roleLibrary.getNumberOfUsersInProject(ID) > 1) {
                 grid.getChildren().add(assignUserCB);
-                GridPane.setConstraints(assignUserCB, 0, 4);
+                GridPane.setConstraints(assignUserCB, 1, 0);
             }
         } else{
             grid.getChildren().remove(assignUserCB);
@@ -476,6 +503,9 @@ public class InterfaceController  {
             ChoiceBox<String> taskProgressCb = new ChoiceBox<>();
             taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
             taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
+            Button delBtn = new Button("x");
+            delBtn.getStyleClass().add("del-btn");
+
 
             taskProgressCb.setOnAction(new EventHandler(){
                 @Override
@@ -491,11 +521,27 @@ public class InterfaceController  {
                 }
             });
 
+            delBtn.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(delBtn);
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
+                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    taskLibrary.removeTask(task);
+                    grid.getChildren().removeAll(btn,cb, delBtn);
+                }
+            });
+
+
             taskBtn.setOnAction(event -> showManageTask(userTasks.get(currentTask)));
             GridPane.setConstraints(taskBtn, 0, startNum);
             grid.getChildren().add(taskBtn);
             GridPane.setConstraints(taskProgressCb, 1, startNum);
             grid.getChildren().add(taskProgressCb);
+
+            GridPane.setConstraints(delBtn, 2, startNum);
+            grid.getChildren().add(delBtn);
             startNum++;
         }
 
@@ -519,6 +565,21 @@ public class InterfaceController  {
         for(int i = 0; i < allProjectTasks.size(); i++){
             Task currentTask = allProjectTasks.get(i);
             Button taskBtn = new Button(currentTask.getTaskName());
+            Button delBtn = new Button("x");
+            delBtn.getStyleClass().add("del-btn");
+
+            delBtn.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(delBtn);
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
+                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    taskLibrary.removeTask(task);
+                    grid.getChildren().removeAll(btn,cb, delBtn);
+                    }
+            });
+
             taskBtn.setOnAction(event -> showManageTask(currentTask));
             User userAssigned = currentTask.getUserAssigned();
 
@@ -536,13 +597,8 @@ public class InterfaceController  {
                 @Override
                 public void handle(Event event) {
                     int row = GridPane.getRowIndex(userAssignedCb);
-                    Button btn = new Button();
-                    for(int i = 0; i < grid.getChildren().size(); i++){
-                        Node child = grid.getChildren().get(i);
-                        if(GridPane.getColumnIndex(child) == 0 && GridPane.getRowIndex(child) == row){
-                            btn = (Button) child;
-                        }
-                    }
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+
                     Task task = taskLibrary.getTaskFromName(btn.getText());
                     String userEmail = userAssignedCb.getValue().toString();
                     User user = userLibrary.getUser(userEmail);
@@ -555,6 +611,9 @@ public class InterfaceController  {
 
             GridPane.setConstraints(userAssignedCb, 1, i);
             grid.getChildren().add(userAssignedCb);
+
+            GridPane.setConstraints(delBtn, 2, i);
+            grid.getChildren().add(delBtn);
         }
         changeScene(gui, title);
     }
@@ -590,6 +649,100 @@ public class InterfaceController  {
         });
         changeScene(gui, title);
     }
+
+
+    private void showAddSalaryInterface(String ID){
+        AnchorPane gui = addSalaryInterface.getGUI();
+        String title = addSalaryInterface.getTitle();
+
+        Hyperlink backToManageProject = addSalaryInterface.getBackToManageProject();
+        Button addSalary = addSalaryInterface.getAddSalaryBtn();
+        TextField hourSalaryField = addSalaryInterface.getHourSalary();
+        Label debug = addSalaryInterface.getDebug();
+
+        ChoiceBox<String> allUsersCB = addSalaryInterface.getAllUsersCB();
+        allUsersCB.getItems().clear();
+        ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
+        allUsersCB.setTooltip(new Tooltip("Select user"));
+        for(int j = 0; j < allProjectUsers.size(); j++){
+            User user = allProjectUsers.get(j);
+            allUsersCB.getItems().add(user.getEmail());
+            if(user.equals(getUser())){
+                allUsersCB.setValue(user.getEmail());
+            }
+        }
+        debug.setText("");
+
+        backToManageProject.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showManageProjectInterface(projectLibrary.getProject(ID));
+            }
+        });
+
+        addSalary.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String emailText = allUsersCB.getValue().toString();
+                Double hourSalary = 0.0;
+                if(!hourSalaryField.getText().equals("")){
+                    hourSalary = Double.parseDouble(hourSalaryField.getText());
+                    if(salaryLibrary.doesUserHaveSalaryInProject(emailText,ID)) {
+                        debug.setText("User already has a salary.");
+                    }else if (hourSalary <= 0) {
+                        debug.setText("Salary can not be 0 or less than zero");
+                    } else {
+                        Salary salary = new Salary(emailText, hourSalary, ID);
+                        salaryLibrary.addSalary(salary);
+                        hourSalaryField.setText("");
+                        showManageProjectInterface(projectLibrary.getProject(ID));
+                    }
+                } else{
+                    debug.setText("Enter a salary");
+                }
+            }
+        });
+        changeScene(gui, title);
+
+    }
+    private void showUserSalaryInterface(String projectID) {
+        AnchorPane gui = userSalaryInterface.getGUI();
+        String title = userSalaryInterface.getTitle();
+
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+
+
+        Hyperlink backToManageProjects = userSalaryInterface.getBackToManageProject();
+
+        ObservableList<Salary> userSalaries = salaryLibrary.getTableData(projectID);
+        TableView table = new TableView();
+        TableColumn emailCol = new TableColumn("Email");
+        TableColumn salaryCol = new TableColumn("Salary(SEK)");
+        table.getColumns().addAll(emailCol, salaryCol);
+        table.setItems(userSalaries);
+        table.setMinWidth(500);
+        salaryCol.setPrefWidth(250);
+        emailCol.setPrefWidth(250);
+        emailCol.setCellValueFactory(new PropertyValueFactory("email"));
+        salaryCol.setCellValueFactory(new PropertyValueFactory("salary"));
+
+        table.getColumns().setAll(emailCol, salaryCol);
+        GridPane.setConstraints(table, 0, 0);
+        grid.getChildren().add(table);
+
+        backToManageProjects.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showManageProjectInterface(projectLibrary.getProject(projectID));
+            }
+        });
+        changeScene(gui, title);
+
+    }
+
 
 
     private void showAdmin(){

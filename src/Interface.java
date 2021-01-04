@@ -98,10 +98,18 @@ abstract public class Interface {
     Button currentTasksBtn = new Button("Current Tasks");
     Button allTasksBtn = new Button("View all project tasks");
 
+    TextField userName = new TextField();
+    ChoiceBox<String> allUsersCB = new ChoiceBox<>();
+    TextField hourSalary = new TextField();
+
 
 
     Button addUserBtn = new Button("Add users");
     Button addUserConfirmBtn = new Button("Add user");
+
+
+    Button addSalaryBtn = new Button("Add Salary");
+    Button currentSalariesBtn = new Button("User Salaries");
 
 
 
@@ -269,6 +277,29 @@ abstract public class Interface {
 
     public Button getAddUserBtn(){
         return addUserBtn;
+    }
+
+
+    public ChoiceBox<String> getAllUsersCB(){
+        return this.allUsersCB;
+    }
+
+
+    public TextField getHourSalary(){
+        return this.hourSalary;
+    }
+
+
+    public TextField getUserName(){
+        return this.userName;
+    }
+
+    public Button getAddSalaryBtn(){
+        return addSalaryBtn;
+    }
+
+    public Button getCurrentSalariesBtn() {
+        return currentSalariesBtn;
     }
 
 
