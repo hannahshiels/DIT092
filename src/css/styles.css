@@ -81,6 +81,25 @@
     -fx-padding: 16px 30px 30px 30px;
 }
 
+.del-btn{
+    -fx-min-width: 36px;
+    -fx-padding: 4px;
+    -fx-background-color: white;
+    -fx-text-fill: red;
+
+}
+
+.del-btn:hover {
+    -fx-background-color:white;
+    -fx-padding: 4px;
+}
+
+.del-btn:pressed{
+    -fx-background-color: white;
+    -fx-padding: 4px;
+    -fx-font-weight: bold;
+}
+
 .btn:pressed {
     -fx-padding: 20px 30px 26px 30px;
 }
@@ -95,6 +114,10 @@
     -fx-min-height: 24px;
     -fx-padding: 12px 6px;
     -fx-font-size: 14px;
+}
+
+.choice-box{
+    -fx-min-width: 100%;
 }
 
 .text-area{

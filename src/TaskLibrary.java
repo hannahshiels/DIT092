@@ -8,6 +8,11 @@ public class TaskLibrary {
         taskList.add(task);
     }
 
+    public void removeTask(Task task){
+        taskList.remove(task);
+    }
+
+
     public void listAllTasks(){
         for(int i = 0; i < taskList.size(); i++){
             System.out.println(taskList.get(i).toString());
@@ -55,5 +60,6 @@ public class TaskLibrary {
         }
         return userTasks;
     }
+
 
 }
