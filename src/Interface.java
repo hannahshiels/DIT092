@@ -45,97 +45,131 @@ abstract public class Interface {
         this.title = title;
     }
 
-
-    // register + login
+    // main menu
     Button registerBtn = new Button("Register");
     Button loginBtn = new Button("Login");
+
+    // login
+    Hyperlink registerLink = new Hyperlink("Create an account instead");
     Button submitLoginBtn = new Button("Login");
 
-    Hyperlink mainMenuLink = new Hyperlink("Back to Main Menu");
-    Hyperlink loginLink = new Hyperlink("Login instead");
-    Hyperlink registerLink = new Hyperlink("Create an account instead");
-
+    // register
     TextField userFirstName  = new TextField();
     TextField userLastName = new TextField();
-    TextField userEmail = new TextField();
 
+    Hyperlink loginLink = new Hyperlink("Login instead");
 
-    PasswordField userPassword = new PasswordField();
     PasswordField userPasswordConfirm = new PasswordField();
-    Label debug = new Label();
 
     Button createAccBtn = new Button ("Create account");
 
-    // user projects
+    // register + login
 
-    Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
-    Hyperlink backToCurrentProjects = new Hyperlink("Back to Current Projects");
-    Hyperlink backToManageProject = new Hyperlink("Back to Manage Project");
-    Hyperlink backToCurrentTasks = new Hyperlink("Back to Current Tasks");
+    Hyperlink mainMenuLink = new Hyperlink("Back to Main Menu");
+    TextField userEmail = new TextField();
+    PasswordField userPassword = new PasswordField();
 
+
+    // various input screens
+
+    Label debug = new Label();
+
+    // user menu
+    Button createAProjectBtn = new Button("Create a project");
+    Button projectsBtn = new Button("Current projects");
 
     Hyperlink logoutLink = new Hyperlink("Log out");
 
-    Button createAProjectBtn = new Button("Create a project");
-    Button projectsBtn = new Button("Current projects");
+    // create a project + current projects
+    Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
+
+    // create a project
     Button createProjectBtn = new Button ("Create project");
 
     TextField projectName = new TextField();
     TextArea projectDescription = new TextArea();
-    TextField taskName = new TextField();
-    TextArea taskDesc = new TextArea();
+
+    // manage project
+    Hyperlink backToCurrentProjects = new Hyperlink("Back to Current Projects");
 
     Label projectNameLabel = new Label();
     Label projectDescLabel = new Label();
 
+    Button tasksBtn = new Button("Tasks");
+
+    public Button getTasksBtn(){
+        return this.tasksBtn;
+    }
+    Button addUserBtn = new Button("Add users");
+    Button addSalaryBtn = new Button("Add Salary");
+    Button currentSalariesBtn = new Button("User Salaries");
+
+    // manage project sub screens
+    Hyperlink backToManageProject = new Hyperlink("Back to Manage Project");
+    Hyperlink backToCurrentTasks = new Hyperlink("Back to Current Tasks");
+
+    // add user
+    Button addUserConfirmBtn = new Button("Add user");
+    ChoiceBox<String> userRolesCb = new ChoiceBox<>();
+
+    // task menu
+    Button createTaskBtn = new Button("Create a task");
+    Button currentTasksBtn = new Button("Current Tasks");
+    Button allTasksBtn = new Button("View all project tasks");
+    Hyperlink backToTaskMenu = new Hyperlink("Back to Task Menu");
+
+
+    // create a task
+    TextField taskName = new TextField();
+    TextArea taskDesc = new TextArea();
+    Button createATaskBtn = new Button("Create task");
+
+    // current tasks
     Label taskNameLabel = new Label();
     Label taskDescLabel = new Label();
     Label taskProgressLabel = new Label();
 
-
-    Button createTaskBtn = new Button("Create a task");
-    Button createATaskBtn = new Button("Create task");
-    Button currentTasksBtn = new Button("Current Tasks");
-    Button allTasksBtn = new Button("View all project tasks");
-
-    TextField userName = new TextField();
+    // salary
     ChoiceBox<String> allUsersCB = new ChoiceBox<>();
+
     TextField hourSalary = new TextField();
 
+    // meeting
+    Hyperlink backToMeetingMenu = new Hyperlink("Back to Meeting Menu");
 
 
-    Button addUserBtn = new Button("Add users");
-    Button addUserConfirmBtn = new Button("Add user");
+    Button showMeetingMenuBtn = new Button("Meetings");
+    Button createNewMeetingBtn = new Button ("Create a new meeting");
+    Button createNewMeetingInviteBtn = new Button ("Invite team to meeting");
 
+    TextField meetingLocation = new TextField();
+    TextField userEmailMeeting = new TextField();
 
-    Button addSalaryBtn = new Button("Add Salary");
-    Button currentSalariesBtn = new Button("User Salaries");
-
-
-
-    public Button getAddUserConfirmBtn(){
-        return this.addUserConfirmBtn;
-    }
+    DatePicker meetingDate = new DatePicker ();
 
 
     // admin
 
     Button userExportBtn = new Button("Export users");
 
-
-
-    // login + register
-
-
+    // main menu
     public Button getRegisterBtn(){
         return this.registerBtn;
     }
-
-    public TextField getUserEmail(){
-        return this.userEmail;
+    public Button getLoginBtn(){
+        return this.loginBtn;
     }
 
+    // login
+    public Hyperlink getRegisterLink(){
+        return this.registerLink;
+    }
 
+    public Button getSubmitLoginBtn(){
+        return this.submitLoginBtn;
+    }
+
+    // register
     public TextField getUserFirstName(){
         return this.userFirstName;
     }
@@ -144,47 +178,41 @@ abstract public class Interface {
         return this.userLastName;
     }
 
-    public PasswordField getUserPassword(){
-        return this.userPassword;
-    }
-
     public PasswordField getUserPasswordConfirm(){
         return this.userPasswordConfirm;
     }
-
-    public Label getDebug(){
-        return this.debug;
-    }
-
 
     public Button getCreateAccBtn(){
         return this.createAccBtn;
     }
 
-
-    public Button getLoginBtn(){
-        return this.loginBtn;
+    public Hyperlink getLoginLink(){
+        return this.loginLink;
     }
 
-    public Button getSubmitLoginBtn(){
-        return this.submitLoginBtn;
+    // login + register
+    public TextField getUserEmail(){
+        return this.userEmail;
+    }
+
+    public PasswordField getUserPassword(){
+        return this.userPassword;
     }
 
     public Hyperlink getMainMenuLink(){
         return this.mainMenuLink;
     }
 
-    public Hyperlink getRegisterLink(){
-        return this.registerLink;
+    // various input screens
+
+    public Label getDebug(){
+        return this.debug;
     }
 
-
-    public Hyperlink getLoginLink(){
-        return this.loginLink;
+    // user menu
+    public Hyperlink getLogoutLink(){
+        return this.logoutLink;
     }
-
-
-    // user projects
 
     public Button getCreateAProjectBtn(){
         return this.createAProjectBtn;
@@ -194,14 +222,13 @@ abstract public class Interface {
         return this.projectsBtn;
     }
 
-    public Hyperlink getLogoutLink(){
-        return this.logoutLink;
-    }
-
+    // create a project + current projects
     public Hyperlink getBackToUserMenuLink(){
         return  this.backToUserMenu;
     }
 
+
+    //create a project
     public Button getCreateProjectBtn(){
         return this.createProjectBtn;
     }
@@ -214,14 +241,12 @@ abstract public class Interface {
         return this.projectDescription;
     }
 
-    public Button getCreateTaskBtn(){
-        return this.createTaskBtn;
-    }
+    // current projects
 
+    // manage project
     public Hyperlink getBackToCurrentProjects(){
         return this.backToCurrentProjects;
     }
-
 
     public Label getProjectNameLabel(){
         return this.projectNameLabel;
@@ -231,7 +256,41 @@ abstract public class Interface {
         return this.projectDescLabel;
     }
 
+    public Button getAddUserBtn(){
+        return this.addUserBtn;
+    }
 
+    public Button getCurrentSalariesBtn() {
+        return currentSalariesBtn;
+    }
+
+
+
+
+    // add salary + manage project
+
+    public Button getAddSalaryBtn(){
+        return addSalaryBtn;
+    }
+
+    // manage project sub screens
+    public Hyperlink getBackToManageProject(){
+        return this.backToManageProject;
+    }
+
+    // add a user
+    public ChoiceBox<String> getUserRolesCb(){
+        return this.userRolesCb;
+    }
+
+    public Button getAddUserConfirmBtn(){
+        return this.addUserConfirmBtn;
+    }
+
+    // task menu
+    public Hyperlink getBackToTaskMenu(){
+        return this.backToTaskMenu;
+    }
 
     public Button getCreateATaskBtn(){
         return this.createATaskBtn;
@@ -245,14 +304,7 @@ abstract public class Interface {
         return this.allTasksBtn;
     }
 
-    public Hyperlink getBackToManageProject(){
-        return this.backToManageProject;
-    }
-
-    public Hyperlink getBackToCurrentTasks(){
-        return this.backToCurrentTasks;
-    }
-
+    // create a task
 
     public TextField getTaskName(){
         return this.taskName;
@@ -262,7 +314,13 @@ abstract public class Interface {
         return this.taskDesc;
     }
 
+    public Button getCreateTaskBtn(){
+        return this.createTaskBtn;
+    }
 
+    // current tasks
+
+    // manage tasks
     public Label getTaskNameLabel(){
         return this.taskNameLabel;
     }
@@ -275,34 +333,47 @@ abstract public class Interface {
         return this.taskProgressLabel;
     }
 
-    public Button getAddUserBtn(){
-        return addUserBtn;
+    public Hyperlink getBackToCurrentTasks(){
+        return this.backToCurrentTasks;
     }
 
+    // add salary
+    public TextField getHourSalary(){
+        return this.hourSalary;
+    }
 
     public ChoiceBox<String> getAllUsersCB(){
         return this.allUsersCB;
     }
 
-
-    public TextField getHourSalary(){
-        return this.hourSalary;
+    // meeting
+    public TextField getMeetingLocation() {
+        return this.meetingLocation;
     }
 
-
-    public TextField getUserName(){
-        return this.userName;
+    public TextField getUserEmailMeeting() {
+        return this.userEmailMeeting;
     }
 
-    public Button getAddSalaryBtn(){
-        return addSalaryBtn;
+    public Button getShowMeetingMenuBtn(){
+        return this.showMeetingMenuBtn;
     }
 
-    public Button getCurrentSalariesBtn() {
-        return currentSalariesBtn;
+    public Button getCreateNewMeetingBtn() {
+        return this.createNewMeetingBtn;
     }
 
+    public Button getCreateNewMeetingInviteBtn() {
+        return this.createNewMeetingInviteBtn;
+    }
 
+    public DatePicker getMeetingDate() {
+        return this.meetingDate;
+    }
+
+    public Hyperlink getBackToMeetingMenu() {
+        return this.backToMeetingMenu;
+    }
 
     // admin
 
