@@ -59,19 +59,16 @@ public class ManageProjectInterface extends Interface {
         GridPane.setConstraints(addUserBtn, 0, 0);
         grid.getChildren().add(addUserBtn);
 
-        GridPane.setConstraints(createTaskBtn, 0, 1);
-        grid.getChildren().add(createTaskBtn);
+        GridPane.setConstraints(tasksBtn, 0, 1);
+        grid.getChildren().add(tasksBtn);
 
-        GridPane.setConstraints(currentTasksBtn, 0, 2);
-        grid.getChildren().add(currentTasksBtn);
+        GridPane.setConstraints(showMeetingMenuBtn, 0, 2);
+        grid.getChildren().add(showMeetingMenuBtn);
 
-        GridPane.setConstraints(allTasksBtn, 0, 3);
-        grid.getChildren().add(allTasksBtn);
-
-        GridPane.setConstraints(addSalaryBtn, 0, 4);
+        GridPane.setConstraints(addSalaryBtn, 0, 3);
         grid.getChildren().add(addSalaryBtn);
 
-        GridPane.setConstraints(currentSalariesBtn, 0, 5);
+        GridPane.setConstraints(currentSalariesBtn, 0, 4);
         grid.getChildren().add(currentSalariesBtn);
 
 
