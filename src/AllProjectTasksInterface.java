@@ -35,8 +35,8 @@ public class AllProjectTasksInterface extends Interface {
         grid.setVgap(10);
         grid.setHgap(5);
 
-        GridPane.setConstraints(backToManageProject, 0, 0);
-        grid.getChildren().add(backToManageProject);
+        GridPane.setConstraints(backToTaskMenu, 0, 0);
+        grid.getChildren().add(backToTaskMenu);
 
 
         return grid;
