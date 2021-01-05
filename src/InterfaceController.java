@@ -195,8 +195,10 @@ public class InterfaceController  {
             } else{
                 User newUser = new User(email,firstName,lastName,password);
                 userLibrary.addUser(newUser);
-                Alert accCreatedAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert accCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 accCreatedAlert.headerTextProperty().set("Account successfully created!");
+                accCreatedAlert.titleProperty().set("Confirmation");
+
                 accCreatedAlert.showAndWait().ifPresent(response -> {
                     if (response == ButtonType.OK) {
                         showLogin();
