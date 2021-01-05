@@ -64,6 +64,31 @@
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
     -fx-font-size: 1.1em;
 }
+
+.date-picker .button{
+    -fx-text-fill: default;
+    -fx-min-width:default;
+    -fx-min-height:default;
+    -fx-padding: default;
+    -fx-background-insets: default;
+    -fx-background-radius: default;
+    -fx-background-color: default;
+    -fx-font-size: default;
+    -fx-effect: none;
+
+
+}
+
+.date-picker .button:hover{
+    -fx-background-color:default;
+}
+
+.date-picker .button:pressed{
+    -fx-background-insets: default;
+    -fx-padding: default;
+    -fx-font-weight: default;
+}
+
 .button:hover {
     -fx-background-color:
             linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
@@ -106,6 +131,7 @@
 
 
 
+
 .text-field, .password-field{
 
     -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
@@ -119,6 +145,8 @@
 .choice-box{
     -fx-min-width: 100%;
 }
+
+
 
 .text-area{
     -fx-background-radius: 8;
