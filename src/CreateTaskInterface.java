@@ -66,8 +66,8 @@ public class CreateTaskInterface extends Interface{
         grid.setPadding(new Insets(20, 20, 20, 20));
 
 
-        GridPane.setConstraints(backToManageProject, 0, 0);
-        grid.getChildren().add(backToManageProject);
+        GridPane.setConstraints(backToTaskMenu, 0, 0);
+        grid.getChildren().add(backToTaskMenu);
 
         return grid;
     }
