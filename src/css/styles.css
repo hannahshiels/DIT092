@@ -66,27 +66,24 @@
 }
 
 .date-picker .button{
-    -fx-text-fill: default;
-    -fx-min-width:default;
-    -fx-min-height:default;
-    -fx-padding: default;
-    -fx-background-insets: default;
-    -fx-background-radius: default;
-    -fx-background-color: default;
-    -fx-font-size: default;
+    -fx-text-fill: null;
+    -fx-min-width:null;
+    -fx-min-height:null;
+    -fx-padding: 0;
+    -fx-background-insets: null;
+    -fx-background-radius: null;
+    -fx-background-color: null;
+    -fx-font-size: null;
     -fx-effect: none;
-
-
 }
 
 .date-picker .button:hover{
-    -fx-background-color:default;
+    -fx-background-color:null;
 }
 
 .date-picker .button:pressed{
-    -fx-background-insets: default;
-    -fx-padding: default;
-    -fx-font-weight: default;
+    -fx-background-insets: none;
+    -fx-padding: 0;
 }
 
 .button:hover {
