@@ -9,6 +9,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class InterfaceController  {
@@ -24,7 +26,10 @@ public class InterfaceController  {
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
+    private UserMeetingInterface userMeetingInterface;
+    private CreateMeetingInterface createMeetingInterface;
     private AddUserInterface addUserInterface;
+    private TaskMenuInterface taskMenuInterface;
     private CreateTaskInterface createTaskInterface;
     private UserTasksInterface userTasksInterface;
     private ManageTaskInterface manageTaskInterface;
@@ -32,12 +37,15 @@ public class InterfaceController  {
     private UserSalaryInterface userSalaryInterface;
     private AddSalaryInterface addSalaryInterface;
     private AdminInterface adminInterface;
+
     private ProjectLibrary projectLibrary;
     private UserLibrary userLibrary;
     private SysAdminLibrary sysAdminLibrary;
     private TaskLibrary taskLibrary;
     private RoleLibrary roleLibrary;
     private SalaryLibrary salaryLibrary;
+
+    private Email emailFunction;
 
 
     public InterfaceController(Stage stage){
@@ -55,7 +63,10 @@ public class InterfaceController  {
         this.userProjectsInterface = new UserProjectsInterface();
         this.createProjectInterface = new CreateProjectInterface();
         this.manageProjectInterface = new ManageProjectInterface();
+        this.userMeetingInterface = new UserMeetingInterface();
+        this.createMeetingInterface = new CreateMeetingInterface();
         this.addUserInterface = new AddUserInterface();
+        this.taskMenuInterface = new TaskMenuInterface();
         this.createTaskInterface = new CreateTaskInterface();
         this.userTasksInterface = new UserTasksInterface();
         this.manageTaskInterface = new ManageTaskInterface();
@@ -71,6 +82,8 @@ public class InterfaceController  {
         this.roleLibrary = new RoleLibrary();
         this.sysAdminLibrary = new SysAdminLibrary();
         this.salaryLibrary = new SalaryLibrary();
+
+        this.emailFunction = new Email();
     }
 
     public void setUser(User user){
@@ -114,9 +127,11 @@ public class InterfaceController  {
         Hyperlink registerLink = loginInterface.getRegisterLink();
         registerLink.setOnAction(event -> showRegister());
 
+        Label debug = loginInterface.getDebug();
+        debug.setText("");
+
         Button submitLoginBtn = loginInterface.getSubmitLoginBtn();
         submitLoginBtn.setOnAction(event -> {
-            Label debug = loginInterface.getDebug();
             debug.setText("");
             String email = loginInterface.getUserEmail().getText();
             String password = loginInterface.getUserPassword().getText();
@@ -146,17 +161,27 @@ public class InterfaceController  {
         Hyperlink loginLink = registerInterface.getLoginLink();
         loginLink.setOnAction(event -> showLogin());
 
-        GridPane grid = (GridPane) gui.getChildren().get(2);
         Button createAccBtn = registerInterface.getCreateAccBtn();
         Label debug = registerInterface.getDebug();
+        TextField emailField = registerInterface.getUserEmail();
+        TextField firstNameField = registerInterface.getUserFirstName();
+        TextField lastNameField = registerInterface.getUserLastName();
+        PasswordField passwordField = registerInterface.getUserPassword();
+        PasswordField passwordConfirmField = registerInterface.getUserPasswordConfirm();
 
+        debug.setText("");
+        emailField.setText("");
+        firstNameField.setText("");
+        lastNameField.setText("");
+        passwordField.setText("");
+        passwordConfirmField.setText("");
         createAccBtn.setOnAction(event -> {
             debug.setText("");
-            String email = registerInterface.getUserEmail().getText();
-            String firstName = registerInterface.getUserFirstName().getText();
-            String lastName = registerInterface.getUserLastName().getText();
-            String password = registerInterface.getUserPassword().getText();
-            String passwordConfirm = registerInterface.getUserPasswordConfirm().getText();
+            String email = emailField.getText();
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String password = passwordField.getText();
+            String passwordConfirm = passwordConfirmField.getText();
             if(email.length() == 0 || firstName.length() == 0 || lastName.length() == 0 || password.length() == 0 || passwordConfirm.length() == 0){
                 debug.setText("Enter all fields");
             } else if(userLibrary.isEmailRegistered(email)){
@@ -168,13 +193,17 @@ public class InterfaceController  {
             } else if(!password.equals(passwordConfirm)){
                 debug.setText("Passwords do not match.");
             } else{
-                grid.getChildren().remove(debug);
                 User newUser = new User(email,firstName,lastName,password);
                 userLibrary.addUser(newUser);
-                Hyperlink link = new Hyperlink("Account created. Log in.");
-                link.setOnAction(event1 -> showLogin());
-                GridPane.setConstraints(link, 0, 8);
-                grid.getChildren().add(link);
+                Alert accCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
+                accCreatedAlert.headerTextProperty().set("Account successfully created!");
+                accCreatedAlert.titleProperty().set("Confirmation");
+
+                accCreatedAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        showLogin();
+                    }
+                });
             }
         });
         String title = registerInterface.getTitle();
@@ -272,20 +301,19 @@ public class InterfaceController  {
         projectDesc.setText(project.getProjectDescription());
 
         Button addUserBtn = manageProjectInterface.getAddUserBtn();
-
         addUserBtn.setOnAction(event -> showAddUserInterface(project.getProjectID()));
 
-        Button createATask = manageProjectInterface.getCreateTaskBtn();
-        createATask.setOnAction(event -> showCreateTaskMenu(project.getProjectID()));
+        Button tasksBtn = manageProjectInterface.getTasksBtn();
+        tasksBtn.setOnAction(event -> showTaskMenu(project.getProjectID()));
 
-        Button currentTasksBtn = manageProjectInterface.getCurrentTasksBtn();
-        currentTasksBtn.setOnAction(event -> showUserTasksMenu(project.getProjectID(), getUser()));
-
-        Button allTasksBtn = manageProjectInterface.getAllTasksBtn();
-        allTasksBtn.setOnAction(event -> showAllProjectTasks(project.getProjectID()));
+        Button createMeetingBtn = manageProjectInterface.getShowMeetingMenuBtn();
+        createMeetingBtn.setOnAction((EventHandler) event -> {
+            showUserMeetingInterface(project.getProjectID());
+        });
 
         Button addSalaryBtn = manageProjectInterface.getAddSalaryBtn();
         addSalaryBtn.setOnAction(event -> showAddSalaryInterface(project.getProjectID()));
+
 
         Button currentSalariesBtn = manageProjectInterface.getCurrentSalariesBtn();
         currentSalariesBtn.setOnAction(event -> showUserSalaryInterface(project.getProjectID()));
@@ -297,12 +325,8 @@ public class InterfaceController  {
              if (!grid.getChildren().contains(addUserBtn)) {
                  grid.getChildren().add(addUserBtn);
              }
-             if(!grid.getChildren().contains(allTasksBtn)){
-                 grid.getChildren().add(allTasksBtn);
-             }
          } else{
              grid.getChildren().remove(addUserBtn);
-             grid.getChildren().remove(allTasksBtn);
          }
 
          if(!roleLibrary.doesProductOwnerExist(project.getProjectID()) && role.getRole().equals("Project Creator") || role.getRole().equals("Product Owner")){
@@ -317,7 +341,6 @@ public class InterfaceController  {
              grid.getChildren().remove(currentSalariesBtn);
          }
 
-
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction(event -> showUserProjectsMenu());
 
@@ -325,22 +348,110 @@ public class InterfaceController  {
         changeScene(gui, title);
     }
 
+    private void showTaskMenu(String projectID){
+        AnchorPane gui = taskMenuInterface.getGUI();
+        String title = taskMenuInterface.getTitle();
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+
+        Hyperlink link = taskMenuInterface.getBackToManageProject();
+        link.setOnAction(event -> showManageProjectInterface(projectLibrary.getProject(projectID)));
+
+        Button createATask = taskMenuInterface.getCreateTaskBtn();
+        createATask.setOnAction(event -> showCreateTaskMenu(projectID));
+
+        Button currentTasksBtn = taskMenuInterface.getCurrentTasksBtn();
+        currentTasksBtn.setOnAction(event -> showUserTasksMenu(projectID));
+
+        Button allTasksBtn = taskMenuInterface.getAllTasksBtn();
+        allTasksBtn.setOnAction(event -> showAllProjectTasks(projectID));
+
+        Role role = roleLibrary.getUserRoleInProject(projectID, getUser());
+
+        if(!roleLibrary.doesScrumMasterExist(projectID) && role.getRole().equals("Project Creator") || role.getRole().equals("Scrum Master")) {
+            if(!grid.getChildren().contains(allTasksBtn)){
+                grid.getChildren().add(allTasksBtn);
+            }
+        } else{
+            grid.getChildren().remove(allTasksBtn);
+        }
+        changeScene(gui, title);
+
+    }
+
+    private void showUserMeetingInterface(String projectID) {
+        AnchorPane gui = userMeetingInterface.getGUI();
+        String title = userMeetingInterface.getTitle();
+
+        Hyperlink backToManagerProject = userMeetingInterface.getBackToManageProject();
+        backToManagerProject.setOnAction((EventHandler) event -> {
+            showManageProjectInterface(projectLibrary.getProject(projectID));
+        });
+        Button createNewMeetingBtn = userMeetingInterface.getCreateNewMeetingBtn();
+        createNewMeetingBtn.setOnAction((EventHandler) event -> {
+            showCreateMeetingInterface(projectID);
+        });
+        changeScene(gui, title);
+    }
+
+
+    private void showCreateMeetingInterface(String projectID) {
+        AnchorPane gui = createMeetingInterface.getGUI();
+        String title = createMeetingInterface.getTitle();
+
+        Hyperlink backToMeetingMenu = createMeetingInterface.getBackToMeetingMenu();
+        backToMeetingMenu.setOnAction((EventHandler) event -> {
+            showUserMeetingInterface(projectID);
+        });
+
+        Label debugLabel = createMeetingInterface.getDebug();
+        TextField locationField = createMeetingInterface.getMeetingLocation();
+        locationField.setText("");
+        DatePicker dateField = createMeetingInterface.getMeetingDate();
+        dateField.setValue(null);
+        debugLabel.setText("");
+
+        Button createNewMeetingBtn = createMeetingInterface.getCreateNewMeetingInviteBtn();
+
+        createNewMeetingBtn.setOnAction((EventHandler) event -> {
+            debugLabel.setText("");
+            String location = locationField.getText();
+            LocalDate date = dateField.getValue();
+            if(location.equals("")){
+                debugLabel.setText("Enter a location");
+            } else if(date == null){
+                debugLabel.setText("Enter a date");
+            }else{
+                showUserMeetingInterface(projectID);
+                String emailBody = "Team meeting was scheduled for project (" + projectLibrary.getProject(projectID).getProjectName() + "). \r Meeting location: " + location + " \n \n Sent by: " + getUser().getFirstName() + " " + getUser().getLastName() + ". Using Miss Management." ;
+                emailFunction.sendFromGMail(emailFunction.getEmailLogin(), emailFunction.getEmailPassword(), roleLibrary.getAllUserEmails(projectID), "Team meeting scheduled - " + createMeetingInterface.getMeetingDate().getValue(), emailBody);
+            }
+
+        });
+
+        ///// IMPORTANT!! WE WILL NEED TO CHANGE THIS, THIS IS COPIED FROM ORACLE DOCS AND STACKOVERFLOW COULDNT UNDERSTAND SHIT
+        createMeetingInterface.getMeetingDate().setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+
+
+        });
+        changeScene(gui, title);
+    }
+
+
 
     private void showAddUserInterface(String ID){
         AnchorPane gui = addUserInterface.getGUI();
         String title = addUserInterface.getTitle();
-
         Label debug = addUserInterface.getDebug();
-
-        ChoiceBox<String> userRolesCb = new ChoiceBox<>();
-        userRolesCb.getItems().addAll( "Scrum Master", "Product Owner", "Developer");
-        userRolesCb.setValue("Scrum Master");
-        GridPane grid = (GridPane) gui.getChildren().get(2);
-        GridPane.setConstraints(userRolesCb, 1, 0);
-        grid.getChildren().add(userRolesCb);
-        debug.setText("");
+        ChoiceBox<String> userRolesCb = addUserInterface.getUserRolesCb();
         Button addUserBtn = addUserInterface.getAddUserConfirmBtn();
         TextField email = addUserInterface.getUserEmail();
+
+        debug.setText("");
         email.setText("");
 
 
@@ -389,11 +500,9 @@ public class InterfaceController  {
         });
 
 
-
         Hyperlink backToManageProject = addUserInterface.getBackToManageProject();
         backToManageProject.setOnAction(event -> showManageProjectInterface(projectLibrary.getProject(ID)));
         changeScene(gui, title);
-
     }
 
 
@@ -401,7 +510,7 @@ public class InterfaceController  {
         AnchorPane gui = createTaskInterface.getGUI();
         String title = createTaskInterface.getTitle();
 
-        Hyperlink backToManageProject = createTaskInterface.getBackToManageProject();
+        Hyperlink backToTaskMenu = createTaskInterface.getBackToTaskMenu();
         Button createTask = createTaskInterface.getCreateATaskBtn();
         TextField taskName = createTaskInterface.getTaskName();
         TextArea taskDesc = createTaskInterface.getTaskDesc();
@@ -409,14 +518,12 @@ public class InterfaceController  {
 
         debug.setText("");
 
-        backToManageProject.setOnAction(new EventHandler() {
+        backToTaskMenu.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                showManageProjectInterface(projectLibrary.getProject(ID));
+                showTaskMenu(ID);
             }
         });
-
-
 
         ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
 
@@ -468,7 +575,7 @@ public class InterfaceController  {
                         User assignUser = userLibrary.getUser(assignUserCB.getValue().toString());
                         newTask.setUserAssigned(assignUser);
                     }
-                    showManageProjectInterface(projectLibrary.getProject(ID));
+                    showTaskMenu(ID);
                 }
 
             }
@@ -478,16 +585,16 @@ public class InterfaceController  {
     }
 
     //User is not used at the moment, remove if necessary
-    private void showUserTasksMenu(String projectID, User user ){
+    private void showUserTasksMenu(String projectID){
         AnchorPane gui = userTasksInterface.getGUI();
         String title = userTasksInterface.getTitle();
 
-        Hyperlink backToManageProjects = userTasksInterface.getBackToManageProject();
+        Hyperlink backToTaskMenu = userTasksInterface.getBackToTaskMenu();
 
-        backToManageProjects.setOnAction(new EventHandler() {
+        backToTaskMenu.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                showManageProjectInterface(projectLibrary.getProject(projectID));
+                showTaskMenu(projectID);
             }
         });
 
@@ -556,8 +663,8 @@ public class InterfaceController  {
         GridPane grid = (GridPane) gui.getChildren().get(2);
         grid.getChildren().remove(0,grid.getChildren().size());
 
-        Hyperlink backToManageProject = allProjectTasksInterface.getBackToManageProject();
-        backToManageProject.setOnAction(event -> showManageProjectInterface(projectLibrary.getProject(ID)));
+        Hyperlink backToTaskMenu = allProjectTasksInterface.getBackToTaskMenu();
+        backToTaskMenu.setOnAction(event -> showTaskMenu(ID));
 
         ArrayList<Task> allProjectTasks = taskLibrary.getAllProjectTasks(ID);
         ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
@@ -643,7 +750,7 @@ public class InterfaceController  {
                 if(linkText.equals("Back to View All Project Tasks")){
                     showAllProjectTasks(task.getProjectID());
                 } else{
-                    showUserTasksMenu(task.getProjectID(), getUser());
+                    showUserTasksMenu(task.getProjectID());
                 }
             }
         });
@@ -740,7 +847,6 @@ public class InterfaceController  {
             }
         });
         changeScene(gui, title);
-
     }
 
 

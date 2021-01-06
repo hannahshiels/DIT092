@@ -14,6 +14,17 @@ public class RoleLibrary {
         }
     }
 
+    public ArrayList<String> getAllUserEmails(String projectID) {
+        ArrayList<String> userEmailList = new ArrayList<>();
+        for (int i = 0; i < roleList.size(); i++) {
+            if(roleList.get(i).getProjectID().equals(projectID)){
+                userEmailList.add(roleList.get(i).getUser().getEmail());
+            }
+        }
+        return userEmailList;
+    }
+
+
     public boolean isUserInProject(String projectID, String email) {
         for (int i = 0; i < roleList.size(); i++) {
             if (roleList.get(i).getUser().getEmail().equals(email) && roleList.get(i).getProjectID().equals(projectID)) {

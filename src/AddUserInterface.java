@@ -52,6 +52,11 @@ public class AddUserInterface extends Interface {
         grid.getChildren().add(userEmail);
         userEmail.setPromptText("Enter user's email");
 
+        GridPane.setConstraints(userRolesCb, 1, 0);
+        grid.getChildren().add(userRolesCb);
+        userRolesCb.getItems().addAll( "Scrum Master", "Product Owner", "Developer");
+        userRolesCb.setValue("Scrum Master");
+
         GridPane.setConstraints(addUserConfirmBtn, 0, 1);
         grid.getChildren().add(addUserConfirmBtn);
 
