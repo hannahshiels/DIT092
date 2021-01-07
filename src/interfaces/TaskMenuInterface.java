@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -23,7 +25,7 @@ public class TaskMenuInterface extends Interface {
         return root;
     }
 
-    public GridPane getNav(){
+    private GridPane getNav(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
@@ -35,7 +37,7 @@ public class TaskMenuInterface extends Interface {
         return grid;
     }
 
-    public GridPane getTaskMenuPane(){
+    private GridPane getTaskMenuPane(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
@@ -47,9 +49,12 @@ public class TaskMenuInterface extends Interface {
         GridPane.setConstraints(currentTasksBtn, 0, 2);
         grid.getChildren().add(currentTasksBtn);
 
-        GridPane.setConstraints(allTasksBtn, 0, 3);
-        grid.getChildren().add(allTasksBtn);
 
+        GridPane.setConstraints(logHoursBtn, 0, 3);
+        grid.getChildren().add(logHoursBtn);
+
+        GridPane.setConstraints(allTasksBtn, 0, 4);
+        grid.getChildren().add(allTasksBtn);
 
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
