@@ -1,3 +1,9 @@
+package projects;
+
+import tools.CurrentDate;
+import tools.RandomID;
+import users.User;
+
 import java.time.LocalDate;
 
 public class Project {
