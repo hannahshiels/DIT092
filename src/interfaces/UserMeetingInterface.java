@@ -1,3 +1,4 @@
+package interfaces;
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -13,7 +14,7 @@ public class UserMeetingInterface extends Interface{
         AnchorPane root = new AnchorPane();
 
         GridPane titlePane = getTitlePane("Miss Management | Meeting Menu");
-        GridPane meetingPane = getCreateAMeeting();
+        GridPane meetingPane = getMeetingPane();
         GridPane nav = getNav();
 
         root.getChildren().add(titlePane);
@@ -27,11 +28,23 @@ public class UserMeetingInterface extends Interface{
         return root;
     }
 
-    private GridPane getCreateAMeeting() {
+    private GridPane getMeetingPane() {
         GridPane grid = new GridPane();
+        grid.setPadding(new Insets(20, 20, 20, 20));
+        grid.setVgap(10);
+        grid.setHgap(5);
 
-        GridPane.setConstraints(createNewMeetingBtn, 0,1);
+
+        GridPane.setConstraints(createNewMeetingBtn, 0,0);
         grid.getChildren().add(createNewMeetingBtn);
+
+
+        GridPane.setConstraints(meetingScheduleBtn, 0,1);
+        grid.getChildren().add(meetingScheduleBtn);
+
+
+        GridPane.setConstraints(pastMeetingsBtn, 0,2);
+        grid.getChildren().add(pastMeetingsBtn);
 
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
