@@ -1,3 +1,7 @@
+package projects;
+
+import users.User;
+
 import java.util.ArrayList;
 
 public class RoleLibrary {
@@ -95,6 +99,20 @@ public class RoleLibrary {
             if (currentRole.getProjectID().equals(projectID)) {
                 if(currentRole.getRole().equalsIgnoreCase("Product Owner"))
                 return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean doesProductOwnerOrScrumMasterExist(String projectID){
+        for (Role currentRole : roleList) {
+            if (currentRole.getProjectID().equals(projectID) ) {
+                if(currentRole.getRole().equalsIgnoreCase("Product Owner"))
+                    return true;
+                if(currentRole.getRole().equalsIgnoreCase("Scrum Master")){
+                    return true;
+                }
             }
         }
         return false;
