@@ -1,7 +1,14 @@
+package tools;
+
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import users.User;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class GridTools {
@@ -28,4 +35,16 @@ public class GridTools {
         return cb;
     }
 
+
+    public static void addLabelIfNoItems(int arrSize, GridPane gridPane, String labelText) {
+        Label label = new Label(labelText);
+        if(arrSize == 0){
+            if(!gridPane.getChildren().contains(label)){
+                GridPane.setConstraints(label, 0, 0);
+                gridPane.getChildren().add(label);
+            }
+        }  else{
+            gridPane.getChildren().remove(label);
+        }
+    }
 }
