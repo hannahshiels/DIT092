@@ -23,7 +23,7 @@ public class PastProjectsInterface extends Interface {
 
         AnchorPane.setTopAnchor(titlePane,0.0);
         AnchorPane.setTopAnchor(nav,120.0);
-        AnchorPane.setTopAnchor(projectsPane,240.0);
+        AnchorPane.setTopAnchor(projectsPane,200.0);
 
         return root;
     }
@@ -51,6 +51,7 @@ public class PastProjectsInterface extends Interface {
 
         grid.getStyleClass().add("grid");
         grid.getStyleClass().add("center");
+
         return grid;
     }
 
