@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import users.User;
 
 import java.lang.reflect.Array;
@@ -22,6 +23,17 @@ public class GridTools {
             }
         }
         return btn;
+    }
+
+    public static VBox getVBoxAtRow(int row, GridPane gridPane){
+        VBox box = new VBox();
+        for(int i = 0; i < gridPane.getChildren().size(); i++){
+            Node child = gridPane.getChildren().get(i);
+            if(GridPane.getColumnIndex(child) == 0 && GridPane.getRowIndex(child) == row){
+                box = (VBox) child;
+            }
+        }
+        return box;
     }
 
     public static ChoiceBox<String> getCBAtRow(int row, GridPane gridPane){
