@@ -81,6 +81,8 @@ abstract public class Interface {
     Button projectsBtn = new Button("Current projects");
     Button closeAProjectBtn = new Button("Close a project");
     Button pastProjectsBtn = new Button("Past projects");
+    Button notificationsBtn = new Button ("Notifications");
+
 
     public Button getPastProjectsBtn(){
         return this.pastProjectsBtn;
@@ -89,7 +91,25 @@ abstract public class Interface {
         return this.closeAProjectBtn;
     }
 
+    public Button getNotificationsBtn(){
+        return this.notificationsBtn;
+    }
+
     Hyperlink logoutLink = new Hyperlink("Log out");
+
+    // close a project
+
+    ChoiceBox<String> projectsCb = new ChoiceBox<>();
+
+    public ChoiceBox<String> getProjectsCb(){
+        return this.projectsCb;
+    }
+
+    Button closeProjectBtn = new Button("Close project");
+
+    public Button getCloseProjectBtn(){
+        return this.closeProjectBtn;
+    }
 
     // create a project + current projects
     Hyperlink backToUserMenu = new Hyperlink("Back to User Menu");
