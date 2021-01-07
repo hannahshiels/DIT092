@@ -23,7 +23,7 @@ public class ManageTaskInterface extends Interface{
 
         AnchorPane.setTopAnchor(titlePane,0.0);
         AnchorPane.setTopAnchor(manageTaskNav,120.0);
-        AnchorPane.setTopAnchor(manageTaskMenu,280.0);
+        AnchorPane.setTopAnchor(manageTaskMenu,240.0);
 
 
 
