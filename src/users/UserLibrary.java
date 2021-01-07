@@ -1,7 +1,9 @@
+package users;
+
 import java.util.ArrayList;
 
 public class UserLibrary {
-    ArrayList<User> userList = new ArrayList<>();
+    private ArrayList<User> userList = new ArrayList<>();
 
     public void addUser(User newUser){
         userList.add(newUser);
