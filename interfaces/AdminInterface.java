@@ -1,4 +1,5 @@
-import javafx.geometry.HPos;
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
