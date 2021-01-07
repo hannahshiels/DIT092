@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -77,6 +79,15 @@ abstract public class Interface {
     // user menu
     Button createAProjectBtn = new Button("Create a project");
     Button projectsBtn = new Button("Current projects");
+    Button closeAProjectBtn = new Button("Close a project");
+    Button pastProjectsBtn = new Button("Past projects");
+
+    public Button getPastProjectsBtn(){
+        return this.pastProjectsBtn;
+    }
+    public Button getCloseAProjectBtn(){
+        return this.closeAProjectBtn;
+    }
 
     Hyperlink logoutLink = new Hyperlink("Log out");
 
@@ -102,7 +113,7 @@ abstract public class Interface {
     }
     Button addUserBtn = new Button("Add users");
     Button addSalaryBtn = new Button("Add Salary");
-    Button currentSalariesBtn = new Button("User Salaries");
+    Button currentSalariesBtn = new Button("Costs");
 
     // manage project sub screens
     Hyperlink backToManageProject = new Hyperlink("Back to Manage Project");
@@ -116,6 +127,8 @@ abstract public class Interface {
     Button createTaskBtn = new Button("Create a task");
     Button currentTasksBtn = new Button("Current Tasks");
     Button allTasksBtn = new Button("View all project tasks");
+    Button logHoursBtn = new Button("Log hours");
+
     Hyperlink backToTaskMenu = new Hyperlink("Back to Task Menu");
 
 
@@ -129,6 +142,18 @@ abstract public class Interface {
     Label taskDescLabel = new Label();
     Label taskProgressLabel = new Label();
 
+    // log hours
+    TextField hoursInput = new TextField();
+    Button addHoursBtn = new Button("Add hours");
+
+    public TextField getHoursInput(){
+        return this.hoursInput;
+    }
+
+    public Button getAddHoursBtn(){
+        return this.addHoursBtn;
+    }
+
     // salary
     ChoiceBox<String> allUsersCB = new ChoiceBox<>();
 
@@ -137,15 +162,25 @@ abstract public class Interface {
     // meeting
     Hyperlink backToMeetingMenu = new Hyperlink("Back to Meeting Menu");
 
-
     Button showMeetingMenuBtn = new Button("Meetings");
     Button createNewMeetingBtn = new Button ("Create a new meeting");
     Button createNewMeetingInviteBtn = new Button ("Invite team to meeting");
+    Button meetingScheduleBtn = new Button("Upcoming meetings");
+    Button pastMeetingsBtn = new Button("Past meetings");
+
+    public Button getMeetingScheduleBtn(){
+        return this.meetingScheduleBtn;
+    }
+
+    public Button getPastMeetingsBtn(){
+        return this.pastMeetingsBtn;
+    }
+
 
     TextField meetingLocation = new TextField();
     TextField userEmailMeeting = new TextField();
 
-    DatePicker meetingDate = new DatePicker ();
+    DatePicker meetingDate = new DatePicker();
 
 
     // admin
@@ -265,8 +300,6 @@ abstract public class Interface {
     }
 
 
-
-
     // add salary + manage project
 
     public Button getAddSalaryBtn(){
@@ -304,6 +337,10 @@ abstract public class Interface {
         return this.allTasksBtn;
     }
 
+    public Button getLogHoursBtn(){
+        return this.logHoursBtn;
+    }
+
     // create a task
 
     public TextField getTaskName(){
@@ -336,6 +373,8 @@ abstract public class Interface {
     public Hyperlink getBackToCurrentTasks(){
         return this.backToCurrentTasks;
     }
+
+    // log hours
 
     // add salary
     public TextField getHourSalary(){
