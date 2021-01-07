@@ -43,6 +43,7 @@ public class AddSalaryInterface extends Interface{
 
         GridPane.setConstraints(allUsersCB, 0, 0);
         grid.getChildren().add(allUsersCB);
+        allUsersCB.getStyleClass().add("cb-lg");
 
         hourSalary.setPromptText("Enter hourly salary");
         hourSalary.setPrefColumnCount(10);
