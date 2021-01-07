@@ -1,3 +1,7 @@
+package projects;
+
+import users.User;
+
 import java.util.ArrayList;
 
 public class TaskLibrary {
@@ -60,6 +64,7 @@ public class TaskLibrary {
         }
         return userTasks;
     }
+
 
 
 }
