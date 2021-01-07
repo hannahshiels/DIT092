@@ -1,7 +1,9 @@
+package projects;
+
 import java.util.ArrayList;
 
 public class ProjectLibrary {
-    ArrayList<Project> projectList = new ArrayList<>();
+    private ArrayList<Project> projectList = new ArrayList<>();
 
     public void addProject(Project newProject){
         projectList.add(newProject);
@@ -42,28 +44,5 @@ public class ProjectLibrary {
         }
         return userProjects;
     }
-
-/*
-    public ArrayList<Project> getAllUserProjects(User user){
-        ArrayList<Project> userProjects = new ArrayList<>();
-        for (int i = 0; i < projectList.size(); i++){
-            if(projectList.get(i).getProjectOwner().equals(user.getEmail())){
-                userProjects.add(projectList.get(i));
-            }
-        }
-        return userProjects;
-    }
-
-    public void listAllUserProjects(User user){
-        for(int i = 0; i < projectList.size(); i++){
-            if(projectList.get(i).getProjectOwner().equals(user.getEmail())){
-                System.out.println("Project name: " + projectList.get(i).getProjectName());
-                System.out.println("Project description: " + projectList.get(i).getProjectDescription());
-            }
-        }
-    }
-*/
-
-
 
 }
