@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import projects.*;
 import tools.Email;
 import tools.EmailValidation;
@@ -48,6 +49,8 @@ public class InterfaceController  {
     private UserTasksInterface userTasksInterface;
     private ManageTaskInterface manageTaskInterface;
     private AllProjectTasksInterface allProjectTasksInterface;
+    private NotificationInterface notificationInterface;
+
     private LogHoursInterface logHoursInterface;
     private UserSalaryInterface userSalaryInterface;
     private AddSalaryInterface addSalaryInterface;
@@ -60,6 +63,8 @@ public class InterfaceController  {
     private RoleLibrary roleLibrary;
     private SalaryLibrary salaryLibrary;
     private MeetingLibrary meetingLibrary;
+    private NotificationLibrary notificationLibrary;
+
 
     private Email emailFunction;
 
@@ -77,6 +82,7 @@ public class InterfaceController  {
         this.userInterface = new UserInterface();
         this.createProjectInterface = new CreateProjectInterface();
         this.userProjectsInterface = new UserProjectsInterface();
+        this.notificationInterface = new NotificationInterface();
         this.createProjectInterface = new CreateProjectInterface();
         this.closeProjectInterface = new CloseProjectInterface();
         this.pastProjectsInterface = new PastProjectsInterface();
@@ -103,6 +109,7 @@ public class InterfaceController  {
         this.sysAdminLibrary = new SysAdminLibrary();
         this.salaryLibrary = new SalaryLibrary();
         this.meetingLibrary = new MeetingLibrary();
+        this.notificationLibrary = new NotificationLibrary();
 
         this.emailFunction = new Email();
     }
@@ -248,6 +255,10 @@ public class InterfaceController  {
         Button pastProjectsBtn = userInterface.getPastProjectsBtn();
         pastProjectsBtn.setOnAction(event -> showPastProjects());
 
+        Button notificationsBtn = userInterface.getNotificationsBtn();
+        notificationsBtn.setOnAction(event -> showNotificationsMenu());
+
+
 
         Hyperlink logoutLink = userInterface.getLogoutLink();
         logoutLink.setOnAction(event -> {
@@ -257,10 +268,45 @@ public class InterfaceController  {
         changeScene(gui, title);
     }
 
+
+
     private void showCloseProject(){
         AnchorPane gui = closeProjectInterface.getGUI();
         String title = closeProjectInterface.getTitle();
         Hyperlink backToUserMenu = closeProjectInterface.getBackToUserMenuLink();
+        ChoiceBox<String> projectsCb = closeProjectInterface.getProjectsCb();
+        projectsCb.getItems().clear();
+        Button closeProjectBtn = closeProjectInterface.getCloseProjectBtn();
+        ArrayList<String> allProjects = roleLibrary.getScrumAndProductProjects(getUser());
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+
+        ArrayList<Project> userProjects = projectLibrary.getAllActiveProjects(allProjects);
+        if(userProjects.size() == 0){
+            GridTools.addLabelIfNoItems(userProjects.size(), grid, "You don't have any projects to close.");
+            grid.getChildren().remove(projectsCb);
+            grid.getChildren().remove(closeProjectBtn);
+        } else{
+            if (!grid.getChildren().contains(projectsCb) && !grid.getChildren().contains(closeProjectBtn)) {
+                grid.getChildren().add(projectsCb);
+                grid.getChildren().add(closeProjectBtn);
+            }
+        }
+        projectsCb.setValue("Select a project:");
+
+
+        for(int i = 0; i < userProjects.size(); i++){
+            Project currentProject = userProjects.get(i);
+            projectsCb.getItems().add(currentProject.getProjectName());
+
+            closeProjectBtn.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    currentProject.setStatusClose();
+                    showUserMenu();
+                }
+            });
+        }
+
 
         backToUserMenu.setOnAction(event -> showUserMenu());
 
@@ -284,19 +330,63 @@ public class InterfaceController  {
 
 
         for(int i = 0; i < userProjects.size(); i++){
-            Group group = new Group();
-            grid.getStyleClass().add("past-projects");
+            VBox box = new VBox();
+            box.getStyleClass().add("projects");
             Label projectName = new Label(userProjects.get(i).getProjectName());
             Label projectDesc = new Label(userProjects.get(i).getProjectDescription());
-            group.getChildren().addAll(projectName,projectDesc);
+            box.getChildren().addAll(projectName,projectDesc);
 
-            GridPane.setConstraints(group, 0, i);
-            grid.getChildren().add(group);
+            GridPane.setConstraints(box, 0, i);
+            grid.getChildren().add(box);
 
         }
 
         changeScene(gui, title);
 
+    }
+
+    private void showNotificationsMenu() {
+        AnchorPane gui = notificationInterface.getGUI();
+        String title = notificationInterface.getTitle();
+        Hyperlink backToUserMenu = notificationInterface.getBackToUserMenuLink();
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+
+        backToUserMenu.setOnAction(event -> showUserMenu());
+
+        ArrayList<Notification> notifications = notificationLibrary.getAllNotificationsOfUser(getUser());
+        GridTools.addLabelIfNoItems(notifications.size(),grid,"You don't have any nofications.");
+
+
+        for (Notification currentNotification : notifications) {
+            int i = 0;
+            VBox box = new VBox();
+            box.getStyleClass().add("notifications");
+            Label notificationTitle  = new Label(currentNotification.getNotificationTitle());
+            Label notificationBody  = new Label(currentNotification.getNotificationBody());
+            box.getChildren().addAll(notificationTitle,notificationBody);
+            Button delBtn = new Button("x");
+            delBtn.getStyleClass().add("del-btn");
+
+            GridPane.setConstraints(box, 0, i);
+            grid.getChildren().add(box);
+            GridPane.setConstraints(delBtn, 1, i);
+            grid.getChildren().add(delBtn);
+            i++;
+
+            delBtn.setOnAction(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(delBtn);
+                    VBox box = GridTools.getVBoxAtRow(row, grid);
+                    Notification notification = notificationLibrary.getNotificationFromID(currentNotification.getNotificationID());
+                    notificationLibrary.deleteNotification(notification);
+                    grid.getChildren().removeAll(box, delBtn);
+                }
+            });
+        }
+        changeScene(gui, title);
     }
 
     private void showCreateProjectMenu(){
@@ -844,6 +934,27 @@ public class InterfaceController  {
             showUserMeetingInterface(projectID);
         });
 
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+        ArrayList<Meeting> upcomingMeetings = meetingLibrary.getUpcomingMeetings(projectID);
+
+        GridTools.addLabelIfNoItems(upcomingMeetings.size(),grid,"You don't have any upcoming meetings.");
+
+
+        for(int i = 0; i < upcomingMeetings.size(); i++){
+            VBox box = new VBox();
+            box.getStyleClass().add("meetings");
+            Meeting meeting = upcomingMeetings.get(i);
+            Label meetingCreator = new Label("Meeting created by: " + meeting.getMeetingCreator().getFirstName() + " " +meeting.getMeetingCreator().getLastName() );
+            Label meetingLocation = new Label("Location: " + meeting.getLocation());
+            Label meetingDate = new Label("Date: " + meeting.getMeetingDate());
+            box.getChildren().addAll(meetingCreator,meetingLocation,meetingDate);
+
+            GridPane.setConstraints(box, 0, i);
+            grid.getChildren().add(box);
+
+        }
+
         changeScene(gui, title);
 
     }
@@ -855,6 +966,27 @@ public class InterfaceController  {
         backToMeetingMenu.setOnAction((EventHandler) event -> {
             showUserMeetingInterface(projectID);
         });
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+        ArrayList<Meeting> pastMeetings = meetingLibrary.getPastMeetings(projectID);
+
+        GridTools.addLabelIfNoItems(pastMeetings.size(),grid,"You don't have any past meetings.");
+
+
+        for(int i = 0; i < pastMeetings.size(); i++){
+            VBox box = new VBox();
+            box.getStyleClass().add("meetings");
+            Meeting meeting = pastMeetings.get(i);
+            Label meetingCreator = new Label("Meeting created by: " + meeting.getMeetingCreator().getFirstName() + " " +meeting.getMeetingCreator().getLastName() );
+            Label meetingLocation = new Label("Location: " + meeting.getLocation());
+            Label meetingDate = new Label("Date: " + meeting.getMeetingDate());
+            box.getChildren().addAll(meetingCreator,meetingLocation,meetingDate);
+
+            GridPane.setConstraints(box, 0, i);
+            grid.getChildren().add(box);
+
+        }
 
         changeScene(gui, title);
 
@@ -896,6 +1028,7 @@ public class InterfaceController  {
                         Role newRole = new Role(user,ID);
                         roleLibrary.addRole(newRole);
                         newRole.setRoleScrumMaster();
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 } else if(role.equals("Product Owner")){
@@ -906,6 +1039,8 @@ public class InterfaceController  {
                         Role newRole = new Role(user,ID);
                         roleLibrary.addRole(newRole);
                         newRole.setRoleProductOwner();
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
+
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 }else{
@@ -913,6 +1048,7 @@ public class InterfaceController  {
                     Role newRole = new Role(user,ID);
                     roleLibrary.addRole(newRole);
                     newRole.setRoleDeveloper();
+                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
             }
