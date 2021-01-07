@@ -21,6 +21,9 @@ public class User {
     }
 
 
+    public String getNames(){
+        return this.firstName + " " + this.lastName;
+    }
 
 
     public String getEmail(){
