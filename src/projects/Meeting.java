@@ -17,6 +17,10 @@ public class Meeting {
         this.meetingDate = meetingDate;
     }
 
+    public User getMeetingCreator(){
+        return this.meetingCreator;
+    }
+
 
 
     public String getProjectID(){
@@ -37,6 +41,6 @@ public class Meeting {
 
     @Override
     public String toString() {
-        return "Meeting: " +  "\n project id: " + this.projectID +  "\n meeting creator: " + this.meetingCreator + "\n location: " + this.location + "\n meeting date: " + meetingDate;
+        return "Meeting: " +  "\n project id: " + this.projectID +  "\n meeting creator: " + this.meetingCreator.getEmail() + "\n location: " + this.location + "\n meeting date: " + meetingDate;
     }
 }
