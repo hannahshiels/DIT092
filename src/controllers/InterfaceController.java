@@ -1,3 +1,6 @@
+package controllers;
+
+import interfaces.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -7,6 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import projects.*;
+import tools.Email;
+import tools.EmailValidation;
+import tools.Export;
+import tools.GridTools;
+import users.*;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -25,15 +34,20 @@ public class InterfaceController  {
     private UserInterface userInterface;
     private CreateProjectInterface createProjectInterface;
     private UserProjectsInterface userProjectsInterface;
+    private CloseProjectInterface closeProjectInterface;
+    private PastProjectsInterface pastProjectsInterface;
     private ManageProjectInterface manageProjectInterface;
     private UserMeetingInterface userMeetingInterface;
     private CreateMeetingInterface createMeetingInterface;
+    private MeetingScheduleInterface meetingsScheduleInterface;
+    private PastMeetingsInterface pastMeetingsInterface;
     private AddUserInterface addUserInterface;
     private TaskMenuInterface taskMenuInterface;
     private CreateTaskInterface createTaskInterface;
     private UserTasksInterface userTasksInterface;
     private ManageTaskInterface manageTaskInterface;
     private AllProjectTasksInterface allProjectTasksInterface;
+    private LogHoursInterface logHoursInterface;
     private UserSalaryInterface userSalaryInterface;
     private AddSalaryInterface addSalaryInterface;
     private AdminInterface adminInterface;
@@ -44,6 +58,7 @@ public class InterfaceController  {
     private TaskLibrary taskLibrary;
     private RoleLibrary roleLibrary;
     private SalaryLibrary salaryLibrary;
+    private MeetingLibrary meetingLibrary;
 
     private Email emailFunction;
 
@@ -62,18 +77,22 @@ public class InterfaceController  {
         this.createProjectInterface = new CreateProjectInterface();
         this.userProjectsInterface = new UserProjectsInterface();
         this.createProjectInterface = new CreateProjectInterface();
+        this.closeProjectInterface = new CloseProjectInterface();
+        this.pastProjectsInterface = new PastProjectsInterface();
         this.manageProjectInterface = new ManageProjectInterface();
         this.userMeetingInterface = new UserMeetingInterface();
         this.createMeetingInterface = new CreateMeetingInterface();
+        this.meetingsScheduleInterface = new MeetingScheduleInterface();
+        this.pastMeetingsInterface = new PastMeetingsInterface();
         this.addUserInterface = new AddUserInterface();
         this.taskMenuInterface = new TaskMenuInterface();
         this.createTaskInterface = new CreateTaskInterface();
         this.userTasksInterface = new UserTasksInterface();
         this.manageTaskInterface = new ManageTaskInterface();
         this.allProjectTasksInterface = new AllProjectTasksInterface();
+        this.logHoursInterface = new LogHoursInterface();
         this.addSalaryInterface = new AddSalaryInterface();
         this.userSalaryInterface = new UserSalaryInterface();
-
         this.adminInterface = new AdminInterface();
 
         this.taskLibrary = new TaskLibrary();
@@ -82,6 +101,7 @@ public class InterfaceController  {
         this.roleLibrary = new RoleLibrary();
         this.sysAdminLibrary = new SysAdminLibrary();
         this.salaryLibrary = new SalaryLibrary();
+        this.meetingLibrary = new MeetingLibrary();
 
         this.emailFunction = new Email();
     }
@@ -156,6 +176,8 @@ public class InterfaceController  {
 
     private void showRegister(){
         AnchorPane gui = registerInterface.getGUI();
+        String title = registerInterface.getTitle();
+
         Hyperlink mainMenuLink = registerInterface.getMainMenuLink();
         mainMenuLink.setOnAction(event -> showMainMenu());
         Hyperlink loginLink = registerInterface.getLoginLink();
@@ -206,7 +228,6 @@ public class InterfaceController  {
                 });
             }
         });
-        String title = registerInterface.getTitle();
         changeScene(gui, title);
     }
 
@@ -276,6 +297,7 @@ public class InterfaceController  {
         ArrayList<String> allUserProjects = roleLibrary.getAllUserProjects(getUser());
         ArrayList<Project> userProjects = projectLibrary.getProjects(allUserProjects);
         int startNum = 0;
+        GridTools.addLabelIfNoItems(userProjects.size(),grid,"You don't have any projects.");
 
         for(int i = 0; i < userProjects.size(); i++){
             Button project = new Button(userProjects.get(i).getProjectName());
@@ -341,6 +363,15 @@ public class InterfaceController  {
              grid.getChildren().remove(currentSalariesBtn);
          }
 
+        if(!roleLibrary.doesProductOwnerOrScrumMasterExist(project.getProjectID()) && role.getRole().equals("Project Creator")  || role.getRole().equals("Product Owner") || role.getRole().equals("Scrum Master")){
+            if(!grid.getChildren().contains(currentSalariesBtn)){
+                grid.getChildren().add(currentSalariesBtn);
+            }
+        } else{
+            grid.getChildren().remove(currentSalariesBtn);
+        }
+
+
         Hyperlink link = manageProjectInterface.getBackToCurrentProjects();
         link.setOnAction(event -> showUserProjectsMenu());
 
@@ -365,6 +396,9 @@ public class InterfaceController  {
         Button allTasksBtn = taskMenuInterface.getAllTasksBtn();
         allTasksBtn.setOnAction(event -> showAllProjectTasks(projectID));
 
+        Button logHoursBtn = taskMenuInterface.getLogHoursBtn();
+        logHoursBtn.setOnAction(event -> showLogHours(projectID));
+
         Role role = roleLibrary.getUserRoleInProject(projectID, getUser());
 
         if(!roleLibrary.doesScrumMasterExist(projectID) && role.getRole().equals("Project Creator") || role.getRole().equals("Scrum Master")) {
@@ -374,11 +408,314 @@ public class InterfaceController  {
         } else{
             grid.getChildren().remove(allTasksBtn);
         }
+
+        if(salaryLibrary.doesUserHaveASalary(getUser())) {
+            if(!grid.getChildren().contains(logHoursBtn)){
+                grid.getChildren().add(logHoursBtn);
+            }
+        } else{
+            grid.getChildren().remove(logHoursBtn);
+        }
+
+        changeScene(gui, title);
+    }
+
+
+    private void showCreateTaskMenu(String ID){
+        AnchorPane gui = createTaskInterface.getGUI();
+        String title = createTaskInterface.getTitle();
+
+        Hyperlink backToTaskMenu = createTaskInterface.getBackToTaskMenu();
+        Button createTask = createTaskInterface.getCreateATaskBtn();
+        TextField taskName = createTaskInterface.getTaskName();
+        TextArea taskDesc = createTaskInterface.getTaskDesc();
+        Label debug = createTaskInterface.getDebug();
+
+        debug.setText("");
+
+        backToTaskMenu.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showTaskMenu(ID);
+            }
+        });
+
+        ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
+
+        GridPane grid = (GridPane) gui.getChildren().get(1);
+
+        ChoiceBox<String> assignUserCB = new ChoiceBox<>();
+        assignUserCB.setTooltip(new Tooltip("Assign task"));
+        for(int j = 0; j < allProjectUsers.size(); j++){
+            User user = allProjectUsers.get(j);
+            assignUserCB.getItems().add(user.getEmail());
+            if(user.equals(getUser())){
+                assignUserCB.setValue(user.getEmail());
+            }
+        }
+
+        Role role = roleLibrary.getUserRoleInProject(ID, getUser());
+        if(!roleLibrary.doesScrumMasterExist(ID) && role.getRole().equals("Project Creator") || role.getRole().equals("Scrum Master")) {
+            if (!grid.getChildren().contains(assignUserCB) && roleLibrary.getNumberOfUsersInProject(ID) > 1) {
+                grid.getChildren().add(assignUserCB);
+                GridPane.setConstraints(assignUserCB, 1, 0);
+            }
+        } else{
+            grid.getChildren().remove(assignUserCB);
+        }
+
+
+        createTask.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String taskNameText = taskName.getText();
+                String taskDescriptionText = taskDesc.getText();
+                if(taskNameText.length() == 0){
+                    debug.setText("Please enter a task name");
+                } else if(taskLibrary.doesTaskNameExistInProject(ID,taskNameText)){
+                    debug.setText("Please set a unique task name");
+                }else if(taskNameText.length() > 100){
+                    debug.setText("Task name must be 100 characters or less");
+                } else if(taskDescriptionText.length() > 200){
+                    debug.setText("Task description must be 200 characters or less");
+                } else{
+                    Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
+                    taskLibrary.addTask(newTask);
+                    taskName.setText("");
+                    taskDesc.setText("");
+                    if(grid.getChildren().contains(assignUserCB)){
+                        User assignUser = userLibrary.getUser(assignUserCB.getValue().toString());
+                        newTask.setUserAssigned(assignUser);
+                    }
+                    showTaskMenu(ID);
+                }
+
+            }
+        });
         changeScene(gui, title);
 
     }
 
-    private void showUserMeetingInterface(String projectID) {
+    private void showUserTasksMenu(String projectID){
+        AnchorPane gui = userTasksInterface.getGUI();
+        String title = userTasksInterface.getTitle();
+
+        Hyperlink backToTaskMenu = userTasksInterface.getBackToTaskMenu();
+
+        backToTaskMenu.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                showTaskMenu(projectID);
+            }
+        });
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+
+        ArrayList<Task> userTasks = taskLibrary.getAllUserTasks(getUser(),projectID);
+        GridTools.addLabelIfNoItems(userTasks.size(),grid,"You don't have any tasks.");
+
+        int startNum = 0;
+        for(int i = 0; i < userTasks.size(); i++){
+            Button taskBtn = new Button(userTasks.get(i).getTaskName());
+            int currentTask = i;
+
+            ChoiceBox<String> taskProgressCb = new ChoiceBox<>();
+            taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
+            taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
+            Button delBtn = new Button("x");
+            delBtn.getStyleClass().add("del-btn");
+
+
+            taskProgressCb.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    String progress = taskProgressCb.getValue();
+                    if(progress.equalsIgnoreCase("Not started")){
+                        userTasks.get(currentTask).setTaskNotStarted();
+                    } else if(progress.equalsIgnoreCase("In progress")){
+                        userTasks.get(currentTask).setTaskInProgress();
+                    } else if(progress.equalsIgnoreCase("Done")){
+                        userTasks.get(currentTask).setTaskDone();
+                    }
+                }
+            });
+
+            delBtn.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(delBtn);
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
+                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    taskLibrary.removeTask(task);
+                    grid.getChildren().removeAll(btn,cb, delBtn);
+                }
+            });
+
+
+            taskBtn.setOnAction(event -> showManageTask(userTasks.get(currentTask)));
+            GridPane.setConstraints(taskBtn, 0, startNum);
+            grid.getChildren().add(taskBtn);
+            GridPane.setConstraints(taskProgressCb, 1, startNum);
+            grid.getChildren().add(taskProgressCb);
+
+            GridPane.setConstraints(delBtn, 2, startNum);
+            grid.getChildren().add(delBtn);
+            startNum++;
+        }
+
+        changeScene(gui, title);
+    }
+
+
+    private void showAllProjectTasks(String ID){
+        AnchorPane gui = allProjectTasksInterface.getGUI();
+        String title = allProjectTasksInterface.getTitle();
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+
+        Hyperlink backToTaskMenu = allProjectTasksInterface.getBackToTaskMenu();
+        backToTaskMenu.setOnAction(event -> showTaskMenu(ID));
+
+        ArrayList<Task> allProjectTasks = taskLibrary.getAllProjectTasks(ID);
+        ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
+        GridTools.addLabelIfNoItems(allProjectTasks.size(),grid,"This project doesn't have any tasks.");
+
+
+        for(int i = 0; i < allProjectTasks.size(); i++){
+            Task currentTask = allProjectTasks.get(i);
+            Button taskBtn = new Button(currentTask.getTaskName());
+            Button delBtn = new Button("x");
+            delBtn.getStyleClass().add("del-btn");
+
+            delBtn.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(delBtn);
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
+                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    taskLibrary.removeTask(task);
+                    grid.getChildren().removeAll(btn,cb, delBtn);
+                }
+            });
+
+            taskBtn.setOnAction(event -> showManageTask(currentTask));
+            User userAssigned = currentTask.getUserAssigned();
+
+            ChoiceBox<String> userAssignedCb = new ChoiceBox<>();
+            userAssignedCb.setTooltip(new Tooltip("Reassign task"));
+            for(int j = 0; j < allProjectUsers.size(); j++){
+                User user = allProjectUsers.get(j);
+                userAssignedCb.getItems().add(user.getEmail());
+                if(user.equals(userAssigned)){
+                    userAssignedCb.setValue(user.getEmail());
+                }
+            }
+
+            userAssignedCb.setOnAction(new EventHandler(){
+                @Override
+                public void handle(Event event) {
+                    int row = GridPane.getRowIndex(userAssignedCb);
+                    Button btn = GridTools.getButtonAtRow(row, grid);
+
+                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    String userEmail = userAssignedCb.getValue().toString();
+                    User user = userLibrary.getUser(userEmail);
+                    task.setUserAssigned(user);
+                }
+            });
+
+            GridPane.setConstraints(taskBtn, 0, i);
+            grid.getChildren().add(taskBtn);
+
+            GridPane.setConstraints(userAssignedCb, 1, i);
+            grid.getChildren().add(userAssignedCb);
+
+            GridPane.setConstraints(delBtn, 2, i);
+            grid.getChildren().add(delBtn);
+        }
+        changeScene(gui, title);
+    }
+
+    private void showManageTask(Task task){
+        AnchorPane gui = manageTaskInterface.getGUI();
+        String title = manageTaskInterface.getTitle();
+        Hyperlink backToCurrentTasks = manageTaskInterface.getBackToCurrentTasks();
+
+        Label taskNameLabel = manageTaskInterface.getTaskNameLabel();
+        Label taskDescLabel = manageTaskInterface.getTaskDescLabel();
+        Label taskProgressLabel = manageTaskInterface.getTaskProgressLabel();
+        taskNameLabel.setText("Task name:" + task.getTaskName());
+        taskDescLabel.setText("Task description: " + task.getTaskDescription());
+        taskProgressLabel.setText("Progress: " + task.getTaskProgress());
+
+        if(!task.getUserAssigned().equals(getUser())){
+            backToCurrentTasks.setText("Back to View All Project Tasks");
+        } else {
+            backToCurrentTasks.setText("Back to Current Tasks");
+        }
+
+        backToCurrentTasks.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String linkText = backToCurrentTasks.getText();
+                if(linkText.equals("Back to View All Project Tasks")){
+                    showAllProjectTasks(task.getProjectID());
+                } else{
+                    showUserTasksMenu(task.getProjectID());
+                }
+            }
+        });
+        changeScene(gui, title);
+    }
+
+    private void showLogHours(String projectID) {
+        AnchorPane gui = logHoursInterface.getGUI();
+        String title = logHoursInterface.getTitle();
+        TextField hoursInput = logHoursInterface.getHoursInput();
+        Button addHoursBtn = logHoursInterface.getAddHoursBtn();
+        Label debug = logHoursInterface.getDebug();
+        hoursInput.setText("");
+        debug.setText("");
+
+        addHoursBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                debug.setText("");
+                String hoursText = hoursInput.getText();
+                Integer hours = 0;
+                if(!hoursText.equals("")){
+                    hours = Integer.parseInt(hoursText);
+                    if(hours <= 0){
+                        debug.setText("Hours must be greater than 0");
+                    } else if(!salaryLibrary.doesUserHaveSalaryInProject(getUser().getEmail(),projectID)){
+                        debug.setText("You must have a salary first!");
+                    }else{
+                        Salary salary = salaryLibrary.getUserSalaryInProject(projectID, getUser());
+                        salary.addHoursLogged(hours);
+                        showTaskMenu(projectID);
+                    }
+                } else{
+                    debug.setText("Enter hours");
+                }
+            }
+        });
+
+        Hyperlink backToTaskMenu = logHoursInterface.getBackToTaskMenu();
+        backToTaskMenu.setOnAction((EventHandler) event -> {
+            showTaskMenu(projectID);
+        });
+
+        changeScene(gui, title);
+    }
+
+
+
+        private void showUserMeetingInterface(String projectID) {
         AnchorPane gui = userMeetingInterface.getGUI();
         String title = userMeetingInterface.getTitle();
 
@@ -428,7 +765,6 @@ public class InterfaceController  {
 
         });
 
-        ///// IMPORTANT!! WE WILL NEED TO CHANGE THIS, THIS IS COPIED FROM ORACLE DOCS AND STACKOVERFLOW COULDNT UNDERSTAND SHIT
         createMeetingInterface.getMeetingDate().setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -506,257 +842,6 @@ public class InterfaceController  {
     }
 
 
-    private void showCreateTaskMenu(String ID){
-        AnchorPane gui = createTaskInterface.getGUI();
-        String title = createTaskInterface.getTitle();
-
-        Hyperlink backToTaskMenu = createTaskInterface.getBackToTaskMenu();
-        Button createTask = createTaskInterface.getCreateATaskBtn();
-        TextField taskName = createTaskInterface.getTaskName();
-        TextArea taskDesc = createTaskInterface.getTaskDesc();
-        Label debug = createTaskInterface.getDebug();
-
-        debug.setText("");
-
-        backToTaskMenu.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                showTaskMenu(ID);
-            }
-        });
-
-        ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
-
-        GridPane grid = (GridPane) gui.getChildren().get(1);
-
-        ChoiceBox<String> assignUserCB = new ChoiceBox<>();
-        assignUserCB.setTooltip(new Tooltip("Assign task"));
-        for(int j = 0; j < allProjectUsers.size(); j++){
-            User user = allProjectUsers.get(j);
-            assignUserCB.getItems().add(user.getEmail());
-            if(user.equals(getUser())){
-                assignUserCB.setValue(user.getEmail());
-            }
-        }
-
-        Role role = roleLibrary.getUserRoleInProject(ID, getUser());
-        if(!roleLibrary.doesScrumMasterExist(ID) && role.getRole().equals("Project Creator") || role.getRole().equals("Scrum Master")) {
-            if (!grid.getChildren().contains(assignUserCB) && roleLibrary.getNumberOfUsersInProject(ID) > 1) {
-                grid.getChildren().add(assignUserCB);
-                GridPane.setConstraints(assignUserCB, 1, 0);
-            }
-        } else{
-            grid.getChildren().remove(assignUserCB);
-        }
-
-
-
-
-        createTask.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                debug.setText("");
-                String taskNameText = taskName.getText();
-                String taskDescriptionText = taskDesc.getText();
-                if(taskNameText.length() == 0){
-                    debug.setText("Please enter a task name");
-                } else if(taskLibrary.doesTaskNameExistInProject(ID,taskNameText)){
-                    debug.setText("Please set a unique task name");
-                }else if(taskNameText.length() > 100){
-                    debug.setText("Task name must be 100 characters or less");
-                } else if(taskDescriptionText.length() > 200){
-                    debug.setText("Task description must be 200 characters or less");
-                } else{
-                    Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
-                    taskLibrary.addTask(newTask);
-                    taskName.setText("");
-                    taskDesc.setText("");
-                    if(grid.getChildren().contains(assignUserCB)){
-                        User assignUser = userLibrary.getUser(assignUserCB.getValue().toString());
-                        newTask.setUserAssigned(assignUser);
-                    }
-                    showTaskMenu(ID);
-                }
-
-            }
-        });
-        changeScene(gui, title);
-
-    }
-
-    //User is not used at the moment, remove if necessary
-    private void showUserTasksMenu(String projectID){
-        AnchorPane gui = userTasksInterface.getGUI();
-        String title = userTasksInterface.getTitle();
-
-        Hyperlink backToTaskMenu = userTasksInterface.getBackToTaskMenu();
-
-        backToTaskMenu.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                showTaskMenu(projectID);
-            }
-        });
-
-        GridPane grid = (GridPane) gui.getChildren().get(2);
-        grid.getChildren().remove(0,grid.getChildren().size());
-
-        ArrayList<Task> userTasks = taskLibrary.getAllUserTasks(getUser(),projectID);
-        int startNum = 0;
-        for(int i = 0; i < userTasks.size(); i++){
-            Button taskBtn = new Button(userTasks.get(i).getTaskName());
-            int currentTask = i;
-
-            ChoiceBox<String> taskProgressCb = new ChoiceBox<>();
-            taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
-            taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
-            Button delBtn = new Button("x");
-            delBtn.getStyleClass().add("del-btn");
-
-
-            taskProgressCb.setOnAction(new EventHandler(){
-                @Override
-                public void handle(Event event) {
-                    String progress = taskProgressCb.getValue();
-                    if(progress.equalsIgnoreCase("Not started")){
-                        userTasks.get(currentTask).setTaskNotStarted();
-                    } else if(progress.equalsIgnoreCase("In progress")){
-                        userTasks.get(currentTask).setTaskInProgress();
-                    } else if(progress.equalsIgnoreCase("Done")){
-                        userTasks.get(currentTask).setTaskDone();
-                    }
-                }
-            });
-
-            delBtn.setOnAction(new EventHandler(){
-                @Override
-                public void handle(Event event) {
-                    int row = GridPane.getRowIndex(delBtn);
-                    Button btn = GridTools.getButtonAtRow(row, grid);
-                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
-                    taskLibrary.removeTask(task);
-                    grid.getChildren().removeAll(btn,cb, delBtn);
-                }
-            });
-
-
-            taskBtn.setOnAction(event -> showManageTask(userTasks.get(currentTask)));
-            GridPane.setConstraints(taskBtn, 0, startNum);
-            grid.getChildren().add(taskBtn);
-            GridPane.setConstraints(taskProgressCb, 1, startNum);
-            grid.getChildren().add(taskProgressCb);
-
-            GridPane.setConstraints(delBtn, 2, startNum);
-            grid.getChildren().add(delBtn);
-            startNum++;
-        }
-
-        changeScene(gui, title);
-    }
-
-
-    private void showAllProjectTasks(String ID){
-        AnchorPane gui = allProjectTasksInterface.getGUI();
-        String title = allProjectTasksInterface.getTitle();
-
-        GridPane grid = (GridPane) gui.getChildren().get(2);
-        grid.getChildren().remove(0,grid.getChildren().size());
-
-        Hyperlink backToTaskMenu = allProjectTasksInterface.getBackToTaskMenu();
-        backToTaskMenu.setOnAction(event -> showTaskMenu(ID));
-
-        ArrayList<Task> allProjectTasks = taskLibrary.getAllProjectTasks(ID);
-        ArrayList<User> allProjectUsers = roleLibrary.getAllProjectUsers(ID);
-
-        for(int i = 0; i < allProjectTasks.size(); i++){
-            Task currentTask = allProjectTasks.get(i);
-            Button taskBtn = new Button(currentTask.getTaskName());
-            Button delBtn = new Button("x");
-            delBtn.getStyleClass().add("del-btn");
-
-            delBtn.setOnAction(new EventHandler(){
-                @Override
-                public void handle(Event event) {
-                    int row = GridPane.getRowIndex(delBtn);
-                    Button btn = GridTools.getButtonAtRow(row, grid);
-                    ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
-                    taskLibrary.removeTask(task);
-                    grid.getChildren().removeAll(btn,cb, delBtn);
-                    }
-            });
-
-            taskBtn.setOnAction(event -> showManageTask(currentTask));
-            User userAssigned = currentTask.getUserAssigned();
-
-            ChoiceBox<String> userAssignedCb = new ChoiceBox<>();
-            userAssignedCb.setTooltip(new Tooltip("Reassign task"));
-            for(int j = 0; j < allProjectUsers.size(); j++){
-                User user = allProjectUsers.get(j);
-                userAssignedCb.getItems().add(user.getEmail());
-                if(user.equals(userAssigned)){
-                    userAssignedCb.setValue(user.getEmail());
-                }
-            }
-
-            userAssignedCb.setOnAction(new EventHandler(){
-                @Override
-                public void handle(Event event) {
-                    int row = GridPane.getRowIndex(userAssignedCb);
-                    Button btn = GridTools.getButtonAtRow(row, grid);
-
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
-                    String userEmail = userAssignedCb.getValue().toString();
-                    User user = userLibrary.getUser(userEmail);
-                    task.setUserAssigned(user);
-                }
-            });
-
-            GridPane.setConstraints(taskBtn, 0, i);
-            grid.getChildren().add(taskBtn);
-
-            GridPane.setConstraints(userAssignedCb, 1, i);
-            grid.getChildren().add(userAssignedCb);
-
-            GridPane.setConstraints(delBtn, 2, i);
-            grid.getChildren().add(delBtn);
-        }
-        changeScene(gui, title);
-    }
-
-    private void showManageTask(Task task){
-        AnchorPane gui = manageTaskInterface.getGUI();
-        String title = manageTaskInterface.getTitle();
-        Hyperlink backToCurrentTasks = manageTaskInterface.getBackToCurrentTasks();
-
-        Label taskNameLabel = manageTaskInterface.getTaskNameLabel();
-        Label taskDescLabel = manageTaskInterface.getTaskDescLabel();
-        Label taskProgressLabel = manageTaskInterface.getTaskProgressLabel();
-        taskNameLabel.setText("Task name:" + task.getTaskName());
-        taskDescLabel.setText("Task description: " + task.getTaskDescription());
-        taskProgressLabel.setText("Progress: " + task.getTaskProgress());
-
-        if(!task.getUserAssigned().equals(getUser())){
-            backToCurrentTasks.setText("Back to View All Project Tasks");
-        } else {
-            backToCurrentTasks.setText("Back to Current Tasks");
-        }
-
-        backToCurrentTasks.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                String linkText = backToCurrentTasks.getText();
-                if(linkText.equals("Back to View All Project Tasks")){
-                    showAllProjectTasks(task.getProjectID());
-                } else{
-                    showUserTasksMenu(task.getProjectID());
-                }
-            }
-        });
-        changeScene(gui, title);
-    }
-
 
     private void showAddSalaryInterface(String ID){
         AnchorPane gui = addSalaryInterface.getGUI();
@@ -800,7 +885,7 @@ public class InterfaceController  {
                     }else if (hourSalary <= 0) {
                         debug.setText("Salary can not be 0 or less than zero");
                     } else {
-                        Salary salary = new Salary(emailText, hourSalary, ID);
+                        Salary salary = new Salary(userLibrary.getUser(emailText), hourSalary, ID);
                         salaryLibrary.addSalary(salary);
                         hourSalaryField.setText("");
                         showManageProjectInterface(projectLibrary.getProject(ID));
@@ -826,17 +911,31 @@ public class InterfaceController  {
 
         ObservableList<Salary> userSalaries = salaryLibrary.getTableData(projectID);
         TableView table = new TableView();
+        TableColumn firstNameCol = new TableColumn("First Name");
+        TableColumn lastNameCol = new TableColumn("Last Name");
         TableColumn emailCol = new TableColumn("Email");
         TableColumn salaryCol = new TableColumn("Salary(SEK)");
-        table.getColumns().addAll(emailCol, salaryCol);
+        TableColumn hoursLoggedCol = new TableColumn("Hours Logged");
+        TableColumn totalCostsCol = new TableColumn("Total Costs");
+
+        table.getColumns().addAll(firstNameCol, lastNameCol,emailCol, salaryCol,hoursLoggedCol, totalCostsCol);
         table.setItems(userSalaries);
-        table.setMinWidth(500);
-        salaryCol.setPrefWidth(250);
-        emailCol.setPrefWidth(250);
+        table.setMinWidth(600);
+        firstNameCol.setPrefWidth(100);
+        lastNameCol.setPrefWidth(100);
+        salaryCol.setPrefWidth(100);
+        emailCol.setPrefWidth(100);
+        hoursLoggedCol.setPrefWidth(100);
+        totalCostsCol.setPrefWidth(100);
+
+        firstNameCol.setCellValueFactory(new PropertyValueFactory("firstName"));
+        lastNameCol.setCellValueFactory(new PropertyValueFactory("lastName"));
         emailCol.setCellValueFactory(new PropertyValueFactory("email"));
         salaryCol.setCellValueFactory(new PropertyValueFactory("salary"));
+        hoursLoggedCol.setCellValueFactory(new PropertyValueFactory("hoursLogged"));
+        totalCostsCol.setCellValueFactory(new PropertyValueFactory("totalCosts"));
 
-        table.getColumns().setAll(emailCol, salaryCol);
+        table.getColumns().setAll(firstNameCol, lastNameCol,emailCol, salaryCol,hoursLoggedCol,totalCostsCol);
         GridPane.setConstraints(table, 0, 0);
         grid.getChildren().add(table);
 
