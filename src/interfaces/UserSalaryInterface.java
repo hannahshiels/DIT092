@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -6,14 +8,14 @@ public class UserSalaryInterface extends Interface{
 
     public UserSalaryInterface(){
         super();
-        super.setTitle("Miss Management | User Salaries");
+        super.setTitle("Miss Management | Costs");
     }
 
 
     public AnchorPane showGUI(){
         AnchorPane root = new AnchorPane();
 
-        GridPane titlePane = getTitlePane("Miss Management | User Salaries");
+        GridPane titlePane = getTitlePane("Miss Management | Costs");
         GridPane userSalaryNav = getUserSalaryNav();
         GridPane userSalaryPane = getUserSalaryPane();
 
