@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -39,7 +40,7 @@ public class InterfaceController  {
     private ManageProjectInterface manageProjectInterface;
     private UserMeetingInterface userMeetingInterface;
     private CreateMeetingInterface createMeetingInterface;
-    private MeetingScheduleInterface meetingsScheduleInterface;
+    private MeetingScheduleInterface meetingScheduleInterface;
     private PastMeetingsInterface pastMeetingsInterface;
     private AddUserInterface addUserInterface;
     private TaskMenuInterface taskMenuInterface;
@@ -82,7 +83,7 @@ public class InterfaceController  {
         this.manageProjectInterface = new ManageProjectInterface();
         this.userMeetingInterface = new UserMeetingInterface();
         this.createMeetingInterface = new CreateMeetingInterface();
-        this.meetingsScheduleInterface = new MeetingScheduleInterface();
+        this.meetingScheduleInterface = new MeetingScheduleInterface();
         this.pastMeetingsInterface = new PastMeetingsInterface();
         this.addUserInterface = new AddUserInterface();
         this.taskMenuInterface = new TaskMenuInterface();
@@ -238,14 +239,64 @@ public class InterfaceController  {
         Button createAProjectBtn = userInterface.getCreateAProjectBtn();
         createAProjectBtn.setOnAction(event -> showCreateProjectMenu());
 
+        Button closeAProject = userInterface.getCloseAProjectBtn();
+        closeAProject.setOnAction(event -> showCloseProject());
+
         Button projectsBtn = userInterface.getProjectsBtn();
         projectsBtn.setOnAction(event -> showUserProjectsMenu());
+
+        Button pastProjectsBtn = userInterface.getPastProjectsBtn();
+        pastProjectsBtn.setOnAction(event -> showPastProjects());
+
+
         Hyperlink logoutLink = userInterface.getLogoutLink();
         logoutLink.setOnAction(event -> {
             setUser(null);
             showMainMenu();
         });
         changeScene(gui, title);
+    }
+
+    private void showCloseProject(){
+        AnchorPane gui = closeProjectInterface.getGUI();
+        String title = closeProjectInterface.getTitle();
+        Hyperlink backToUserMenu = closeProjectInterface.getBackToUserMenuLink();
+
+        backToUserMenu.setOnAction(event -> showUserMenu());
+
+        changeScene(gui, title);
+
+    }
+
+    private void showPastProjects(){
+        AnchorPane gui = pastProjectsInterface.getGUI();
+        String title = pastProjectsInterface.getTitle();
+        Hyperlink backToUserMenu = pastProjectsInterface.getBackToUserMenuLink();
+
+        backToUserMenu.setOnAction(event -> showUserMenu());
+
+        GridPane grid = (GridPane) gui.getChildren().get(2);
+        grid.getChildren().remove(0,grid.getChildren().size());
+        ArrayList<String> allUserProjects = roleLibrary.getAllUserProjects(getUser());
+        ArrayList<Project> userProjects = projectLibrary.getAllClosedProjects(allUserProjects);
+
+        GridTools.addLabelIfNoItems(userProjects.size(),grid,"You don't have any past projects.");
+
+
+        for(int i = 0; i < userProjects.size(); i++){
+            Group group = new Group();
+            grid.getStyleClass().add("past-projects");
+            Label projectName = new Label(userProjects.get(i).getProjectName());
+            Label projectDesc = new Label(userProjects.get(i).getProjectDescription());
+            group.getChildren().addAll(projectName,projectDesc);
+
+            GridPane.setConstraints(group, 0, i);
+            grid.getChildren().add(group);
+
+        }
+
+        changeScene(gui, title);
+
     }
 
     private void showCreateProjectMenu(){
@@ -295,17 +346,15 @@ public class InterfaceController  {
         GridPane grid = (GridPane) gui.getChildren().get(2);
         grid.getChildren().remove(0,grid.getChildren().size());
         ArrayList<String> allUserProjects = roleLibrary.getAllUserProjects(getUser());
-        ArrayList<Project> userProjects = projectLibrary.getProjects(allUserProjects);
-        int startNum = 0;
+        ArrayList<Project> userProjects = projectLibrary.getAllActiveProjects(allUserProjects);
         GridTools.addLabelIfNoItems(userProjects.size(),grid,"You don't have any projects.");
 
         for(int i = 0; i < userProjects.size(); i++){
             Button project = new Button(userProjects.get(i).getProjectName());
             int currentProject = i;
             project.setOnAction(event -> showManageProjectInterface(userProjects.get(currentProject)));
-            GridPane.setConstraints(project, 0, startNum);
+            GridPane.setConstraints(project, 0, i);
             grid.getChildren().add(project);
-            startNum++;
         }
 
         changeScene(gui, title);
@@ -692,9 +741,7 @@ public class InterfaceController  {
                     hours = Integer.parseInt(hoursText);
                     if(hours <= 0){
                         debug.setText("Hours must be greater than 0");
-                    } else if(!salaryLibrary.doesUserHaveSalaryInProject(getUser().getEmail(),projectID)){
-                        debug.setText("You must have a salary first!");
-                    }else{
+                    } else{
                         Salary salary = salaryLibrary.getUserSalaryInProject(projectID, getUser());
                         salary.addHoursLogged(hours);
                         showTaskMenu(projectID);
@@ -719,14 +766,24 @@ public class InterfaceController  {
         AnchorPane gui = userMeetingInterface.getGUI();
         String title = userMeetingInterface.getTitle();
 
-        Hyperlink backToManagerProject = userMeetingInterface.getBackToManageProject();
-        backToManagerProject.setOnAction((EventHandler) event -> {
+        Hyperlink backToManageProject = userMeetingInterface.getBackToManageProject();
+        backToManageProject.setOnAction((EventHandler) event -> {
             showManageProjectInterface(projectLibrary.getProject(projectID));
         });
         Button createNewMeetingBtn = userMeetingInterface.getCreateNewMeetingBtn();
         createNewMeetingBtn.setOnAction((EventHandler) event -> {
             showCreateMeetingInterface(projectID);
         });
+
+        Button meetingScheduleBtn = userMeetingInterface.getMeetingScheduleBtn();
+            meetingScheduleBtn.setOnAction((EventHandler) event -> {
+                showMeetingSchedule(projectID);
+            });
+
+            Button pastMeetingsBtn = userMeetingInterface.getPastMeetingsBtn();
+            pastMeetingsBtn.setOnAction((EventHandler) event -> {
+                showPastMeetings(projectID);
+            });
         changeScene(gui, title);
     }
 
@@ -761,6 +818,8 @@ public class InterfaceController  {
                 showUserMeetingInterface(projectID);
                 String emailBody = "Team meeting was scheduled for project (" + projectLibrary.getProject(projectID).getProjectName() + "). \r Meeting location: " + location + " \n \n Sent by: " + getUser().getFirstName() + " " + getUser().getLastName() + ". Using Miss Management." ;
                 emailFunction.sendFromGMail(emailFunction.getEmailLogin(), emailFunction.getEmailPassword(), roleLibrary.getAllUserEmails(projectID), "Team meeting scheduled - " + createMeetingInterface.getMeetingDate().getValue(), emailBody);
+                Meeting meeting = new Meeting(projectID,getUser(), location, date);
+                meetingLibrary.addMeeting(meeting);
             }
 
         });
@@ -775,6 +834,30 @@ public class InterfaceController  {
 
         });
         changeScene(gui, title);
+    }
+
+    private void showMeetingSchedule(String projectID){
+        AnchorPane gui = meetingScheduleInterface.getGUI();
+        String title = meetingScheduleInterface.getTitle();
+        Hyperlink backToMeetingMenu = meetingScheduleInterface.getBackToMeetingMenu();
+        backToMeetingMenu.setOnAction((EventHandler) event -> {
+            showUserMeetingInterface(projectID);
+        });
+
+        changeScene(gui, title);
+
+    }
+
+    private void showPastMeetings(String projectID){
+        AnchorPane gui = pastMeetingsInterface.getGUI();
+        String title = pastMeetingsInterface.getTitle();
+        Hyperlink backToMeetingMenu = pastMeetingsInterface.getBackToMeetingMenu();
+        backToMeetingMenu.setOnAction((EventHandler) event -> {
+            showUserMeetingInterface(projectID);
+        });
+
+        changeScene(gui, title);
+
     }
 
 
