@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 public class PastProjectsInterface extends Interface {
     public PastProjectsInterface(){
         super();
-        super.setTitle("Past Projects");
+        super.setTitle("Miss Management | Past Projects");
     }
 
     public AnchorPane showGUI(){
