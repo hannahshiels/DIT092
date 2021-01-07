@@ -23,7 +23,7 @@ public class MeetingScheduleInterface extends Interface {
 
         AnchorPane.setTopAnchor(titlePane,0.0);
         AnchorPane.setTopAnchor(nav,120.0);
-        AnchorPane.setTopAnchor(meetingPane,240.0);
+        AnchorPane.setTopAnchor(meetingPane,200.0);
 
         return root;
     }
