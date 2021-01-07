@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
