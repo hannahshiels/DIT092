@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -29,7 +31,7 @@ public class AddUserInterface extends Interface {
         return root;
     }
 
-    public GridPane getAddUserNav(){
+    private GridPane getAddUserNav(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
@@ -42,7 +44,7 @@ public class AddUserInterface extends Interface {
         return grid;
     }
 
-    public GridPane getAddUserPane(){
+    private GridPane getAddUserPane(){
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(10);
