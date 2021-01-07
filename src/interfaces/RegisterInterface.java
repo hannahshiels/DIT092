@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -5,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.scene.layout.GridPane;
 
 public class RegisterInterface extends Interface {
+
 
     public RegisterInterface(){
         super();
