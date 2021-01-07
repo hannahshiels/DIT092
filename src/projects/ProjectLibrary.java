@@ -32,6 +32,37 @@ public class ProjectLibrary {
         }
         return null;
     }
+    public ArrayList<Project> getAllActiveProjects(ArrayList<String> projectIDS){
+        ArrayList<Project> userActiveProjects = new ArrayList<>();
+        for (int i = 0; i < projectList.size(); i++){
+            if(projectList.get(i).getStatus().equalsIgnoreCase("In Progress")){
+                for(int j = 0; j < projectIDS.size(); j++){
+                    if(projectList.get(i).getProjectID().equals(projectIDS.get(j))){
+                        userActiveProjects.add(projectList.get(i));
+                    }
+                }
+            }
+        }
+        return userActiveProjects;
+    }
+
+    public ArrayList<Project> getAllClosedProjects(ArrayList<String> projectIDS){
+        ArrayList<Project> userClosedProjects = new ArrayList<>();
+        for (int i = 0; i < projectList.size(); i++){
+            if(projectList.get(i).getStatus().equalsIgnoreCase("Closed")){
+                for(int j = 0; j < projectIDS.size(); j++){
+                    if(projectList.get(i).getProjectID().equals(projectIDS.get(j))){
+                        userClosedProjects.add(projectList.get(i));
+                    }
+                }
+            }
+        }
+        return userClosedProjects;
+    }
+
+
+
+
 
     public ArrayList<Project> getProjects(ArrayList<String> projectIDS){
         ArrayList<Project> userProjects = new ArrayList<>();
