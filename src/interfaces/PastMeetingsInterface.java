@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 public class PastMeetingsInterface extends Interface {
     public PastMeetingsInterface(){
         super();
-        super.setTitle("Past Meetings");
+        super.setTitle("Miss Management | Past Meetings");
     }
 
     public AnchorPane showGUI(){
