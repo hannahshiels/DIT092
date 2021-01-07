@@ -1,5 +1,8 @@
+package interfaces;
+
 import javafx.geometry.HPos;
 import javafx.scene.layout.AnchorPane;
+import users.User;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 
@@ -42,8 +45,15 @@ public class UserInterface extends Interface {
         GridPane.setConstraints(createAProjectBtn, 0, 0);
         grid.getChildren().add(createAProjectBtn);
 
-        GridPane.setConstraints(projectsBtn, 0, 1);
+
+        GridPane.setConstraints(closeAProjectBtn, 0, 1);
+        grid.getChildren().add(closeAProjectBtn);
+
+        GridPane.setConstraints(projectsBtn, 0, 2);
         grid.getChildren().add(projectsBtn);
+
+        GridPane.setConstraints(pastProjectsBtn, 0, 3);
+        grid.getChildren().add(pastProjectsBtn);
 
 
         grid.getStyleClass().add("grid");
