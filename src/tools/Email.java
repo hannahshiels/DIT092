@@ -1,11 +1,13 @@
+package tools;
+
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 public class Email {
-     String emailLogin = "miss.management.meetings@gmail.com";
-     String emailPassword = "123321H!";
+    private String emailLogin = "miss.management.meetings@gmail.com";
+    private String emailPassword = "123321H!";
 
      public String getEmailLogin(){
          return this.emailLogin;
