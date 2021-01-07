@@ -46,6 +46,18 @@
     -fx-background-color: #1b6ca8;
 }
 
+.meetings,.projects, .notifications{
+    -fx-alignment: top-left;
+    -fx-min-width: 720px;
+    -fx-background-color: #fff;
+    -fx-padding: 12px;
+    -fx-vgap: 10;
+    -fx-border-outsets: 5 0 5 0;
+    -fx-border-color: #1b6ca8;
+    -fx-border-width: 3px;
+}
+
+
 
 
 
@@ -139,8 +151,8 @@
     -fx-font-size: 14px;
 }
 
-.choice-box{
-    -fx-min-width: 100%;
+.cb-lg{
+    -fx-min-width: 324px;
 }
 
 
