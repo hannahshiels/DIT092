@@ -1,6 +1,8 @@
-import java.util.ArrayList;
+package users;
+
 import java.time.LocalDate;
 
+import tools.CurrentDate;
 
 public class User {
 
