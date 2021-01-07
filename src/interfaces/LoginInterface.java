@@ -1,3 +1,5 @@
+package interfaces;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -6,13 +8,9 @@ import javafx.scene.layout.GridPane;
 
 public class LoginInterface extends Interface {
 
-    private UserLibrary userLibrary;
-
-
     public LoginInterface(){
         super();
         super.setTitle("Miss Management | Login");
-        this.userLibrary = new UserLibrary();
     }
 
 
