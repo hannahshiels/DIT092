@@ -7,13 +7,13 @@ import javafx.scene.layout.GridPane;
 public class MeetingScheduleInterface extends Interface {
     public MeetingScheduleInterface(){
         super();
-        super.setTitle("Past Projects");
+        super.setTitle("Miss Management | Upcoming Meetings");
     }
 
     public AnchorPane showGUI(){
         AnchorPane root = new AnchorPane();
 
-        GridPane titlePane = getTitlePane("Miss Management | Past projects");
+        GridPane titlePane = getTitlePane("Miss Management | Upcoming Meetings");
         GridPane nav = getNav();
         GridPane meetingPane = getMeetingPane();
 
