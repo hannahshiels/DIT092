@@ -1,3 +1,8 @@
+package projects;
+
+import tools.CurrentDate;
+import users.User;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -6,8 +11,6 @@ public class Task {
     User userAssigned;
     String taskTitle;
     String taskDescription;
-    Date dueDate;
-    LocalDate dateCreated;
     String projectID;
     String taskProgress;
 
