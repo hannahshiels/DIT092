@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 public class CloseProjectInterface extends Interface {
     public CloseProjectInterface(){
         super();
-        super.setTitle("Close a project");
+        super.setTitle("Miss Management | Close a project");
     }
 
     public AnchorPane showGUI(){
