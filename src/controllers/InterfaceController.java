@@ -1,5 +1,6 @@
 package controllers;
 
+import com.sun.mail.imap.protocol.ID;
 import interfaces.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -358,9 +359,8 @@ public class InterfaceController  {
         ArrayList<Notification> notifications = notificationLibrary.getAllNotificationsOfUser(getUser());
         GridTools.addLabelIfNoItems(notifications.size(),grid,"You don't have any nofications.");
 
-
+        int i = 0;
         for (Notification currentNotification : notifications) {
-            int i = 0;
             VBox box = new VBox();
             box.getStyleClass().add("notifications");
             Label notificationTitle  = new Label(currentNotification.getNotificationTitle());
@@ -381,7 +381,7 @@ public class InterfaceController  {
                     int row = GridPane.getRowIndex(delBtn);
                     VBox box = GridTools.getVBoxAtRow(row, grid);
                     Notification notification = notificationLibrary.getNotificationFromID(currentNotification.getNotificationID());
-                    notificationLibrary.deleteNotification(notification);
+                    notificationLibrary.deleteNotification(notification, getUser());
                     grid.getChildren().removeAll(box, delBtn);
                 }
             });
@@ -621,11 +621,13 @@ public class InterfaceController  {
                 } else{
                     Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
                     taskLibrary.addTask(newTask);
+                    notificationLibrary.sendNewTaskNotification(roleLibrary.getAllProjectUsers(ID), newTask, projectLibrary.getProject(ID));
                     taskName.setText("");
                     taskDesc.setText("");
                     if(grid.getChildren().contains(assignUserCB)){
                         User assignUser = userLibrary.getUser(assignUserCB.getValue().toString());
                         newTask.setUserAssigned(assignUser);
+                        notificationLibrary.sendTaskAssignedNotification(assignUser, newTask, projectLibrary.getProject(ID));
                     }
                     showTaskMenu(ID);
                 }
@@ -675,8 +677,10 @@ public class InterfaceController  {
                         userTasks.get(currentTask).setTaskNotStarted();
                     } else if(progress.equalsIgnoreCase("In progress")){
                         userTasks.get(currentTask).setTaskInProgress();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
                     } else if(progress.equalsIgnoreCase("Done")){
                         userTasks.get(currentTask).setTaskDone();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
                     }
                 }
             });
@@ -765,6 +769,8 @@ public class InterfaceController  {
                     String userEmail = userAssignedCb.getValue().toString();
                     User user = userLibrary.getUser(userEmail);
                     task.setUserAssigned(user);
+                    notificationLibrary.sendTaskAssignedNotification(user, task, projectLibrary.getProject(ID));
+
                 }
             });
 
@@ -910,6 +916,7 @@ public class InterfaceController  {
                 emailFunction.sendFromGMail(emailFunction.getEmailLogin(), emailFunction.getEmailPassword(), roleLibrary.getAllUserEmails(projectID), "Team meeting scheduled - " + createMeetingInterface.getMeetingDate().getValue(), emailBody);
                 Meeting meeting = new Meeting(projectID,getUser(), location, date);
                 meetingLibrary.addMeeting(meeting);
+                notificationLibrary.sendMeetingNotification(roleLibrary.getAllProjectUsers(projectID), projectLibrary.getProject(projectID));
             }
 
         });
@@ -1026,9 +1033,9 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleScrumMaster();
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 } else if(role.equals("Product Owner")){
@@ -1037,18 +1044,17 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleProductOwner();
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
-
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 }else{
                     User user = userLibrary.getUser(emailText);
                     Role newRole = new Role(user,ID);
+                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     roleLibrary.addRole(newRole);
                     newRole.setRoleDeveloper();
-                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
             }
