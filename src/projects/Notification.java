@@ -34,7 +34,16 @@ public class Notification {
         this.notificationBody = notificationBody;
         this.date = CurrentDate.getCurrentDate();
     }
-    
+
+
+    public ArrayList<User> getReceivers(){
+        return receivers;
+    }
+
+    public void deleteReceiver(User user){
+        receivers.remove(user);
+    }
+
     public User getIndividualReceiver(User user) {
         if (receivers != null) {
             for (User newUser : receivers) {

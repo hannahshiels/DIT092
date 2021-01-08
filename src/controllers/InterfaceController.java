@@ -359,9 +359,8 @@ public class InterfaceController  {
         ArrayList<Notification> notifications = notificationLibrary.getAllNotificationsOfUser(getUser());
         GridTools.addLabelIfNoItems(notifications.size(),grid,"You don't have any nofications.");
 
-
+        int i = 0;
         for (Notification currentNotification : notifications) {
-            int i = 0;
             VBox box = new VBox();
             box.getStyleClass().add("notifications");
             Label notificationTitle  = new Label(currentNotification.getNotificationTitle());
@@ -382,7 +381,7 @@ public class InterfaceController  {
                     int row = GridPane.getRowIndex(delBtn);
                     VBox box = GridTools.getVBoxAtRow(row, grid);
                     Notification notification = notificationLibrary.getNotificationFromID(currentNotification.getNotificationID());
-                    notificationLibrary.deleteNotification(notification);
+                    notificationLibrary.deleteNotification(notification, getUser());
                     grid.getChildren().removeAll(box, delBtn);
                 }
             });
@@ -770,6 +769,8 @@ public class InterfaceController  {
                     String userEmail = userAssignedCb.getValue().toString();
                     User user = userLibrary.getUser(userEmail);
                     task.setUserAssigned(user);
+                    notificationLibrary.sendTaskAssignedNotification(user, task, projectLibrary.getProject(ID));
+
                 }
             });
 

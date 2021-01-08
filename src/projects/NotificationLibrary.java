@@ -1,7 +1,9 @@
 package projects;
 
+import tools.CurrentDate;
 import users.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -44,10 +46,10 @@ public class NotificationLibrary {
         notificationList.add(newNotification);
     }
 
-
-    public void deleteNotification(Notification notification) {
-        notificationList.remove(notification);
+    public void deleteNotification(Notification notification, User user) {
+        notification.deleteReceiver(user);
     }
+
 
     public ArrayList<Notification> getAllNotificationsOfUser(User user){
         ArrayList<Notification> notificationsOfUser = new ArrayList<>();
