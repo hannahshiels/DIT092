@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Notification {
 
     private String notificationID;
-    private String projectID;
     private ArrayList<User> receivers;
     private User receiver;
     private String notificationTitle;
@@ -36,17 +35,20 @@ public class Notification {
         this.date = CurrentDate.getCurrentDate();
     }
 
-    public String getProjectID(){
-        return projectID;
-    }
+
     public ArrayList<User> getReceivers(){
         return receivers;
     }
-    public User getIndividualReceiver(User user){
-        ArrayList<User> receivers = new ArrayList<>(getReceivers());
-        for(User newUser : receivers){
-            if(newUser == user){
-                return user;
+
+    public User getReceiver(){
+        return this.receiver;
+    }
+    public User getIndividualReceiver(User user) {
+        if (receivers != null) {
+            for (User newUser : receivers) {
+                if (newUser == user) {
+                    return user;
+                }
             }
         }
         return null;
