@@ -1,16 +1,22 @@
-System Admin;admin;admin,admin@email.com;admin;
 User;Hannah;Shiels;gusshieha@student.gu.se;password;
 User;Erdem;Halil;gushaliler@student.gu.se;password;
 User;Taofik;Arnouk;gusarnota@student.gu.se;password;
 User;Anis;Bourbia;gusbourban@student.gu.se;password;
 User;Wanxuan;Hu;gushuwak@student.gu.se;password;
 User;Qianyuan;Wang;gusqianwa@student.gu.se;password;
-
 Project;Miss Management;Software Management Tool;gusshieha@student.gu.se;
 Role;gushaliler@student.gu.se;1;Product Owner;
 Role;gusarnota@student.gu.se;1;Developer;
 Role;gusbourban@student.gu.se;1;Developer;
 Role;gushuwak@student.gu.se;1;Developer;
 Role;gusqianwa@student.gu.se;1;Developer;
+Task;gusshieha@student.gu.se;1;Sprint 1;User Story 1.1 - User Registration;
+Task;gusqianwa@student.gu.se;1;Sprint 1;User Story 1.1 - User Login;
+Task;gusbourban@student.gu.se;1;Sprint 1;User Story 2.1 - Add a project name;
+Task;gushuwak@student.gu.se;1;Sprint 1;Risk Management;
+Task;gushaliler@student.gu.se;1;Sprint 1;Sprint Plan;
+Task;gusqianwa@student.gu.se;1;Sprint 2;User Story 2.3 - Assign project roles;
+Task;gusbourban@student.gu.se;1;Sprint 2;User Story 2.4 - Task;
 
-Task;gusqianwa@student.gu.se;1;Sprint 1;Complete Risk Management;
+
+
