@@ -49,6 +49,7 @@
 .meetings,.projects, .notifications{
     -fx-alignment: top-left;
     -fx-min-width: 720px;
+    -fx-max-width: 750px;
     -fx-background-color: #fff;
     -fx-padding: 12px;
     -fx-vgap: 10;

@@ -11,6 +11,11 @@ public class TaskLibrary {
     public void addTask(Task task){
         taskList.add(task);
     }
+    public void registerTask(User user, String projectID, String taskTitle, String taskDescription){
+        Task task = new Task( user,  projectID,  taskTitle, taskDescription);
+        taskList.add(task);
+    }
+
 
     public void removeTask(Task task){
         taskList.remove(task);
