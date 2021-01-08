@@ -12,6 +12,18 @@ public class RoleLibrary {
         roleList.add(role);
     }
 
+    public void registerRole(User user, String projectID, String roleType){
+        Role role = new Role(user,projectID);
+        roleList.add(role);
+        if(roleType.equalsIgnoreCase("Scrum Master")){
+            role.setRoleScrumMaster();
+        } else if( roleType.equalsIgnoreCase("Product Owner")){
+            role.setRoleProductOwner();
+        } else if(roleType.equalsIgnoreCase("Developer")){
+            role.setRoleDeveloper();
+        }
+    }
+
     public void listAllRoles() {
         for (int i = 0; i < roleList.size(); i++) {
             System.out.println(roleList.get(i).toString());
