@@ -61,9 +61,6 @@ public class ProjectLibrary {
     }
 
 
-
-
-
     public ArrayList<Project> getProjects(ArrayList<String> projectIDS){
         ArrayList<Project> userProjects = new ArrayList<>();
         for (int i = 0; i < projectList.size(); i++){
