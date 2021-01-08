@@ -1,18 +1,16 @@
 package projects;
 
-import tools.CurrentDate;
+import tools.RandomID;
 import users.User;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 public class Task {
 
-    User userAssigned;
-    String taskTitle;
-    String taskDescription;
-    String projectID;
-    String taskProgress;
+    private User userAssigned;
+    private String taskTitle;
+    private String taskDescription;
+    private String projectID;
+    private String taskProgress;
+    private String taskID;
 
     public Task(User user, String projectID, String taskTitle, String taskDescription){
         this.userAssigned  = user;
@@ -20,6 +18,11 @@ public class Task {
         this.taskDescription = taskDescription;
         this.projectID = projectID;
         this.taskProgress = "Not started";
+        this.taskID = RandomID.getRandomID();
+    }
+
+    public String getTaskID(){
+        return this.taskID;
     }
 
     public void setUserAssigned(User user){

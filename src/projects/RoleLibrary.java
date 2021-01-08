@@ -143,13 +143,16 @@ public class RoleLibrary {
         ArrayList<String> projectIds = new ArrayList<>();
         for(int i = 0; i < roleList.size(); i++){
             Role currentRole = roleList.get(i);
-            if(currentRole.getUser().equals(user) && currentRole.getRole().equals("Product Owner") |  currentRole.getRole().equals("Scrum Master")){
-                projectIds.add(currentRole.getProjectID());
-            } else if(!doesProductOwnerOrScrumMasterExist(currentRole.getProjectID() )){
+            if(!doesProductOwnerOrScrumMasterExist(currentRole.getProjectID() )){
                 if(isUserInProject(currentRole.getProjectID(), user.getEmail())&& getRoleInProject(currentRole.getProjectID(),user).equals("Project Creator")){
                     projectIds.add(currentRole.getProjectID());
                 }
+            } else{
+                if(currentRole.getUser().equals(user) && currentRole.getRole().equals("Product Owner") |  currentRole.getRole().equals("Scrum Master")){
+                    projectIds.add(currentRole.getProjectID());
+                }
             }
+
         }
         return projectIds;
     }

@@ -34,15 +34,16 @@ public class TaskLibrary {
         return projectTasks;
     }
 
-    public Task getTaskFromName(String taskName){
-        for(int i = 0; i < taskList.size(); i++){
-            Task task = taskList.get(i);
-            if(task.getTaskName().equals(taskName)){
+
+    public Task getTaskFromID(String ID) {
+        for(Task task : taskList){
+            if(task.getTaskID().equals(ID)){
                 return task;
             }
         }
         return null;
     }
+
 
     public boolean doesTaskNameExistInProject(String projectID,String taskName){
         for(int i = 0; i < taskList.size(); i++){
