@@ -1,6 +1,5 @@
 package controllers;
 
-import com.sun.mail.imap.protocol.ID;
 import interfaces.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +23,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class InterfaceController  {
 
@@ -279,9 +279,12 @@ public class InterfaceController  {
         projectsCb.getItems().clear();
         Button closeProjectBtn = closeProjectInterface.getCloseProjectBtn();
         ArrayList<String> allProjects = roleLibrary.getScrumAndProductProjects(getUser());
+        for(int i = 0; i < allProjects.size(); i++){
+            System.out.println(allProjects.get(i));
+        }
         GridPane grid = (GridPane) gui.getChildren().get(2);
 
-        ArrayList<Project> userProjects = projectLibrary.getAllActiveProjects(allProjects);
+        ArrayList<Project> userProjects = (ArrayList<Project>) projectLibrary.getAllActiveProjects(allProjects).stream().distinct().collect(Collectors.toList());
         if(userProjects.size() == 0){
             GridTools.addLabelIfNoItems(userProjects.size(), grid, "You don't have any projects to close.");
             grid.getChildren().remove(projectsCb);
@@ -292,22 +295,33 @@ public class InterfaceController  {
                 grid.getChildren().add(closeProjectBtn);
             }
         }
+
         projectsCb.setValue("Select a project:");
 
 
-        for(int i = 0; i < userProjects.size(); i++){
+        for(int i = 0; i < userProjects.size(); i++) {
             Project currentProject = userProjects.get(i);
-            projectsCb.getItems().add(currentProject.getProjectName());
-
-            closeProjectBtn.setOnAction(new EventHandler() {
-                @Override
-                public void handle(Event event) {
-                    currentProject.setStatusClose();
-                    showUserMenu();
-                }
-            });
+            projectsCb.getItems().add((i + 1) + ") " + currentProject.getProjectName());
         }
 
+        closeProjectBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                int index = Integer.parseInt(projectsCb.getValue().substring(0,1)) - 1;
+                Project currentProject = userProjects.get(index);
+                currentProject.setStatusClose();
+                double totalCosts = salaryLibrary.getProjectTotalCost(currentProject.getProjectID());
+                Alert accCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
+                accCreatedAlert.headerTextProperty().set("Total Costs for this project: " + totalCosts);
+                accCreatedAlert.titleProperty().set("Project Cost");
+
+                accCreatedAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        showUserMenu();
+                    }
+                });
+            }
+        });
 
         backToUserMenu.setOnAction(event -> showUserMenu());
 
@@ -612,8 +626,6 @@ public class InterfaceController  {
                 String taskDescriptionText = taskDesc.getText();
                 if(taskNameText.length() == 0){
                     debug.setText("Please enter a task name");
-                } else if(taskLibrary.doesTaskNameExistInProject(ID,taskNameText)){
-                    debug.setText("Please set a unique task name");
                 }else if(taskNameText.length() > 100){
                     debug.setText("Task name must be 100 characters or less");
                 } else if(taskDescriptionText.length() > 200){
@@ -621,7 +633,6 @@ public class InterfaceController  {
                 } else{
                     Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
                     taskLibrary.addTask(newTask);
-                    notificationLibrary.sendNewTaskNotification(roleLibrary.getAllProjectUsers(ID), newTask, projectLibrary.getProject(ID));
                     taskName.setText("");
                     taskDesc.setText("");
                     if(grid.getChildren().contains(assignUserCB)){
@@ -660,11 +671,11 @@ public class InterfaceController  {
         int startNum = 0;
         for(int i = 0; i < userTasks.size(); i++){
             Button taskBtn = new Button(userTasks.get(i).getTaskName());
-            int currentTask = i;
+            Task currentTask = userTasks.get(i);
 
             ChoiceBox<String> taskProgressCb = new ChoiceBox<>();
             taskProgressCb.getItems().addAll("Not started", "In progress", "Done");
-            taskProgressCb.setValue(userTasks.get(currentTask).getTaskProgress());
+            taskProgressCb.setValue(currentTask.getTaskProgress());
             Button delBtn = new Button("x");
             delBtn.getStyleClass().add("del-btn");
 
@@ -674,13 +685,13 @@ public class InterfaceController  {
                 public void handle(Event event) {
                     String progress = taskProgressCb.getValue();
                     if(progress.equalsIgnoreCase("Not started")){
-                        userTasks.get(currentTask).setTaskNotStarted();
+                        currentTask.setTaskNotStarted();
                     } else if(progress.equalsIgnoreCase("In progress")){
-                        userTasks.get(currentTask).setTaskInProgress();
-                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
+                        currentTask.setTaskInProgress();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), currentTask, projectLibrary.getProject(projectID));
                     } else if(progress.equalsIgnoreCase("Done")){
-                        userTasks.get(currentTask).setTaskDone();
-                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
+                        currentTask.setTaskDone();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), currentTask, projectLibrary.getProject(projectID));
                     }
                 }
             });
@@ -691,14 +702,14 @@ public class InterfaceController  {
                     int row = GridPane.getRowIndex(delBtn);
                     Button btn = GridTools.getButtonAtRow(row, grid);
                     ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    Task task = taskLibrary.getTaskFromID(currentTask.getTaskID());
                     taskLibrary.removeTask(task);
                     grid.getChildren().removeAll(btn,cb, delBtn);
                 }
             });
 
 
-            taskBtn.setOnAction(event -> showManageTask(userTasks.get(currentTask)));
+            taskBtn.setOnAction(event -> showManageTask(currentTask));
             GridPane.setConstraints(taskBtn, 0, startNum);
             grid.getChildren().add(taskBtn);
             GridPane.setConstraints(taskProgressCb, 1, startNum);
@@ -740,7 +751,7 @@ public class InterfaceController  {
                     int row = GridPane.getRowIndex(delBtn);
                     Button btn = GridTools.getButtonAtRow(row, grid);
                     ChoiceBox<String> cb = GridTools.getCBAtRow(row,grid);
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    Task task = taskLibrary.getTaskFromID(currentTask.getTaskID());
                     taskLibrary.removeTask(task);
                     grid.getChildren().removeAll(btn,cb, delBtn);
                 }
@@ -765,12 +776,11 @@ public class InterfaceController  {
                     int row = GridPane.getRowIndex(userAssignedCb);
                     Button btn = GridTools.getButtonAtRow(row, grid);
 
-                    Task task = taskLibrary.getTaskFromName(btn.getText());
+                    Task task = currentTask;
                     String userEmail = userAssignedCb.getValue().toString();
                     User user = userLibrary.getUser(userEmail);
                     task.setUserAssigned(user);
                     notificationLibrary.sendTaskAssignedNotification(user, task, projectLibrary.getProject(ID));
-
                 }
             });
 
@@ -1033,9 +1043,9 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleScrumMaster();
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 } else if(role.equals("Product Owner")){
@@ -1044,17 +1054,18 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleProductOwner();
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
+
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 }else{
                     User user = userLibrary.getUser(emailText);
                     Role newRole = new Role(user,ID);
-                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     roleLibrary.addRole(newRole);
                     newRole.setRoleDeveloper();
+                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
             }
