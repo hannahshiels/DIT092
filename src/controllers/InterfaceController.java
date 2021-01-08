@@ -124,9 +124,17 @@ public class InterfaceController  {
 
     public void start(){
         this.scene.getStylesheets().add("css/styles.css");
-        Import.importData("import.txt",  userLibrary, roleLibrary,  taskLibrary, projectLibrary);
-        testingInit();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import file");
+        fileChooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         showMainMenu();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            Import.importData(selectedFile.getAbsolutePath(),  userLibrary, roleLibrary,  taskLibrary, projectLibrary);
+            testingInit();
+
+        }
     }
 
     private void changeScene(AnchorPane gui, String title){
