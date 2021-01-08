@@ -632,6 +632,8 @@ public class InterfaceController  {
                     debug.setText("Task description must be 200 characters or less");
                 } else{
                     Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
+                    notificationLibrary.sendNewTaskNotification(roleLibrary.getAllProjectUsers(ID), newTask, projectLibrary.getProject(ID));
+
                     taskLibrary.addTask(newTask);
                     taskName.setText("");
                     taskDesc.setText("");
