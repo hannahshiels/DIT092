@@ -2,7 +2,6 @@ package tools;
 import exceptions.NameException;
 import exceptions.PasswordException;
 import projects.*;
-import users.SysAdminLibrary;
 import users.User;
 import users.UserLibrary;
 
@@ -16,9 +15,8 @@ public class Import {
     //User;firstname;lastname;email;Password
     //Project;title;description;email
     //Task;email;project num;taskName;taskDesc;
-    //Meeting;projectID;meetingCreator(email);location;meetingDate(int day, int month, int year)
 
-    public static String importData(String filePath, UserLibrary userLibrary,RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary,MeetingLibrary meetingLibrary){
+    public static String importData(String filePath, UserLibrary userLibrary,RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary){
         try {
             File myFile = new File(filePath);
             FileReader fileReader = new FileReader(myFile);
