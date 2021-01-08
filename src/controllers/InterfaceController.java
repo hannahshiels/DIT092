@@ -12,11 +12,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import projects.*;
-import tools.Email;
-import tools.EmailValidation;
-import tools.Export;
-import tools.GridTools;
+import tools.*;
 import users.*;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -124,7 +122,9 @@ public class InterfaceController  {
     }
 
     public void start(){
+
         this.scene.getStylesheets().add("css/styles.css");
+        System.out.println(Import.importData("import.txt",  userLibrary,  sysAdminLibrary,  roleLibrary,  taskLibrary, projectLibrary));
         testingInit();
         showMainMenu();
     }
@@ -279,9 +279,6 @@ public class InterfaceController  {
         projectsCb.getItems().clear();
         Button closeProjectBtn = closeProjectInterface.getCloseProjectBtn();
         ArrayList<String> allProjects = roleLibrary.getScrumAndProductProjects(getUser());
-        for(int i = 0; i < allProjects.size(); i++){
-            System.out.println(allProjects.get(i));
-        }
         GridPane grid = (GridPane) gui.getChildren().get(2);
 
         ArrayList<Project> userProjects = (ArrayList<Project>) projectLibrary.getAllActiveProjects(allProjects).stream().distinct().collect(Collectors.toList());
@@ -312,8 +309,8 @@ public class InterfaceController  {
                 currentProject.setStatusClose();
                 double totalCosts = salaryLibrary.getProjectTotalCost(currentProject.getProjectID());
                 Alert accCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
-                accCreatedAlert.headerTextProperty().set("Total Costs for this project: " + totalCosts);
-                accCreatedAlert.titleProperty().set("Project Cost");
+                accCreatedAlert.headerTextProperty().set("Total Costs: " + totalCosts);
+                accCreatedAlert.titleProperty().set("Project Costs");
 
                 accCreatedAlert.showAndWait().ifPresent(response -> {
                     if (response == ButtonType.OK) {
