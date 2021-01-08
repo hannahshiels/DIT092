@@ -124,7 +124,7 @@ public class InterfaceController  {
     public void start(){
 
         this.scene.getStylesheets().add("css/styles.css");
-        System.out.println(Import.importData("import.txt",  userLibrary,  sysAdminLibrary,  roleLibrary,  taskLibrary, projectLibrary));
+        Import.importData("import.txt",  userLibrary,  sysAdminLibrary,  roleLibrary,  taskLibrary, projectLibrary,meetingLibrary);
         testingInit();
         showMainMenu();
     }
@@ -1206,62 +1206,8 @@ public class InterfaceController  {
 
 
     public void testingInit(){
-        User user1 = new User("email@email.com", "firstName", "lastName", "password");
-        userLibrary.addUser(user1);
-
-        User user2 = new User("email2@email.com", "firstName", "lastName", "password");
-        userLibrary.addUser(user2);
-
-        User user3 = new User("email3@email.com", "firstName", "lastName", "password");
-        userLibrary.addUser(user3);
-
-        User user4 = new User("email4@email.com", "firstName", "lastName", "password");
-        userLibrary.addUser(user4);
-
-        Project project1 = new Project("Project name 1", "Project Description 1", user1);
-        projectLibrary.addProject(project1);
-
-        Role role1 =  new Role(user1, project1.getProjectID());
-        role1.setRoleProjectCreator();
-        roleLibrary.addRole(role1);
-
-        Project project2 = new Project("Project name 2", "Project Description 2", user1);
-        projectLibrary.addProject(project2);
-
-        Role role2 =  new Role(user1, project2.getProjectID());
-        role2.setRoleProjectCreator();
-        roleLibrary.addRole(role2);
-
-        Project project3 = new Project("Project name 3", "Project Description 3", user1);
-        projectLibrary.addProject(project3);
-        Role role3 =  new Role(user1, project3.getProjectID());
-        role3.setRoleProjectCreator();
-        roleLibrary.addRole(role3);
-
-        Project project4 = new Project("Project name 4", "Project Description 4", user2);
-        projectLibrary.addProject(project4);
-
-        Role role4 =  new Role(user2, project4.getProjectID());
-        role4.setRoleProjectCreator();
-        roleLibrary.addRole(role4);
-
-        Project project5 = new Project("Project name 5", "Project Description 5", user2);
-        projectLibrary.addProject(project5);
-
-        Role role5 =  new Role(user2, project5.getProjectID());
-        role5.setRoleProjectCreator();
-        roleLibrary.addRole(role5);
-
-        Project project6 = new Project("Project name 6", "Project Description 6", user2);
-        projectLibrary.addProject(project6);
-
-        Role role6 =  new Role(user2, project6.getProjectID());
-        role6.setRoleProjectCreator();
-        roleLibrary.addRole(role6);
-
+        sysAdminLibrary.addSysAdmin("admin@admin.com", "admin","admin","admin");
         userLibrary.listUsers();
-     //   projectLibrary.listAllProjects();
-        sysAdminLibrary.addSysAdmin("admin@email.com", "hannah", "shiels", "password");
     }
 
 
