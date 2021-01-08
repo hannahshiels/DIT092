@@ -9,6 +9,11 @@ public class UserLibrary {
         userList.add(newUser);
     }
 
+    public void registerUser(String email, String firstName, String lastName, String password){
+        User newUser = new User( email,  firstName,  lastName, password);
+        userList.add(newUser);
+    }
+
     public User getUser(String email){
         for(int i = 0; i < userList.size(); i++){
             if(userList.get(i).getEmail().equals(email)){
