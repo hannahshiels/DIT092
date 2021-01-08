@@ -122,9 +122,8 @@ public class InterfaceController  {
     }
 
     public void start(){
-
         this.scene.getStylesheets().add("css/styles.css");
-        Import.importData("import.txt",  userLibrary,  sysAdminLibrary,  roleLibrary,  taskLibrary, projectLibrary,meetingLibrary);
+        Import.importData("import.txt",  userLibrary, roleLibrary,  taskLibrary, projectLibrary,meetingLibrary);
         testingInit();
         showMainMenu();
     }
