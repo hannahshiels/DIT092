@@ -1,11 +1,18 @@
 package projects;
 
+import users.User;
+
 import java.util.ArrayList;
 
 public class ProjectLibrary {
     private ArrayList<Project> projectList = new ArrayList<>();
 
     public void addProject(Project newProject){
+        projectList.add(newProject);
+    }
+
+    public void registerProject(String projectName, String projectDescription, User user){
+        Project newProject = new Project(projectName,projectDescription,user);
         projectList.add(newProject);
     }
 
@@ -32,6 +39,13 @@ public class ProjectLibrary {
         }
         return null;
     }
+
+    public Project getNumProject(int num){
+      return projectList.get(num - 1);
+    }
+
+
+
     public ArrayList<Project> getAllActiveProjects(ArrayList<String> projectIDS){
         ArrayList<Project> userActiveProjects = new ArrayList<>();
         for (int i = 0; i < projectList.size(); i++){
@@ -59,7 +73,6 @@ public class ProjectLibrary {
         }
         return userClosedProjects;
     }
-
 
     public ArrayList<Project> getProjects(ArrayList<String> projectIDS){
         ArrayList<Project> userProjects = new ArrayList<>();
