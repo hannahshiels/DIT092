@@ -25,32 +25,32 @@ public class NotificationLibrary {
         notificationList.add(newNotification);
     }
 
-    public Notification sendNewTaskNotification(ArrayList<User> receivers, Task newTask, Project project){
+    public void sendNewTaskNotification(ArrayList<User> receivers, Task newTask, Project project){
         String title = project.getProjectName() + " - New Task";
         String text = "A new task " + newTask.getTaskName() + " has been created in " + project.getProjectName() + "!";
         Notification newNotification = new Notification(receivers, title, text);
         notificationList.add(newNotification);
-        return newNotification;
     }
 
-    /*public Notification sendMeetingNotification(){
+    public void sendMeetingNotification(ArrayList<User> receivers, Project project){
+        String title = project.getProjectName() + " - New Meeting";
+        String text = "New Team Meeting has been scheduled for " + project.getProjectName() + ". Check your e-mail for more information.";
+        Notification newNotification = new Notification(receivers, title, text);
+        notificationList.add(newNotification);
+    }
 
-    }*/
-
-    public Notification sendNewProgressNotification(ArrayList<User> receivers, Task task, Project project){
+    public void sendNewProgressNotification(ArrayList<User> receivers, Task task, Project project){
         String title = project.getProjectName() + " - Task Progress Changed";
         String text = "Task " + task.getTaskName() + " in " + project.getProjectName() + " has been moved to " + task.getTaskProgress() + "!";
         Notification newNotification = new Notification(receivers, title, text);
         notificationList.add(newNotification);
-        return newNotification;
     }
 
-    public Notification sendTaskAssignedNotification(User receiver, Task task, Project project){
+    public void sendTaskAssignedNotification(User receiver, Task task, Project project){
         String title = project.getProjectName() + " - New Task Assigned";
         String text = "You have been assigned a new task (" + task.getTaskName() + " ) in " + project.getProjectName() + "!";
         Notification newNotification = new Notification(receiver, title, text);
         notificationList.add(newNotification);
-        return newNotification;
     }
 
     //--------------------------------------------------------------

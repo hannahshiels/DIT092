@@ -1,5 +1,6 @@
 package controllers;
 
+import com.sun.mail.imap.protocol.ID;
 import interfaces.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -910,6 +911,7 @@ public class InterfaceController  {
                 emailFunction.sendFromGMail(emailFunction.getEmailLogin(), emailFunction.getEmailPassword(), roleLibrary.getAllUserEmails(projectID), "Team meeting scheduled - " + createMeetingInterface.getMeetingDate().getValue(), emailBody);
                 Meeting meeting = new Meeting(projectID,getUser(), location, date);
                 meetingLibrary.addMeeting(meeting);
+                notificationLibrary.sendMeetingNotification(roleLibrary.getAllProjectUsers(projectID), projectLibrary.getProject(projectID));
             }
 
         });
