@@ -15,10 +15,10 @@ public class Import {
 
     //User;firstname;lastname;email;Password
     //Project;title;description;email
-    //Task;
+    //Task;email;project num;taskName;taskDesc;
     //Meeting;projectID;meetingCreator(email);location;meetingDate(int day, int month, int year)
 
-    public static String importData(String filePath, UserLibrary userLibrary, SysAdminLibrary sysAdminLibrary, RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary){
+    public static String importData(String filePath, UserLibrary userLibrary, SysAdminLibrary sysAdminLibrary, RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary,MeetingLibrary meetingLibrary){
         try {
             File myFile = new File(filePath);
             FileReader fileReader = new FileReader(myFile);
@@ -26,10 +26,6 @@ public class Import {
             StringBuilder builder = new StringBuilder();
             String line = null;
             int lineCounter=0;
-            int userCount=0;
-            int projectCount=0;
-            int sysAdminCounter=0;
-            int taskCounter=0;
 
             while ((line = reader.readLine()) != null) {
                 lineCounter++;
@@ -37,7 +33,6 @@ public class Import {
                 if(partsOfCurrentLine[0].equalsIgnoreCase("User")){
                     try{
                         userLibrary.registerUser(partsOfCurrentLine[3],partsOfCurrentLine[1],partsOfCurrentLine[2],partsOfCurrentLine[4]);
-                        userCount++;
                     }catch (NameException | PasswordException ex){
                         builder.append("Invalid input at line "+lineCounter+"\n");
                         builder.append(ex.getMessage());
@@ -46,17 +41,6 @@ public class Import {
                         builder.append("Invalid input at line "+lineCounter+"\n");
                     }
 
-                }else if(partsOfCurrentLine[0].equalsIgnoreCase("System Admin")){
-                    try{
-                        sysAdminLibrary.addSysAdmin(partsOfCurrentLine[1],partsOfCurrentLine[2],(partsOfCurrentLine[3]),partsOfCurrentLine[4]);
-                        sysAdminCounter++;
-                    }catch ( NameException | PasswordException ex){
-                        builder.append("Invalid input at line "+lineCounter+"\n");
-                        builder.append(ex.getMessage());
-                        builder.append("\n");
-                    } catch (ArrayIndexOutOfBoundsException ex){
-                        builder.append("Invalid input at line "+lineCounter+"\n");
-                    }
                 }else if(partsOfCurrentLine[0].equalsIgnoreCase("Project")){
                     try{
                         User user = userLibrary.getUser(partsOfCurrentLine[3]);
@@ -65,7 +49,6 @@ public class Import {
                         Role role = new Role(user, project.getProjectID());
                         role.setRoleProjectCreator();
                         roleLibrary.addRole(role);
-                        projectCount++;
                     }catch (NameException ex){
                         builder.append("Invalid input at line "+lineCounter+"\n");
                         builder.append(ex.getMessage());
@@ -91,7 +74,6 @@ public class Import {
                         User user = userLibrary.getUser(partsOfCurrentLine[1]);
                         Project project = projectLibrary.getNumProject(Integer.parseInt(partsOfCurrentLine[2]));
                         taskLibrary.registerTask(user, project.getProjectID(),partsOfCurrentLine[3],partsOfCurrentLine[4]);
-                        taskCounter++;
                     }catch (NameException ex){
                         builder.append("Invalid input at line "+lineCounter+"\n");
                         builder.append(ex.getMessage());
@@ -103,20 +85,7 @@ public class Import {
                     builder.append("Invalid input at line "+lineCounter+"\n");
                 }
             }
-            if(userCount > 0){
-                builder.append(userCount + " users.");
-            }
-            if (projectCount > 0){
-                builder.append(projectCount + " projects.");
-            }
-            if (sysAdminCounter > 0){
-                builder.append(sysAdminCounter + " system admins.");
-            }
-            if (taskCounter > 0){
-                builder.append(taskCounter + " tasks.");
-            }else {
-                builder.append("No data to import!");
-            }
+
             reader.close();
             return builder.toString();
         } catch(Exception ex) {
