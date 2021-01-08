@@ -1026,9 +1026,9 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleScrumMaster();
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 } else if(role.equals("Product Owner")){
@@ -1037,18 +1037,17 @@ public class InterfaceController  {
                     } else{
                         User user = userLibrary.getUser(emailText);
                         Role newRole = new Role(user,ID);
+                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                         roleLibrary.addRole(newRole);
                         newRole.setRoleProductOwner();
-                        notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
-
                         showManageProjectInterface(projectLibrary.getProject(ID));
                     }
                 }else{
                     User user = userLibrary.getUser(emailText);
                     Role newRole = new Role(user,ID);
+                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     roleLibrary.addRole(newRole);
                     newRole.setRoleDeveloper();
-                    notificationLibrary.sendNewUserNotification(roleLibrary.getAllProjectUsers(ID), user, projectLibrary.getProject(ID));
                     showManageProjectInterface(projectLibrary.getProject(ID));
                 }
             }

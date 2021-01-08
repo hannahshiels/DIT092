@@ -12,13 +12,24 @@ public class Notification {
     private String notificationID;
     private String projectID;
     private ArrayList<User> receivers;
+    private User receiver;
     private String notificationTitle;
     private String notificationBody;
     private LocalDate date;
 
+    //Constructor for notifications that have 2 or more receivers
     public Notification(ArrayList<User> receivers, String notificationTitle, String notificationBody){
         this.notificationID = RandomID.getRandomID();
         this.receivers = receivers;
+        this.notificationTitle = notificationTitle;
+        this.notificationBody = notificationBody;
+        this.date = CurrentDate.getCurrentDate();
+    }
+
+    //Constructor for notifications that have a single receiver (e.g - New Task Assigned)
+    public Notification(User receiver, String notificationTitle, String notificationBody){
+        this.notificationID = RandomID.getRandomID();
+        this.receiver = receiver;
         this.notificationTitle = notificationTitle;
         this.notificationBody = notificationBody;
         this.date = CurrentDate.getCurrentDate();
@@ -39,7 +50,7 @@ public class Notification {
     public String getProjectID(){
         return projectID;
     }
-    public ArrayList<User> getReceiver(){
+    public ArrayList<User> getReceivers(){
         return receivers;
     }
     public User getIndividualReceiver(User user){

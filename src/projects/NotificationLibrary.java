@@ -45,10 +45,10 @@ public class NotificationLibrary {
         return newNotification;
     }
 
-    public Notification sendTaskAssignedNotification(ArrayList<User> receivers, Task task, Project project){
+    public Notification sendTaskAssignedNotification(User receiver, Task task, Project project){
         String title = project.getProjectName() + " - New Task Assigned";
         String text = "You have been assigned a new task (" + task.getTaskName() + " ) in " + project.getProjectName() + "!";
-        Notification newNotification = new Notification(receivers, title, text);
+        Notification newNotification = new Notification(receiver, title, text);
         notificationList.add(newNotification);
         return newNotification;
     }
