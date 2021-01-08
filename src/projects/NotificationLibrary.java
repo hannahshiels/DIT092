@@ -8,15 +8,6 @@ import java.util.Collections;
 public class NotificationLibrary {
     private ArrayList<Notification> notificationList = new ArrayList<>();
 
-    /*public Notification sendNotification(String projectID, String receiverEmail, String notificationTitle, String notificationText, RoleLibrary roleLibrary){
-        if(roleLibrary.isUserInProject(projectID, receiverEmail)){
-            Notification newNotification = new Notification(receiverEmail, notificationTitle, notificationText);
-            notificationList.add(newNotification);
-            return newNotification;
-        } else {
-            return null;
-        }
-    }*/
 
     public void sendNewUserNotification(ArrayList<User> receivers, User newUser, Project project){
         String title = project.getProjectName() + " - New User";

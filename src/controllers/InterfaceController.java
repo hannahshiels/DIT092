@@ -622,11 +622,13 @@ public class InterfaceController  {
                 } else{
                     Task newTask = new Task(getUser(),ID, taskNameText, taskDescriptionText);
                     taskLibrary.addTask(newTask);
+                    notificationLibrary.sendNewTaskNotification(roleLibrary.getAllProjectUsers(ID), newTask, projectLibrary.getProject(ID));
                     taskName.setText("");
                     taskDesc.setText("");
                     if(grid.getChildren().contains(assignUserCB)){
                         User assignUser = userLibrary.getUser(assignUserCB.getValue().toString());
                         newTask.setUserAssigned(assignUser);
+                        notificationLibrary.sendTaskAssignedNotification(assignUser, newTask, projectLibrary.getProject(ID));
                     }
                     showTaskMenu(ID);
                 }
