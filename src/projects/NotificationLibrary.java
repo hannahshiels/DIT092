@@ -44,45 +44,6 @@ public class NotificationLibrary {
         notificationList.add(newNotification);
     }
 
-    //--------------------------------------------------------------
-                       // Notification Titles
-    public String newUserNotTitle(Project project){
-        return project.getProjectName() + " - New User";
-    }
-    public String newTaskNotTitle(Project project){
-        return project.getProjectName() + " - New Task";
-    }
-    public String newMeetingNotTitle(Project project){
-        return project.getProjectName() + " - New Meeting";
-    }
-    public String newProgressNotTitle(Project project){
-        return project.getProjectName() + " - Task Progress Changed";
-    }
-
-    public String taskAssignedNotTitle(Project project){
-        return project.getProjectName() + " - New Task Assigned";
-    }
-    //--------------------------------------------------------------
-                     // Notification Texts
-   /* public String newUserText(User newUser, Project project){
-        return "A new team member has been added to " + project.getProjectName() + "! Please, welcome " + newUser.getNames() + "!";
-    }
-    public String newTaskText(Task newTask, Project project){
-        return "A new task " + newTask.getTaskName() + " has been created in " + project.getProjectName() + "!";
-    }
-    //I don't have the meeting updates yet, come back to it later!!!
-    public String newMeetingText(Task newTask, Project project){
-        String text = String.format("A new task %s", newTask.getTaskName(), " has been created in %s", project.getProjectName());
-        return text;
-    }
-    public String newTaskProgress(Task task, Project project){
-        return "Task " + task.getTaskName() + "in " + project.getProjectName() + " has been moved to %s" + task.getTaskProgress() + "!";
-    }
-    public String taskAssignedText(Task task, Project project){
-        return "You have been assigned a new task (" + task.getTaskName() + " ) in " + project.getProjectName() + "!";
-    }*/
-    //-------------------------------------------------------------------
-
 
     public void deleteNotification(Notification notification) {
         notificationList.remove(notification);
