@@ -132,9 +132,8 @@ public class InterfaceController  {
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
             Import.importData(selectedFile.getAbsolutePath(),  userLibrary, roleLibrary,  taskLibrary, projectLibrary);
-            testingInit();
-
         }
+        testingInit();
     }
 
     private void changeScene(AnchorPane gui, String title){
@@ -1208,8 +1207,6 @@ public class InterfaceController  {
 
         changeScene(gui, title);
     }
-
-
 
 
     public void testingInit(){
