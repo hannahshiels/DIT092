@@ -18,7 +18,7 @@ public class Import {
     //Task;email;project num;taskName;taskDesc;
     //Meeting;projectID;meetingCreator(email);location;meetingDate(int day, int month, int year)
 
-    public static String importData(String filePath, UserLibrary userLibrary, SysAdminLibrary sysAdminLibrary, RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary,MeetingLibrary meetingLibrary){
+    public static String importData(String filePath, UserLibrary userLibrary,RoleLibrary roleLibrary, TaskLibrary taskLibrary, ProjectLibrary projectLibrary,MeetingLibrary meetingLibrary){
         try {
             File myFile = new File(filePath);
             FileReader fileReader = new FileReader(myFile);
