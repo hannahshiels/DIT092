@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class Notification {
 
     private String notificationID;
-    private String projectID;
     private ArrayList<User> receivers;
     private User receiver;
     private String notificationTitle;
@@ -35,24 +34,6 @@ public class Notification {
         this.date = CurrentDate.getCurrentDate();
     }
 
-
-    // Added setters, idk if we will need them
-    public void setReceiver(ArrayList<User> receivers){
-        this.receivers = receivers;
-    }
-    public void setNotificationTitle(String notificationTitle){
-        this.notificationTitle = notificationTitle;
-    }
-    public void setNotificationBody(String notificationBody){
-        this.notificationBody = notificationBody;
-    }
-
-    public String getProjectID(){
-        return projectID;
-    }
-    public ArrayList<User> getReceivers(){
-        return receivers;
-    }
     public User getIndividualReceiver(User user){
         for(User newUser : receivers){
             if(newUser == user){
