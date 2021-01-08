@@ -676,8 +676,10 @@ public class InterfaceController  {
                         userTasks.get(currentTask).setTaskNotStarted();
                     } else if(progress.equalsIgnoreCase("In progress")){
                         userTasks.get(currentTask).setTaskInProgress();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
                     } else if(progress.equalsIgnoreCase("Done")){
                         userTasks.get(currentTask).setTaskDone();
+                        notificationLibrary.sendNewProgressNotification(roleLibrary.getAllProjectUsers(projectID), userTasks.get(currentTask), projectLibrary.getProject(projectID));
                     }
                 }
             });
